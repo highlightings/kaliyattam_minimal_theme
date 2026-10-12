@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - kaliyattam_core
+  theme:
+    - kaliyattam_minimal
+id: kaliyattam_minimal_node_about
+theme: kaliyattam_minimal
+region: sidebar_first
+weight: 3
+provider: null
+plugin: kaliyattam_updates_about
+settings:
+  id: kaliyattam_updates_about
+  label: 'About Kaliyattam Heritage'
+  label_display: '0'
+  provider: kaliyattam_core
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      event: event
+      location: location
+      post: post
+      theyyam: theyyam

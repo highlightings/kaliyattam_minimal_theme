@@ -9,18 +9,35 @@
 {% set has_second = page.sidebar_second is not empty %}
 <div class="site">
   <header class="site-header">
-    {% if page.header_top %}
-      <div class="site-header__top">
-        <div class="container">{{ page.header_top }}</div>
+    <div class="site-header__top">
+      <div class="container">
+        {{ page.header_top }}
+        <button type="button" class="theme-toggle" id="theme-toggle" data-theme-toggle aria-label="{{ 'Toggle dark/light mode'|t }}" title="{{ 'Toggle dark/light mode'|t }}">
+          <span class="theme-toggle-icon theme-toggle-icon--moon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+          <span class="theme-toggle-icon theme-toggle-icon--sun" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </span>
+          <span class="theme-toggle-label">{{ 'Dark'|t }}</span>
+        </button>
       </div>
-    {% endif %}
+    </div>
     <div class="site-header__main container">
       <div class="site-branding">{{ page.branding }}</div>
       <div class="site-nav" id="site-nav">{{ page.main_nav }}</div>
-      <button type="button" class="header-button theme-toggle" data-theme-toggle aria-pressed="false" title="{{ 'Switch between light and dark mode'|t }}">
-        <span class="theme-toggle__light">{{ 'Dark'|t }}</span>
-        <span class="theme-toggle__dark">{{ 'Light'|t }}</span>
-      </button>
       <button type="button" class="header-button nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="site-nav">{{ 'Menu'|t }}</button>
     </div>
   </header>
@@ -30,13 +47,13 @@
       <div class="site-breadcrumb">{{ page.breadcrumb }}</div>
     {% endif %}
     {{ page.highlighted }}
-    <div class="layout{{ has_first ? ' layout--sidebar-first' }}{{ has_second ? ' layout--sidebar-second' }}">
+    <div class="layout{{ has_first ? ' layout--sidebar-first' }}{{ has_second ? ' layout--sidebar-second' }}{{ (has_first and has_second) ? ' layout--both-sidebars' }}">
       {% if has_first %}
-        <aside class="sidebar sidebar--first">{{ page.sidebar_first }}</aside>
+        <aside class="sidebar sidebar--first" role="complementary" aria-label="{{ 'First sidebar'|t }}">{{ page.sidebar_first }}</aside>
       {% endif %}
       <div class="layout__content">{{ page.content }}</div>
       {% if has_second %}
-        <aside class="sidebar sidebar--second">{{ page.sidebar_second }}</aside>
+        <aside class="sidebar sidebar--second" role="complementary" aria-label="{{ 'Second sidebar'|t }}">{{ page.sidebar_second }}</aside>
       {% endif %}
     </div>
   </main>

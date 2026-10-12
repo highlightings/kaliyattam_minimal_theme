@@ -1,0 +1,33 @@
+<div class="node-interaction-bar post-interaction-bar">
+  {% if logged_in %}
+    {% if flag_like_node is not empty %}
+      {{ flag_like_node }}
+    {% endif %}
+    {% if follow_content_enabled and flag_follow_content is not empty %}
+      {{ flag_follow_content }}
+    {% endif %}
+    {% if flag_offensive_content is not empty %}
+      {{ flag_offensive_content }}
+    {% endif %}
+  {% else %}
+    {% set login_url = path('user.login', {}, {'query': {'destination': url}}) %}
+    <a href="{{ login_url }}" class="action-flag action-flag-anon action-flag-like" title="{{ 'Log in to like this content'|t }}">
+      <span class="action-icon action-icon-like" aria-hidden="true">👍</span><span>{{ 'Like'|t }}</span>
+    </a>
+    {% if follow_content_enabled %}
+      <a href="{{ login_url }}" class="action-flag action-flag-anon action-flag-follow" title="{{ 'Log in to follow this content'|t }}">
+        <span class="action-icon action-icon-follow" aria-hidden="true">🔖</span><span>{{ 'Follow'|t }}</span>
+      </a>
+    {% endif %}
+    <a href="{{ login_url }}" class="action-flag action-flag-anon action-flag-report" title="{{ 'Log in to report this content'|t }}">
+      <span class="action-icon action-icon-report" aria-hidden="true">🚩</span><span>{{ 'Report'|t }}</span>
+    </a>
+  {% endif %}
+  <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Share this content'|t }}">
+    <span class="action-icon action-icon-share" aria-hidden="true">↗</span><span class="share-label">{{ 'Share'|t }}</span>
+  </button>
+  <a href="#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
+    <span class="action-icon action-icon-comments" aria-hidden="true">💬</span><span>{{ 'Comments'|t }}</span>
+    <span class="action-count">{{ comment_count|default(0) }}</span>
+  </a>
+</div>

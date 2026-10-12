@@ -1,11 +1,7 @@
 {#
 /**
  * @file
- * One template for every content type and view mode. The look comes from the
- * view-mode class (.node--view-mode-full / -teaser / -card) in components.css.
- *
- * `label` is empty when titles are hidden (exclude_node_title), so it is
- * tested before printing.
+ * One template for every content type and view mode.
  */
 #}
 {%
@@ -13,22 +9,46 @@
     'node',
     'node--type-' ~ node.bundle|clean_class,
     'node--view-mode-' ~ view_mode|clean_class,
+    view_mode == 'full' ? 'wiki-node-view',
     not node.isPublished() ? 'node--unpublished',
   ]
 %}
 <article{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {% if label and not page %}
-    <h2{{ title_attributes.addClass('node__title') }}>
+    <h1{{ title_attributes.addClass('node__title') }}>
       <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
+    </h1>
   {% endif %}
   {{ title_suffix }}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {% if display_submitted %}
+    {% if display_submitted and view_mode != 'full' %}
       <p class="node__meta">{{ author_name }} &middot; {{ date }}</p>
     {% endif %}
-    {{ content }}
+
+    {% if view_mode == 'full' %}
+      {% if content.field_featured_image is not empty %}
+        <div class="node-cover-image">
+          {{ content.field_featured_image }}
+        </div>
+      {% endif %}
+
+      <div class="node-main-fields">
+        {{ content|without('field_featured_image', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+      </div>
+
+      {% include '@kaliyattam_minimal/templates/node-actions.html.twig' %}
+
+      {% set comment_content = content.field_comments_without_title|default(content.field_comments) %}
+      {% if comment_content is not empty %}
+        <section id="comments" class="node-comments-section comments-collapsible">
+          <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
+          {{ comment_content }}
+        </section>
+      {% endif %}
+    {% else %}
+      {{ content }}
+    {% endif %}
   </div>
 </article>

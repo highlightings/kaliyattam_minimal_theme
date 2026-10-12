@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.updates_sidebar
+  module:
+    - system
+    - views
+  theme:
+    - kaliyattam_minimal
+id: kaliyattam_minimal_updates_temples
+theme: kaliyattam_minimal
+region: sidebar_second
+weight: 3
+provider: null
+plugin: 'views_block:updates_sidebar-temples_block'
+settings:
+  id: 'views_block:updates_sidebar-temples_block'
+  label: 'Sacred Shrines'
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: null
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/updates_1\n/updates_1/*\n/theyyam\n/events\n/temples\n/posts\n/timeline\n/theyyam/*/timeline\n/events/*/timeline\n/temples/*/timeline\n/user/*"

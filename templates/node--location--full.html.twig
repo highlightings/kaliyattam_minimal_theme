@@ -1,0 +1,124 @@
+{#
+/**
+ * @file
+ * Temple / Location node in full view mode.
+ * Clean, uncluttered layout matching the sacred Kaliyattam design.
+ */
+#}
+<article{{ attributes.addClass('node', 'node--type-location', 'node--view-mode-full', 'wiki-node-view', not node.isPublished() ? 'node--unpublished') }}>
+  {{ title_prefix }}
+  {% if label and not page %}
+    <h1{{ title_attributes.addClass('node__title') }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h1>
+  {% endif %}
+  {{ title_suffix }}
+
+  <div{{ content_attributes.addClass('node__content') }}>
+    {# Cover / Featured Image #}
+    {% if content.field_featured_image is not empty %}
+      <div class="location-cover-image">
+        {{ content.field_featured_image }}
+      </div>
+    {% endif %}
+
+    {# Address details #}
+    {% if content.field_location_address is not empty %}
+      <div class="location-address-box">
+        <span class="location-address-icon" aria-hidden="true">📍</span>
+        <div class="location-address-text">
+          {{ content.field_location_address }}
+        </div>
+      </div>
+    {% endif %}
+
+    {# Temple Map Section #}
+    {% if location_map is not empty or content.field_geofield is not empty %}
+      <section id="temple-map" class="temple-map-section">
+        <div class="temple-map-header">
+          <h2 class="temple-map-title">
+            <span class="temple-map-icon" aria-hidden="true">🗺️</span>
+            <span>{{ 'Temple Location & Map'|t }}</span>
+          </h2>
+          {% if location_directions_url %}
+            <a href="{{ location_directions_url }}" target="_blank" rel="noopener noreferrer" class="button button--directions">
+              <span>🧭 {{ 'Get directions'|t }}</span>
+            </a>
+          {% endif %}
+        </div>
+        {% if location_map is not empty %}
+          <div class="temple-map-canvas">
+            {{ location_map }}
+          </div>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    {# Related Theyyams at this Temple #}
+    {% set theyyam_items = related_theyyams|default([]) %}
+    {% if theyyam_items is not empty %}
+      <div class="theyyam-related">
+        <h2 class="theyyam-related-title">{{ 'Theyyam at this temple'|t }}</h2>
+        <div class="theyyam-simple-list">
+          {% for theyyam in theyyam_items %}
+            <article class="theyyam-list-row">
+              <div class="theyyam-list-media">
+                {% if theyyam.media_id %}
+                  <a href="{{ theyyam.url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
+                    {{ drupal_entity('media', theyyam.media_id, 'thumbnail') }}
+                  </a>
+                {% else %}
+                  <a href="{{ theyyam.url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
+                    <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
+                  </a>
+                {% endif %}
+              </div>
+              <div class="theyyam-list-body">
+                <h3 class="theyyam-list-title">
+                  <a href="{{ theyyam.url }}">{{ theyyam.label }}</a>
+                </h3>
+                {% if theyyam.snippet %}
+                  <div class="theyyam-list-snippet">
+                    {{ theyyam.snippet }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="theyyam-list-action">
+                <a href="{{ theyyam.url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.label }}">
+                  <span>{{ 'More'|t }} &raquo;</span>
+                </a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {# Main Content & Description #}
+    <div class="node-main-fields">
+      {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'field_theyyam', 'field_media', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+    </div>
+
+    {% include '@kaliyattam_minimal/templates/node-actions.html.twig' %}
+
+    {# Wiki Page Metadata Footer #}
+    <footer class="wiki-node-footer">
+      <div class="wiki-last-updated">
+        <span>🕒 {{ 'Last updated on'|t }} {{ node.getChangedTime()|format_date('medium') }}</span>
+      </div>
+      <div class="wiki-history-links">
+        <a href="{{ logged_in ? path('entity.node.version_history', {'node': node.id}) : path('user.login', {}, {'query': {'destination': path('entity.node.version_history', {'node': node.id})}}) }}">
+          <span>📖 {{ 'View versions & revision history'|t }}</span>
+        </a>
+      </div>
+    </footer>
+
+    {% set comment_content = content.field_comments_without_title|default(content.field_comments) %}
+    {% if comment_content is not empty %}
+      <section id="comments" class="node-comments-section comments-collapsible">
+        <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
+        {{ comment_content }}
+      </section>
+    {% endif %}
+  </div>
+</article>

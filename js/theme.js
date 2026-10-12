@@ -1,6 +1,6 @@
 /**
  * @file
- * Two tiny behaviours: manual light/dark toggle and the mobile nav button.
+ * Theme JavaScript: theme toggle, mobile nav, collapsible comments, and share button.
  */
 (function (Drupal, once) {
   'use strict';
@@ -11,21 +11,41 @@
 
   Drupal.behaviors.kaliyattamMinimal = {
     attach: function (context) {
+      // 1. Dark / Light Mode Toggle
       once('km-theme-toggle', '[data-theme-toggle]', context).forEach(function (button) {
-        button.setAttribute('aria-pressed', currentTheme() === 'dark' ? 'true' : 'false');
-        button.addEventListener('click', function () {
+        var label = button.querySelector('.theme-toggle-label');
+        function syncState(theme) {
+          button.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+          if (label) {
+            label.textContent = theme === 'dark'
+              ? (Drupal.t ? Drupal.t('Light') : 'Light')
+              : (Drupal.t ? Drupal.t('Dark') : 'Dark');
+          }
+        }
+
+        syncState(currentTheme());
+
+        button.addEventListener('click', function (e) {
+          e.preventDefault();
           var next = currentTheme() === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', next);
-          button.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+          if (next === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+          syncState(next);
           try {
             window.localStorage.setItem('kaliyattam-theme', next);
+            window.localStorage.setItem('kaliyattam_theme', next);
           }
-          catch (e) {
-            /* Storage blocked: the choice lasts for this page only. */
+          catch (err) {
+            /* Storage blocked. */
           }
         });
       });
 
+      // 2. Mobile Nav Toggle
       once('km-nav-toggle', '[data-nav-toggle]', context).forEach(function (button) {
         var header = button.closest('.site-header');
         function setOpen(open) {
@@ -44,6 +64,71 @@
           if (event.key === 'Escape') {
             setOpen(false);
             button.focus();
+          }
+        });
+      });
+
+      // 3. Collapsible Comments Toggle
+      once('km-comments-toggle', '.comments-scroll-btn', context).forEach(function (btn) {
+        var commentsSection = document.querySelector('.node-comments-section');
+        if (!commentsSection) return;
+
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var willOpen = !commentsSection.classList.contains('is-open');
+          commentsSection.classList.toggle('is-open', willOpen);
+          btn.classList.toggle('is-active', willOpen);
+          btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+
+          if (willOpen) {
+            setTimeout(function () {
+              commentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              var firstInput = commentsSection.querySelector('textarea, input[type="text"]:not([type="hidden"])');
+              if (firstInput) {
+                setTimeout(function () {
+                  firstInput.focus();
+                }, 350);
+              }
+            }, 60);
+          }
+        });
+      });
+
+      // Automatically expand comments if page loaded with #comments or #comment in hash
+      if (window.location.hash && (window.location.hash === '#comments' || window.location.hash.indexOf('#comment') === 0)) {
+        var commentsSection = document.querySelector('.node-comments-section');
+        if (commentsSection) {
+          commentsSection.classList.add('is-open');
+          var btn = document.querySelector('.comments-scroll-btn');
+          if (btn) {
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+          setTimeout(function () {
+            var target = document.querySelector(window.location.hash) || commentsSection;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      }
+
+      // 4. Share / Copy Link Button
+      once('km-copy-link', '.btn-copy-link', context).forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var url = btn.getAttribute('data-url') || window.location.href;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function () {
+              var label = btn.querySelector('.share-label');
+              var originalText = label ? label.textContent : '';
+              if (label) {
+                label.textContent = Drupal.t ? Drupal.t('Copied!') : 'Copied!';
+              }
+              setTimeout(function () {
+                if (label) {
+                  label.textContent = originalText;
+                }
+              }, 2000);
+            });
           }
         });
       });
