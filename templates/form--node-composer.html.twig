@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Wrapper for the post and event add/edit forms (selected by
+ * kaliyattam_minimal_theme_suggestions_form_alter in the .theme file).
+ *
+ * Adds the .composer card class, plus a small author header on the post form.
+ * No logic: field order, widgets and groups all come from Manage form display.
+ */
+#}
+<form{{ attributes.addClass('composer') }}>
+  {% if element['#id'] starts with 'node-post' %}
+    <div class="composer__header">
+      <span class="composer__avatar" aria-hidden="true">{{ user.displayname|first|upper }}</span>
+      <span class="composer__author">{{ user.displayname }}</span>
+    </div>
+  {% endif %}
+  {{ children }}
+</form>

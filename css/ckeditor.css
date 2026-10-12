@@ -1,0 +1,19 @@
+/**
+ * Loaded inside CKEditor 5 (info.yml: ckeditor5-stylesheets). Keeps the
+ * editing area looking like published text.
+ */
+.ck-content {
+  color: var(--theme-text);
+  font: var(--text-base) / var(--leading-relaxed) var(--font-sans-body);
+}
+
+.ck-content a {
+  color: var(--theme-accent);
+}
+
+.ck-content blockquote {
+  margin: 1em 0;
+  padding: 0.25em 1em;
+  border-inline-start: 4px solid var(--kaliyattam-gold);
+  color: var(--theme-text-secondary);
+}

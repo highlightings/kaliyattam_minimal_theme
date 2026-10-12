@@ -1,0 +1,24 @@
+# Runs in <head> so the saved light/dark choice is applied before first paint.
+theme-init:
+  header: true
+  js:
+    js/theme-init.js: {}
+
+global:
+  css:
+    base:
+      css/tokens.css: {}
+      css/base.css: {}
+    layout:
+      css/layout.css: {}
+    component:
+      css/components.css: {}
+      css/forms.css: {}
+      css/dialog.css: {}
+
+theme:
+  js:
+    js/theme.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

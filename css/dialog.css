@@ -1,0 +1,47 @@
+/**
+ * dialog.css: a small skin for the one dialog the forms still use: the media
+ * library modal opened by the Photo / video button. Core owns its behaviour
+ * and layout; we only set colours, radius and the title bar. Selectors are
+ * descendant selectors (two classes), enough to beat core's single-class
+ * jQuery UI rules without !important.
+ */
+.ui-widget-overlay {
+  background: rgb(15 23 42 / 0.6);
+  opacity: 1;
+}
+
+.ui-dialog {
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--theme-border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  box-shadow: var(--shadow-xl);
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding: var(--space-3) var(--space-5);
+  border: 0;
+  border-radius: 0;
+  background: var(--theme-header-bg);
+  color: var(--kaliyattam-text-light);
+}
+
+.ui-dialog .ui-dialog-title {
+  font-family: var(--font-serif-heading);
+  font-weight: 700;
+}
+
+.ui-dialog .ui-dialog-content {
+  padding: var(--space-4) var(--space-5);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+  margin: 0;
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--theme-border-subtle);
+  background: var(--theme-surface);
+}

@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Kaliyattam Minimal theme.
+ *
+ * Presentation only: everything else (form layout, groups, widgets) is
+ * configuration. The single hook below lets the post/event forms use one small
+ * Twig template (form--node-composer.html.twig); core has no form template
+ * suggestions of its own.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_theme_suggestions_form_alter().
+ */
+function kaliyattam_minimal_theme_suggestions_form_alter(array &$suggestions, array $variables): void {
+  $id = $variables['element']['#id'] ?? '';
+  if (preg_match('/^node-(post|event)-(edit-)?form/', $id)) {
+    $suggestions[] = 'form__node_composer';
+  }
+}

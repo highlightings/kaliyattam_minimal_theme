@@ -1,0 +1,27 @@
+name: Kaliyattam Minimal
+type: theme
+description: 'Small, config-first theme for kaliyattam.com. Design tokens plus plain CSS: no build step, no jQuery, no dialog or off-canvas theming. Post and event forms are built with form display and field groups, not theme code.'
+package: Kaliyattam
+core_version_requirement: ^10.3 || ^11
+base theme: false
+
+libraries:
+  - kaliyattam_minimal/theme-init
+  - kaliyattam_minimal/global
+  - kaliyattam_minimal/theme
+
+# Loaded inside CKEditor 5 so the editing area matches the front end.
+ckeditor5-stylesheets:
+  - css/tokens.css
+  - css/ckeditor.css
+
+regions:
+  header_top: 'Header top strip'
+  branding: 'Branding'
+  main_nav: 'Main navigation'
+  breadcrumb: Breadcrumb
+  highlighted: Highlighted
+  content: Content
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: Footer
