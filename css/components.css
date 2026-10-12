@@ -335,6 +335,86 @@ input[type="button"]:hover {
   font-size: var(--text-sm);
 }
 
+/* Node Author & Metadata Bar */
+.node-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--theme-surface-warm, rgba(0, 0, 0, 0.02));
+  border: 1px solid var(--theme-border-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 1.25rem;
+}
+
+.node-author-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.node-author-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--theme-accent, #890000), #b8860b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-decoration: none !important;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.node-author-avatar:hover {
+  opacity: 0.92;
+  color: #fff !important;
+}
+
+.node-meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.node-meta-author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.node-author-link {
+  font-weight: 600;
+  color: var(--theme-text, #18181b);
+  text-decoration: none;
+  font-size: var(--text-base, 1rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.node-author-link:hover {
+  color: var(--theme-accent, #890000);
+}
+
+.node-meta-date {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--theme-text-muted, #71717a);
+  display: inline-flex;
+  align-items: center;
+}
+
+.node-meta-date time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 /* Interaction Bar & Action Badges */
 .node-interaction-bar {
   display: flex;
@@ -652,6 +732,17 @@ html.dark .temple-map-section,
 html.dark .theyyam-list-row {
   background: var(--theme-surface-warm);
   border-color: var(--theme-border);
+}
+
+:root[data-theme="dark"] .node-meta-bar,
+html.dark .node-meta-bar {
+  background: var(--theme-surface-raised, #18181b);
+  border-color: var(--theme-border-subtle, #27272a);
+}
+
+:root[data-theme="dark"] .node-author-link,
+html.dark .node-author-link {
+  color: var(--theme-text, #f4f4f5);
 }
 
 /* Pager */

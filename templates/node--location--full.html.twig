@@ -33,62 +33,66 @@
     {% endif %}
 
     {# Temple Map Section #}
-    {% if location_map is not empty or content.field_geofield is not empty %}
+    {% if content.field_geofield is not empty or (node.hasField('field_geofield') and not node.field_geofield.isEmpty()) %}
       <section id="temple-map" class="temple-map-section">
         <div class="temple-map-header">
           <h2 class="temple-map-title">
             <span class="temple-map-icon" aria-hidden="true">🗺️</span>
             <span>{{ 'Temple Location & Map'|t }}</span>
           </h2>
-          {% if location_directions_url %}
-            <a href="{{ location_directions_url }}" target="_blank" rel="noopener noreferrer" class="button button--directions">
-              <span>🧭 {{ 'Get directions'|t }}</span>
-            </a>
+          {% if node.hasField('field_geofield') and not node.field_geofield.isEmpty() %}
+            {% set geo = node.field_geofield.0 %}
+            {% if geo.lat and geo.lon %}
+              <a href="https://www.google.com/maps/dir/?api=1&destination={{ geo.lat }},{{ geo.lon }}" target="_blank" rel="noopener noreferrer" class="button button--directions">
+                <span>🧭 {{ 'Get directions'|t }}</span>
+              </a>
+            {% endif %}
           {% endif %}
         </div>
-        {% if location_map is not empty %}
-          <div class="temple-map-canvas">
-            {{ location_map }}
-          </div>
-        {% endif %}
+        <div class="temple-map-canvas">
+          {{ content.field_geofield }}
+        </div>
       </section>
     {% endif %}
 
     {# Related Theyyams at this Temple #}
-    {% set theyyam_items = related_theyyams|default([]) %}
-    {% if theyyam_items is not empty %}
+    {% if node.hasField('field_theyyam') and not node.field_theyyam.isEmpty() %}
       <div class="theyyam-related">
         <h2 class="theyyam-related-title">{{ 'Theyyam at this temple'|t }}</h2>
         <div class="theyyam-simple-list">
-          {% for theyyam in theyyam_items %}
-            <article class="theyyam-list-row">
-              <div class="theyyam-list-media">
-                {% if theyyam.media_id %}
-                  <a href="{{ theyyam.url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
-                    {{ drupal_entity('media', theyyam.media_id, 'thumbnail') }}
+          {% for item in node.field_theyyam %}
+            {% if item.entity %}
+              {% set theyyam = item.entity %}
+              {% set theyyam_url = path('entity.node.canonical', {'node': theyyam.id()}) %}
+              <article class="theyyam-list-row">
+                <div class="theyyam-list-media">
+                  {% if theyyam.hasField('field_featured_image') and not theyyam.get('field_featured_image').isEmpty() %}
+                    <a href="{{ theyyam_url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
+                      {{ drupal_entity('media', theyyam.field_featured_image.target_id, 'thumbnail') }}
+                    </a>
+                  {% else %}
+                    <a href="{{ theyyam_url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
+                      <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
+                    </a>
+                  {% endif %}
+                </div>
+                <div class="theyyam-list-body">
+                  <h3 class="theyyam-list-title">
+                    <a href="{{ theyyam_url }}">{{ theyyam.label() }}</a>
+                  </h3>
+                  {% if theyyam.hasField('body') and not theyyam.get('body').isEmpty() %}
+                    <div class="theyyam-list-snippet">
+                      {{ (theyyam.body.summary|default(theyyam.body.value)|striptags|trim)|slice(0, 140) }}…
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="theyyam-list-action">
+                  <a href="{{ theyyam_url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.label() }}">
+                    <span>{{ 'More'|t }} &raquo;</span>
                   </a>
-                {% else %}
-                  <a href="{{ theyyam.url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
-                    <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
-                  </a>
-                {% endif %}
-              </div>
-              <div class="theyyam-list-body">
-                <h3 class="theyyam-list-title">
-                  <a href="{{ theyyam.url }}">{{ theyyam.label }}</a>
-                </h3>
-                {% if theyyam.snippet %}
-                  <div class="theyyam-list-snippet">
-                    {{ theyyam.snippet }}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="theyyam-list-action">
-                <a href="{{ theyyam.url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.label }}">
-                  <span>{{ 'More'|t }} &raquo;</span>
-                </a>
-              </div>
-            </article>
+                </div>
+              </article>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
