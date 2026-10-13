@@ -184,4 +184,94 @@
       });
     }
   };
+
+  // 7. Performant Lightweight Media Carousel Behavior
+  Drupal.behaviors.kmCarousel = {
+    attach: function (context) {
+      once('km-carousel', '[data-km-carousel]', context).forEach(function (carousel) {
+        var viewport = carousel.querySelector('.km-carousel__viewport');
+        var prevBtn = carousel.querySelector('[data-carousel-prev]');
+        var nextBtn = carousel.querySelector('[data-carousel-next]');
+        var dots = carousel.querySelectorAll('.km-carousel__dot');
+        var slides = carousel.querySelectorAll('.km-carousel__slide');
+
+        if (!viewport || slides.length <= 1) {
+          if (prevBtn) prevBtn.style.display = 'none';
+          if (nextBtn) nextBtn.style.display = 'none';
+          var dotsWrap = carousel.querySelector('[data-carousel-dots]');
+          if (dotsWrap) dotsWrap.style.display = 'none';
+          return;
+        }
+
+        function getSlideWidth() {
+          return viewport.clientWidth || (slides[0] ? slides[0].offsetWidth : 0);
+        }
+
+        var isTicking = false;
+        function updateControls() {
+          var scrollLeft = viewport.scrollLeft;
+          var maxScroll = viewport.scrollWidth - viewport.clientWidth - 5;
+          if (prevBtn) prevBtn.disabled = scrollLeft <= 5;
+          if (nextBtn) nextBtn.disabled = scrollLeft >= maxScroll;
+
+          var slideWidth = getSlideWidth();
+          if (slideWidth > 0 && dots.length > 0) {
+            var activeIndex = Math.round(scrollLeft / slideWidth);
+            dots.forEach(function (dot, idx) {
+              dot.classList.toggle('is-active', idx === activeIndex);
+            });
+          }
+          isTicking = false;
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            viewport.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            viewport.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
+          });
+        }
+
+        dots.forEach(function (dot) {
+          dot.addEventListener('click', function (e) {
+            e.preventDefault();
+            var idx = parseInt(dot.getAttribute('data-slide-index'), 10);
+            if (!isNaN(idx) && slides[idx]) {
+              slides[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+            }
+          });
+        });
+
+        viewport.addEventListener('scroll', function () {
+          if (!isTicking) {
+            window.requestAnimationFrame(updateControls);
+            isTicking = true;
+          }
+        }, { passive: true });
+
+        // Recalculate controls when images finish loading or viewport resizes
+        carousel.querySelectorAll('img').forEach(function (img) {
+          if (!img.complete) {
+            img.addEventListener('load', updateControls);
+          }
+        });
+
+        if (window.ResizeObserver) {
+          var ro = new ResizeObserver(function () {
+            updateControls();
+          });
+          ro.observe(viewport);
+        }
+
+        updateControls();
+      });
+    }
+  };
 })(Drupal, once);
+

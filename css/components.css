@@ -1156,33 +1156,25 @@ html.dark a.timeline-toolbar__btn.is-active {
   cursor: pointer;
 }
 
-/* "Add a Post" button and view structure on timeline */
-.view-timeline-site {
-  display: flex;
-  flex-direction: column;
-}
-
+/* View structure on timeline */
 .view-timeline-site > form[id*="views-exposed-form-timeline-site"],
 .view-timeline-site > .views-exposed-form {
-  order: 1;
   margin-bottom: 0.75rem;
 }
 
 .view-timeline-site > .view-header {
-  order: 2;
   margin-bottom: 1.25rem;
 }
 
-.view-timeline-site > .attachment-before {
-  order: 3;
-}
-
-.view-timeline-site > .view-content {
-  order: 4;
-}
-
-.view-timeline-site > .pager {
-  order: 5;
+/* Ensure infinite scroll pager sits in natural document flow below content */
+[data-drupal-views-infinite-scroll-pager].visually-hidden {
+  position: static !important;
+  clip: auto !important;
+  height: 1px !important;
+  width: 100% !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
 }
 
 /* "Add post" button on /posts feed matching "Add an Event" on /events page */
@@ -1727,5 +1719,148 @@ html.dark .node--view-mode-card .field--name-field-where {
 .locations-timeline-header,
 .view-timeline-locations .view-header:has(.locations-timeline-header) {
   display: none !important;
+}
+
+/* Lightweight Performant Media Carousel (CSS Scroll-Snap) */
+.km-carousel {
+  position: relative;
+  width: 100%;
+  margin: 0.5rem 0 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--theme-surface-alt, #f3f4f6);
+}
+
+.km-carousel__viewport {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.km-carousel__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.km-carousel__track {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.km-carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--theme-surface-alt, #f3f4f6);
+}
+
+.km-carousel__slide img,
+.km-carousel__slide video,
+.km-carousel__slide iframe {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+
+.node--view-mode-card .km-carousel__slide img,
+.node--view-mode-card .km-carousel__slide video {
+  max-height: 380px;
+}
+
+.km-carousel__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #1f2937;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 0;
+}
+
+.km-carousel__btn:hover {
+  background: #ffffff;
+  color: #111827;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+.km-carousel__btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.km-carousel__btn--prev {
+  left: 10px;
+}
+
+.km-carousel__btn--next {
+  right: 10px;
+}
+
+:root[data-theme="dark"] .km-carousel__btn,
+html.dark .km-carousel__btn {
+  background: rgba(31, 41, 55, 0.88);
+  color: #f3f4f6;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+:root[data-theme="dark"] .km-carousel__btn:hover,
+html.dark .km-carousel__btn:hover {
+  background: #1f2937;
+  color: #ffffff;
+}
+
+.km-carousel__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.km-carousel__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.km-carousel__dot.is-active {
+  background: #ffffff;
+  width: 18px;
+  border-radius: 4px;
 }
 

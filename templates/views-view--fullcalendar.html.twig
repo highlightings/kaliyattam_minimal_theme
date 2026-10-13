@@ -27,6 +27,24 @@
       <a href="/events/calendar" class="timeline-toolbar__btn is-active">
         <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
       </a>
+      <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search" data-timeline-toggle-search aria-expanded="false">
+        <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+      </button>
+    </div>
+
+    <div class="timeline-toolbar__search-drawer" id="timeline-search-drawer" hidden>
+      <div class="timeline-toolbar__search-inner">
+        <form action="/events" method="get">
+          <div class="timeline-toolbar__filter-item">
+            <div class="js-form-item form-item js-form-type-textfield form-type--textfield form-item-search">
+              <input type="text" name="search" placeholder="{{ 'Search events...'|t }}" class="form-text">
+            </div>
+          </div>
+          <div class="timeline-toolbar__actions form-actions js-form-wrapper form-wrapper">
+            <input type="submit" value="{{ 'Apply'|t }}" class="button js-form-submit form-submit">
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
