@@ -19,7 +19,18 @@
         <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
       </div>
       <div class="event-meta-right">
-        <span class="node-bundle-pill node-bundle-pill--event">📅 {{ 'Event'|t }}</span>
+        {% set event_day = (node.hasField('field_when') and not node.field_when.isEmpty()) ? node.field_when.value|date('j') : '' %}
+        <span class="node-bundle-pill node-bundle-pill--event">
+          {% if event_day %}
+            <span class="pill-cal-icon" aria-hidden="true">
+              <span class="pill-cal-top"></span>
+              <span class="pill-cal-day">{{ event_day }}</span>
+            </span>
+          {% else %}
+            📅
+          {% endif %}
+          {{ 'Event'|t }}
+        </span>
       </div>
     </div>
 

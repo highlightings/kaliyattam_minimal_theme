@@ -41,4 +41,11 @@
       <span class="action-count">{{ total_comments }}</span>
     {% endif %}
   </a>
+
+  {# 5. View Post Link (for posts in list/card views) #}
+  {% if node.bundle == 'post' and not page %}
+    <a href="{{ node_target_url }}" class="action-flag timeline-action-link action-flag-view-post" title="{{ 'View post'|t }}">
+      <span>{{ 'View post'|t }} &rarr;</span>
+    </a>
+  {% endif %}
 </div>
