@@ -132,6 +132,48 @@
           }
         });
       });
+
+      // 5. Timeline Search Drawer Toggle & Sort Switcher
+      once('km-timeline-toolbar', '.timeline-toolbar', context).forEach(function (toolbar) {
+        var form = toolbar.closest('form');
+        var drawer = toolbar.querySelector('.timeline-toolbar__search-drawer');
+        var toggleBtn = toolbar.querySelector('[data-timeline-toggle-search]');
+        var sortBtns = toolbar.querySelectorAll('[data-timeline-sort]');
+
+        if (toggleBtn && drawer) {
+          toggleBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var isOpen = drawer.classList.contains('is-open');
+            drawer.classList.toggle('is-open', !isOpen);
+            drawer.hidden = isOpen;
+            toggleBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+            toggleBtn.classList.toggle('is-active', !isOpen);
+            if (!isOpen) {
+              var searchInput = drawer.querySelector('input[type="text"], input[type="search"]');
+              if (searchInput) {
+                setTimeout(function () { searchInput.focus(); }, 100);
+              }
+            }
+          });
+        }
+
+        sortBtns.forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var sortVal = btn.getAttribute('data-timeline-sort');
+            var sortSelect = form ? form.querySelector('select[name="sort_by"]') : null;
+            if (sortSelect) {
+              sortSelect.value = sortVal;
+              var submitBtn = form.querySelector('[data-drupal-selector*="edit-submit"], input[type="submit"]');
+              if (submitBtn) {
+                submitBtn.click();
+              } else {
+                form.submit();
+              }
+            }
+          });
+        });
+      });
     }
   };
 })(Drupal, once);

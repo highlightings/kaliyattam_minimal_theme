@@ -386,6 +386,19 @@ html.dark .theme-toggle-icon--sun {
   min-width: 0;
 }
 
+/* Hide sidebars on node composer pages (add/edit) so form is clean and centered */
+.layout:has(.composer) .sidebar,
+.layout:has(form.composer) .sidebar {
+  display: none !important;
+}
+
+.layout:has(.composer),
+.layout:has(form.composer) {
+  display: block !important;
+  max-width: 760px !important;
+  margin-inline: auto !important;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

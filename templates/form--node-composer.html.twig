@@ -9,11 +9,12 @@
  */
 #}
 <form{{ attributes.addClass('composer') }}>
-  {% if element['#id'] starts with 'node-post' %}
-    <div class="composer__header">
-      <span class="composer__avatar" aria-hidden="true">{{ user.displayname|first|upper }}</span>
+  <div class="composer__header">
+    <div class="composer__avatar-circle" aria-hidden="true">{{ user.displayname|first|upper }}</div>
+    <div class="composer__meta">
       <span class="composer__author">{{ user.displayname }}</span>
+      <span class="composer__visibility-badge">🌐 {{ 'Public'|t }}</span>
     </div>
-  {% endif %}
+  </div>
   {{ children }}
 </form>
