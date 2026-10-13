@@ -6,7 +6,41 @@
   'use strict';
 
   function currentTheme() {
-    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var attr = document.documentElement.getAttribute('data-theme');
+    if (attr === 'dark' || attr === 'light') {
+      return attr;
+    }
+    try {
+      var stored = window.localStorage.getItem('kaliyattam-theme');
+      if (stored === 'dark' || stored === 'light') {
+        return stored;
+      }
+    }
+    catch (e) {
+      /* Storage blocked. */
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  }
+
+  function autoExpandComments() {
+    if (window.location.hash && (window.location.hash === '#comments' || window.location.hash.indexOf('#comment') === 0)) {
+      var commentsSection = document.querySelector('.node-comments-section');
+      if (commentsSection) {
+        commentsSection.classList.add('is-open');
+        var btn = document.querySelector('.comments-scroll-btn');
+        if (btn) {
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+        setTimeout(function () {
+          var target = document.querySelector(window.location.hash) || commentsSection;
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+    }
   }
 
   Drupal.behaviors.kaliyattamMinimal = {
@@ -37,7 +71,6 @@
           syncState(next);
           try {
             window.localStorage.setItem('kaliyattam-theme', next);
-            window.localStorage.setItem('kaliyattam_theme', next);
           }
           catch (err) {
             /* Storage blocked. */
@@ -94,22 +127,11 @@
         });
       });
 
-      // Automatically expand comments if page loaded with #comments or #comment in hash
-      if (window.location.hash && (window.location.hash === '#comments' || window.location.hash.indexOf('#comment') === 0)) {
-        var commentsSection = document.querySelector('.node-comments-section');
-        if (commentsSection) {
-          commentsSection.classList.add('is-open');
-          var btn = document.querySelector('.comments-scroll-btn');
-          if (btn) {
-            btn.classList.add('is-active');
-            btn.setAttribute('aria-expanded', 'true');
-          }
-          setTimeout(function () {
-            var target = document.querySelector(window.location.hash) || commentsSection;
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 150);
-        }
-      }
+      // Automatically expand comments if hash matches on initial load or subsequent in-page hashchange
+      once('km-comments-hash-listener', 'body', context).forEach(function () {
+        window.addEventListener('hashchange', autoExpandComments);
+      });
+      autoExpandComments();
 
       // 4. Share / Copy Link Button
       once('km-copy-link', '.btn-copy-link', context).forEach(function (btn) {
