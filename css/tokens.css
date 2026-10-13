@@ -5,6 +5,9 @@
  */
 
 :root {
+  /* Native browser color-scheme signaling */
+  color-scheme: light;
+
   /* Brand Color Palette - Sacred Ritual Arts & Theyyam Tradition */
   --kaliyattam-primary: #890000;
   --kaliyattam-primary-dark: #5c0000;
@@ -46,8 +49,8 @@
   --kaliyattam-gradient-subtle: linear-gradient(180deg, rgba(137, 0, 0, 0.04) 0%, transparent 100%);
   --kaliyattam-gradient-overlay: linear-gradient(180deg, transparent 40%, rgba(24, 24, 27, 0.85) 100%);
 
-  /* Typography */
-  --font-serif-heading: "Cinzel", "Playfair Display", Georgia, "Times New Roman", serif;
+  /* Typography - Intentionally using native system font stacks for maximum performance; custom external webfonts deprecated to eliminate render-blocking network requests and layout shifts */
+  --font-serif-heading: Georgia, "Times New Roman", Times, serif;
   --font-sans-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
@@ -120,6 +123,7 @@
    ========================================================================== */
 :root[data-theme="dark"],
 html.dark {
+  color-scheme: dark;
   --theme-bg: #0f172a;
   --theme-surface: #1e293b;
   --theme-surface-warm: #243247;

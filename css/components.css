@@ -47,128 +47,6 @@
   color: var(--theme-accent);
 }
 
-/* Wikipedia-Style Page Toolbar on Node Pages */
-.vector-page-toolbar {
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid var(--theme-border-subtle, #e5e7eb);
-  padding-bottom: 0.5rem;
-}
-
-.vector-page-toolbar-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-#left-navigation {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-#left-navigation .vector-menu-content-list {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#left-navigation .vector-menu-content-list li a {
-  display: inline-block;
-  padding: 0.35rem 0.85rem;
-  font-weight: 700;
-  font-size: 0.88rem;
-  color: var(--theme-accent, #890000);
-  border-bottom: 3px solid var(--theme-accent, #890000);
-  text-decoration: none;
-}
-
-.vector-wiki-invite-line {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-sm, 6px);
-  background: var(--theme-surface-warm, #f8fafc);
-  border: 1px solid var(--theme-border-subtle, #e2e8f0);
-  font-size: 0.78rem;
-  color: var(--theme-text-secondary, #64748b);
-}
-
-#right-navigation .vector-menu-content-list {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#right-navigation .vector-menu-content-list li a {
-  display: inline-block;
-  padding: 0.35rem 0.65rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--theme-text-secondary, #64748b);
-  border-bottom: 3px solid transparent;
-  text-decoration: none;
-  transition: all 0.15s ease;
-}
-
-#right-navigation .vector-menu-content-list li a:hover,
-#right-navigation .vector-menu-content-list li.selected a,
-#right-navigation .vector-menu-content-list li a.is-active {
-  color: var(--theme-accent, #890000);
-  border-bottom-color: var(--theme-accent, #890000);
-}
-
-.vector-tools-dropdown {
-  position: relative;
-}
-
-.vector-tools-summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 0.35rem 0.65rem;
-  font-size: 0.85rem;
-  color: var(--theme-text-secondary, #64748b);
-}
-
-.vector-tools-summary::-webkit-details-marker {
-  display: none;
-}
-
-.vector-tools-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  z-index: 100;
-  background: var(--theme-surface, #ffffff);
-  border: 1px solid var(--theme-border, #e5e7eb);
-  border-radius: 8px;
-  box-shadow: var(--shadow-md);
-  min-width: 140px;
-  padding: 0.35rem 0;
-  margin: 0;
-  list-style: none;
-}
-
-.vector-tools-menu li a {
-  display: block;
-  padding: 0.35rem 0.85rem;
-  font-size: 0.82rem;
-  color: var(--theme-text, #1c1917);
-  text-decoration: none;
-}
-
-.vector-tools-menu li a:hover {
-  background: var(--theme-surface-alt, #f8fafc);
-  color: var(--theme-accent, #890000);
-}
-
 /* Buttons */
 .button,
 input[type="submit"],
@@ -972,10 +850,6 @@ html.dark .node-interaction-bar .action-flag-view-post:hover {
 }
 
 /* Dark mode adjustments */
-:root[data-theme="dark"] .vector-page-toolbar-container,
-html.dark .vector-page-toolbar-container {
-  border-color: var(--theme-border);
-}
 
 :root[data-theme="dark"] .node--view-mode-full,
 html.dark .node--view-mode-full {

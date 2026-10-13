@@ -247,7 +247,9 @@
 
           if (dots.length > 0) {
             dots.forEach(function (dot, idx) {
-              dot.classList.toggle('is-active', idx === activeIndex);
+              var isActive = idx === activeIndex;
+              dot.classList.toggle('is-active', isActive);
+              dot.setAttribute('aria-current', isActive ? 'true' : 'false');
             });
           }
           isTicking = false;
