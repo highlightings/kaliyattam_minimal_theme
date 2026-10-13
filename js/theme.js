@@ -203,20 +203,49 @@
           return;
         }
 
-        function getSlideWidth() {
-          return viewport.clientWidth || (slides[0] ? slides[0].offsetWidth : 0);
+        function getBaseOffset() {
+          return slides[0] ? slides[0].offsetLeft : 0;
+        }
+
+        function getTargetScroll(index) {
+          if (!slides[index]) return 0;
+          return slides[index].offsetLeft - getBaseOffset();
+        }
+
+        function getCurrentIndex() {
+          var scrollLeft = viewport.scrollLeft;
+          var baseOffset = getBaseOffset();
+          var closestIndex = 0;
+          var minDiff = Infinity;
+          for (var i = 0; i < slides.length; i++) {
+            var slidePos = slides[i].offsetLeft - baseOffset;
+            var diff = Math.abs(slidePos - scrollLeft);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestIndex = i;
+            }
+          }
+          return closestIndex;
+        }
+
+        function scrollToIndex(targetIndex) {
+          var clamped = Math.max(0, Math.min(targetIndex, slides.length - 1));
+          viewport.scrollTo({
+            left: getTargetScroll(clamped),
+            behavior: 'smooth'
+          });
         }
 
         var isTicking = false;
         function updateControls() {
           var scrollLeft = viewport.scrollLeft;
           var maxScroll = viewport.scrollWidth - viewport.clientWidth - 5;
-          if (prevBtn) prevBtn.disabled = scrollLeft <= 5;
-          if (nextBtn) nextBtn.disabled = scrollLeft >= maxScroll;
+          var activeIndex = getCurrentIndex();
 
-          var slideWidth = getSlideWidth();
-          if (slideWidth > 0 && dots.length > 0) {
-            var activeIndex = Math.round(scrollLeft / slideWidth);
+          if (prevBtn) prevBtn.disabled = activeIndex <= 0 || scrollLeft <= 5;
+          if (nextBtn) nextBtn.disabled = activeIndex >= slides.length - 1 || scrollLeft >= maxScroll;
+
+          if (dots.length > 0) {
             dots.forEach(function (dot, idx) {
               dot.classList.toggle('is-active', idx === activeIndex);
             });
@@ -227,14 +256,16 @@
         if (prevBtn) {
           prevBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            viewport.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
+            var current = getCurrentIndex();
+            scrollToIndex(current - 1);
           });
         }
 
         if (nextBtn) {
           nextBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            viewport.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
+            var current = getCurrentIndex();
+            scrollToIndex(current + 1);
           });
         }
 
@@ -242,8 +273,8 @@
           dot.addEventListener('click', function (e) {
             e.preventDefault();
             var idx = parseInt(dot.getAttribute('data-slide-index'), 10);
-            if (!isNaN(idx) && slides[idx]) {
-              slides[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+            if (!isNaN(idx)) {
+              scrollToIndex(idx);
             }
           });
         });
