@@ -35,12 +35,21 @@
             <span class="node-author-badge">Devotee Member</span>
           </div>
           <div class="node-meta-time">
-            <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
+            <a href="{{ url }}" class="node-time-link" rel="bookmark" title="{{ 'View post'|t }}">
+              <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
+            </a>
           </div>
         </div>
-        {% if node.isSticky() %}
-          <div class="node-pinned-badge"><span>📌 {{ 'Pinned'|t }}</span></div>
-        {% endif %}
+        <div class="node-post-header-actions">
+          {% if node.isSticky() %}
+            <div class="node-pinned-badge"><span>📌 {{ 'Pinned'|t }}</span></div>
+          {% endif %}
+          {% if not page %}
+            <a href="{{ url }}" class="node-view-link" title="{{ 'View post'|t }}" aria-label="{{ 'View post'|t }}">
+              <span>{{ 'View post'|t }} &rarr;</span>
+            </a>
+          {% endif %}
+        </div>
       </div>
 
     {# 2. FOR ALL OTHER CONTENT TYPES (Events, Temples, Theyyam): Title first, then subtle metadata #}

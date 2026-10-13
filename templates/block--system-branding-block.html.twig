@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a system branding block.
+ * Explicitly loads logo.svg directly from the theme root.
+ */
+#}
+{% block content %}
+  <div class="site-branding">
+    <a href="{{ path('<front>') }}" rel="home" class="site-branding__link" aria-label="{{ site_name ?: 'Home'|t }}">
+      <img src="/{{ directory }}/logo.svg" alt="" width="30" height="35" fetchpriority="high" />
+      {% if site_name %}
+        <span class="site-title">{{ site_name }}</span>
+      {% endif %}
+    </a>
+  </div>
+{% endblock %}

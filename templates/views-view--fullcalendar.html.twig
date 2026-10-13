@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Fullcalendar view template for kaliyattam_minimal (/events/calendar).
+ * Provides the [ 📅 Upcoming ] [ 🕰️ Past Events ] [ 🗓️ Calendar ] segmented control bar.
+ */
+#}
+{%
+  set classes = [
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]
+%}
+
+<div {{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title }}
+  {{ title_suffix }}
+
+  <div class="timeline-toolbar">
+    <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
+      <a href="/events" class="timeline-toolbar__btn">
+        <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+      </a>
+      <a href="/events/past" class="timeline-toolbar__btn">
+        <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
+      </a>
+      <a href="/events/calendar" class="timeline-toolbar__btn is-active">
+        <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+      </a>
+    </div>
+  </div>
+
+  {% if header %}
+    <header class="view-header">
+      {{ header }}
+    </header>
+  {% endif %}
+
+  {{ exposed }}
+  {{ attachment_before }}
+
+  <div id="js-view-dom-id-{{ view.dom_id }}" class="fullcalendar--wrapper">{{ rows }}</div>
+  <div id="fc-message"></div>
+  {{ attachment_after }}
+
+  {% if footer %}
+    <footer class="view-footer">
+      {{ footer }}
+    </footer>
+  {% endif %}
+
+</div>

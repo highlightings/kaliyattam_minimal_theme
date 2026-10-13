@@ -399,16 +399,55 @@ input[type="button"]:hover {
   color: var(--theme-text-muted, #71717a);
 }
 
+.node-time-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.node-time-link:hover {
+  text-decoration: underline;
+  color: var(--theme-accent, #890000);
+}
+
+.node-post-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.node-view-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--theme-surface-subtle, #f4f4f5);
+  border: 1px solid var(--theme-border-subtle, #e4e4e7);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--theme-text-muted, #71717a);
+  text-decoration: none;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.node-view-link:hover {
+  background: var(--theme-accent-soft, #fef2f2);
+  color: var(--theme-accent, #890000);
+  border-color: rgba(137, 0, 0, 0.2);
+}
+
 .node-header-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
   margin-bottom: 0.25rem;
+  padding: 0;
 }
 
 .node-header-row .node__title {
   margin: 0;
+  padding: 0;
   font-family: var(--font-serif-heading, Georgia, serif);
   font-size: 1.25rem;
   font-weight: 700;
@@ -1449,6 +1488,7 @@ body.path-frontpage .site-nav a[href*="posts"].is-active {
   font-weight: 700;
   line-height: 1.35;
   margin: 0 0 0.6rem;
+  padding: 0;
 }
 
 .node--view-mode-card .node__title a {
@@ -1552,3 +1592,49 @@ html.dark .node--view-mode-card .field--name-field-where {
   color: #e4e4e7;
   border-color: rgba(255, 255, 255, 0.15);
 }
+
+/* Leaflet map on /temples/map */
+#leaflet-map-view-locations-map-page-1,
+.view-locations-map .leaflet-container {
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--theme-border-subtle, #e4e4e7);
+  box-shadow: var(--theme-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.05));
+  margin-top: 0.75rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.view-locations-map .view-header {
+  margin-bottom: 0.75rem;
+}
+
+.view-locations-map .view-header a.button,
+.view-locations-map .view-header .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border-subtle, #e4e4e7);
+  color: var(--theme-text, #18181b);
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+.view-locations-map .view-header a.button:hover,
+.view-locations-map .view-header .btn:hover {
+  border-color: var(--theme-accent, #890000);
+  color: var(--theme-accent, #890000);
+}
+
+/* Hide duplicate/broken Map View & List View links header if rendered anywhere */
+.locations-timeline-header,
+.view-timeline-locations .view-header:has(.locations-timeline-header) {
+  display: none !important;
+}
+
