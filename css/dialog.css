@@ -1,47 +1,950 @@
 /**
- * dialog.css: a small skin for the one dialog the forms still use: the media
- * library modal opened by the Photo / video button. Core owns its behaviour
- * and layout; we only set colours, radius and the title bar. Selectors are
- * descendant selectors (two classes), enough to beat core's single-class
- * jQuery UI rules without !important.
+ * @file dialog.css
+ * Comprehensive theming for Drupal dialogs, the drupal-off-canvas tray,
+ * and the Media Library modal (Light & Dark modes).
  */
+
+/* ==========================================================================
+   1. jQuery UI Modal & Overlay Base
+   ========================================================================== */
+
 .ui-widget-overlay {
-  background: rgb(15 23 42 / 0.6);
-  opacity: 1;
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(4px);
+  opacity: 1 !important;
+  z-index: 1190 !important;
 }
 
 .ui-dialog {
   overflow: hidden;
-  padding: 0;
-  border: 1px solid var(--theme-border-subtle);
-  border-radius: var(--radius-xl);
-  background: var(--theme-surface);
-  color: var(--theme-text);
-  box-shadow: var(--shadow-xl);
+  padding: 0 !important;
+  border: 1px solid var(--theme-border-subtle, #e2e8f0);
+  border-radius: var(--radius-xl, 14px);
+  background: var(--theme-surface, #ffffff);
+  color: var(--theme-text, #1e293b);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
+  font-family: inherit;
+  z-index: 1200 !important;
+}
+
+[data-theme="dark"] .ui-dialog,
+html.dark .ui-dialog {
+  background: #18181b;
+  border-color: #27272a;
+  color: #f4f4f5;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
 }
 
 .ui-dialog .ui-dialog-titlebar {
-  padding: var(--space-3) var(--space-5);
-  border: 0;
-  border-radius: 0;
-  background: var(--theme-header-bg);
-  color: var(--kaliyattam-text-light);
+  padding: 1rem 1.5rem !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--kaliyattam-maroon, #7a0b0b) !important;
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+[data-theme="dark"] .ui-dialog .ui-dialog-titlebar,
+html.dark .ui-dialog .ui-dialog-titlebar {
+  background: #1c1917 !important;
+  border-bottom: 1px solid #27272a !important;
+  color: #f4f4f5 !important;
 }
 
 .ui-dialog .ui-dialog-title {
-  font-family: var(--font-serif-heading);
+  font-family: var(--font-serif-heading, inherit);
+  font-size: 1.15rem;
   font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 0;
+}
+
+.ui-dialog .ui-dialog-titlebar-close::before {
+  content: "×";
+  font-size: 1.35rem;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .ui-dialog .ui-dialog-content {
-  padding: var(--space-4) var(--space-5);
-  background: var(--theme-surface);
-  color: var(--theme-text);
+  padding: 1.25rem 1.5rem !important;
+  background: var(--theme-surface, #ffffff);
+  color: var(--theme-text, #1e293b);
+  overflow-y: auto;
 }
 
-.ui-dialog .ui-dialog-buttonpane {
-  margin: 0;
-  padding: var(--space-3) var(--space-5);
-  border-top: 1px solid var(--theme-border-subtle);
-  background: var(--theme-surface);
+[data-theme="dark"] .ui-dialog .ui-dialog-content,
+html.dark .ui-dialog .ui-dialog-content {
+  background: #18181b;
+  color: #f4f4f5;
+}
+
+/* ==========================================================================
+   2. Drupal Off-Canvas Tray (#drupal-off-canvas-wrapper)
+   Used by "Add post" and "Add an Event" drawers
+   ========================================================================== */
+
+#drupal-off-canvas-wrapper {
+  --off-canvas-padding: 1.5rem;
+  --off-canvas-font-family: inherit;
+  z-index: 550;
+  border-inline-start: 1px solid #e2e8f0 !important;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12) !important;
+  font-family: inherit !important;
+}
+
+/* Light Mode Off-Canvas */
+html:not([data-theme="dark"]) #drupal-off-canvas-wrapper,
+[data-theme="light"] #drupal-off-canvas-wrapper {
+  --off-canvas-background-color: #ffffff;
+  --off-canvas-background-color-light: #ffffff;
+  --off-canvas-background-color-medium: #ffffff;
+  --off-canvas-background-color-dark: #f8fafc;
+  --off-canvas-text-color: #1e293b;
+  --off-canvas-link-color: #7a0b0b;
+  --off-canvas-border-color: #e2e8f0;
+  --off-canvas-title-background-color: #7a0b0b;
+  --off-canvas-title-text-color: #ffffff;
+  --off-canvas-button-background-color: #f1f5f9;
+  --off-canvas-button-text-color: #1e293b;
+  --off-canvas-button-border-color: #cbd5e1;
+  --off-canvas-primary-button-background-color: #7a0b0b;
+  --off-canvas-primary-button-background-color-hover: #900d0d;
+  --off-canvas-primary-button-text-color: #ffffff;
+  --drupal-off-canvas-input-background-color: #ffffff;
+  --drupal-off-canvas-input-text-color: #1e293b;
+  --drupal-off-canvas-input-border: solid 1px #cbd5e1;
+  --drupal-off-canvas-input-border-radius: 8px;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-inline-start: 1px solid #e2e8f0 !important;
+}
+
+/* Dark Mode Off-Canvas */
+[data-theme="dark"] #drupal-off-canvas-wrapper,
+html.dark #drupal-off-canvas-wrapper {
+  --off-canvas-background-color: #18181b;
+  --off-canvas-background-color-light: #27272a;
+  --off-canvas-background-color-medium: #18181b;
+  --off-canvas-background-color-dark: #121214;
+  --off-canvas-text-color: #f4f4f5;
+  --off-canvas-link-color: #f59e0b;
+  --off-canvas-border-color: #27272a;
+  --off-canvas-title-background-color: #1c1917;
+  --off-canvas-title-text-color: #ffffff;
+  --off-canvas-button-background-color: #27272a;
+  --off-canvas-button-text-color: #f4f4f5;
+  --off-canvas-button-border-color: #3f3f46;
+  --off-canvas-primary-button-background-color: #991b1b;
+  --off-canvas-primary-button-background-color-hover: #b91c1c;
+  --off-canvas-primary-button-text-color: #ffffff;
+  --drupal-off-canvas-input-background-color: #27272a;
+  --drupal-off-canvas-input-text-color: #f4f4f5;
+  --drupal-off-canvas-input-border: solid 1px #3f3f46;
+  --drupal-off-canvas-input-border-radius: 8px;
+  background-color: #18181b !important;
+  color: #f4f4f5 !important;
+  border-inline-start: 1px solid #27272a !important;
+  box-shadow: -8px 0 36px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Titlebar inside Off-Canvas */
+#drupal-off-canvas-wrapper .ui-dialog-titlebar {
+  padding: 1.15rem 1.5rem !important;
+  margin: 0 !important;
+  border: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar::before {
+  display: none !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas-wrapper .ui-dialog-titlebar,
+[data-theme="light"] #drupal-off-canvas-wrapper .ui-dialog-titlebar {
+  background: #7a0b0b !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas-wrapper .ui-dialog-titlebar,
+html.dark #drupal-off-canvas-wrapper .ui-dialog-titlebar {
+  background: #1c1917 !important;
+  border-bottom: 1px solid #27272a !important;
+  color: #f4f4f5 !important;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-title {
+  font-family: var(--font-serif-heading, inherit) !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar-close {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar-close::before {
+  content: "×" !important;
+  font-size: 1.35rem !important;
+  line-height: 1 !important;
+  color: #ffffff !important;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar-close:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Off-Canvas Body & Form Content */
+#drupal-off-canvas {
+  padding: 1.5rem !important;
+  overflow-y: auto !important;
+}
+
+#drupal-off-canvas form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.15rem !important;
+  padding: 0 !important;
+}
+
+#drupal-off-canvas label {
+  display: block !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.35rem !important;
+  color: inherit !important;
+}
+
+#drupal-off-canvas .description,
+#drupal-off-canvas .form-item__description {
+  font-size: 0.8rem !important;
+  opacity: 0.8 !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Inputs, textareas, selects inside off-canvas */
+#drupal-off-canvas input[type="text"],
+#drupal-off-canvas input[type="date"],
+#drupal-off-canvas input[type="time"],
+#drupal-off-canvas input[type="email"],
+#drupal-off-canvas input[type="url"],
+#drupal-off-canvas select,
+#drupal-off-canvas textarea {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0.65rem 0.85rem !important;
+  border-radius: 8px !important;
+  font-size: 0.925rem !important;
+  font-family: inherit !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas input[type="text"],
+html:not([data-theme="dark"]) #drupal-off-canvas input[type="date"],
+html:not([data-theme="dark"]) #drupal-off-canvas input[type="time"],
+html:not([data-theme="dark"]) #drupal-off-canvas select,
+html:not([data-theme="dark"]) #drupal-off-canvas textarea,
+[data-theme="light"] #drupal-off-canvas input[type="text"],
+[data-theme="light"] #drupal-off-canvas select,
+[data-theme="light"] #drupal-off-canvas textarea {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas input:focus,
+html:not([data-theme="dark"]) #drupal-off-canvas select:focus,
+html:not([data-theme="dark"]) #drupal-off-canvas textarea:focus,
+[data-theme="light"] #drupal-off-canvas input:focus,
+[data-theme="light"] #drupal-off-canvas select:focus,
+[data-theme="light"] #drupal-off-canvas textarea:focus {
+  border-color: #7a0b0b !important;
+  box-shadow: 0 0 0 3px rgba(122, 11, 11, 0.15) !important;
+  outline: none !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas input[type="text"],
+[data-theme="dark"] #drupal-off-canvas input[type="date"],
+[data-theme="dark"] #drupal-off-canvas input[type="time"],
+[data-theme="dark"] #drupal-off-canvas select,
+[data-theme="dark"] #drupal-off-canvas textarea,
+html.dark #drupal-off-canvas input[type="text"],
+html.dark #drupal-off-canvas select,
+html.dark #drupal-off-canvas textarea {
+  background: #27272a !important;
+  border: 1px solid #3f3f46 !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas input:focus,
+[data-theme="dark"] #drupal-off-canvas select:focus,
+[data-theme="dark"] #drupal-off-canvas textarea:focus,
+html.dark #drupal-off-canvas input:focus,
+html.dark #drupal-off-canvas select:focus,
+html.dark #drupal-off-canvas textarea:focus {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2) !important;
+  outline: none !important;
+}
+
+/* Fieldsets & Details in Off-Canvas */
+#drupal-off-canvas fieldset,
+#drupal-off-canvas details {
+  border-radius: 8px !important;
+  padding: 0.85rem 1rem !important;
+  margin: 0.5rem 0 !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas fieldset,
+html:not([data-theme="dark"]) #drupal-off-canvas details,
+[data-theme="light"] #drupal-off-canvas fieldset,
+[data-theme="light"] #drupal-off-canvas details {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas summary,
+[data-theme="light"] #drupal-off-canvas summary {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 6px !important;
+  padding: 0.6rem 0.85rem !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas fieldset,
+[data-theme="dark"] #drupal-off-canvas details,
+html.dark #drupal-off-canvas fieldset,
+html.dark #drupal-off-canvas details {
+  background: #202024 !important;
+  border: 1px solid #27272a !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas summary,
+html.dark #drupal-off-canvas summary {
+  background: #27272a !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #3f3f46 !important;
+  border-radius: 6px !important;
+  padding: 0.6rem 0.85rem !important;
+}
+
+#drupal-off-canvas summary {
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+/* Media widget inside form */
+#drupal-off-canvas .field--widget-media-library-widget {
+  border-radius: 10px !important;
+  padding: 1.15rem !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas .field--widget-media-library-widget,
+[data-theme="light"] #drupal-off-canvas .field--widget-media-library-widget {
+  background: #fbfcfe !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas .field--widget-media-library-widget,
+html.dark #drupal-off-canvas .field--widget-media-library-widget {
+  background: #222227 !important;
+  border: 1px solid #27272a !important;
+}
+
+#drupal-off-canvas .js-media-library-open-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 0.6rem 1.4rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas .js-media-library-open-button,
+[data-theme="light"] #drupal-off-canvas .js-media-library-open-button {
+  background: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+html:not([data-theme="dark"]) #drupal-off-canvas .js-media-library-open-button:hover,
+[data-theme="light"] #drupal-off-canvas .js-media-library-open-button:hover {
+  border-color: #7a0b0b !important;
+  color: #7a0b0b !important;
+  background: #fef2f2 !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas .js-media-library-open-button,
+html.dark #drupal-off-canvas .js-media-library-open-button {
+  background: #27272a !important;
+  border: 1.5px solid #3f3f46 !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas .js-media-library-open-button:hover,
+html.dark #drupal-off-canvas .js-media-library-open-button:hover {
+  border-color: #f59e0b !important;
+  color: #f59e0b !important;
+}
+
+/* Action buttons in off-canvas */
+#drupal-off-canvas .form-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-top: 1rem !important;
+  padding-top: 1rem !important;
+  border-top: 1px solid rgba(128, 128, 128, 0.2) !important;
+}
+
+#drupal-off-canvas .form-actions input[type="submit"],
+#drupal-off-canvas .form-actions .button {
+  padding: 0.65rem 1.6rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+#drupal-off-canvas .button--primary,
+#drupal-off-canvas input[value="Save"],
+#drupal-off-canvas input[data-drupal-selector*="edit-submit"] {
+  background: #7a0b0b !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+#drupal-off-canvas .button--primary:hover,
+#drupal-off-canvas input[value="Save"]:hover {
+  background: #900d0d !important;
+  box-shadow: 0 4px 12px rgba(122, 11, 11, 0.3) !important;
+}
+
+[data-theme="dark"] #drupal-off-canvas .button--primary,
+[data-theme="dark"] #drupal-off-canvas input[value="Save"],
+html.dark #drupal-off-canvas .button--primary {
+  background: #991b1b !important;
+}
+
+/* ==========================================================================
+   3. Media Library Modal Theme (.media-library-widget-modal)
+   Styled to match the reference design exactly in Light & Dark modes
+   ========================================================================== */
+
+.media-library-widget-modal {
+  max-width: 980px !important;
+  width: 92vw !important;
+}
+
+.media-library-widget-modal #drupal-modal {
+  padding: 0 !important;
+  overflow: hidden !important;
+  max-height: 82vh !important;
+}
+
+#media-library-wrapper {
+  display: flex !important;
+  gap: 24px !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  max-height: calc(82vh - 120px) !important;
+  overflow-y: auto !important;
+}
+
+@media (max-width: 768px) {
+  #media-library-wrapper {
+    flex-direction: column !important;
+    padding: 16px !important;
+  }
+}
+
+/* 3.1 Left Column: Media Types Vertical Menu */
+.media-library-menu,
+ul.js-media-library-menu {
+  width: 175px !important;
+  flex-shrink: 0 !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+@media (max-width: 768px) {
+  .media-library-menu,
+  ul.js-media-library-menu {
+    width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+.media-library-menu li,
+ul.js-media-library-menu li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.media-library-menu a,
+ul.js-media-library-menu a {
+  display: block !important;
+  padding: 11px 16px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.925rem !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  text-align: left !important;
+}
+
+/* Inactive tabs (Light mode) */
+html:not([data-theme="dark"]) .media-library-menu a,
+html:not([data-theme="dark"]) ul.js-media-library-menu a,
+[data-theme="light"] .media-library-menu a,
+[data-theme="light"] ul.js-media-library-menu a {
+  background: #ffffff !important;
+  border: 1px solid #e0e4ec !important;
+  color: #475569 !important;
+}
+
+html:not([data-theme="dark"]) .media-library-menu a:hover,
+html:not([data-theme="dark"]) ul.js-media-library-menu a:hover,
+[data-theme="light"] .media-library-menu a:hover,
+[data-theme="light"] ul.js-media-library-menu a:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+/* Active tab (Signature rich maroon pill from reference image) */
+.media-library-menu a.active,
+ul.js-media-library-menu a.active,
+.media-library-menu li.active a,
+ul.js-media-library-menu li.active a,
+html .media-library-menu a.active,
+html ul.js-media-library-menu a.active,
+html:not([data-theme="dark"]) ul.js-media-library-menu a.active,
+[data-theme="light"] ul.js-media-library-menu a.active {
+  background: #6e0d0d !important;
+  border: 1px solid #6e0d0d !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(110, 13, 13, 0.35) !important;
+}
+
+/* Inactive tabs (Dark mode) */
+[data-theme="dark"] .media-library-menu a,
+[data-theme="dark"] ul.js-media-library-menu a,
+html.dark .media-library-menu a,
+html.dark ul.js-media-library-menu a {
+  background: #27272a !important;
+  border: 1px solid #3f3f46 !important;
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .media-library-menu a:hover,
+[data-theme="dark"] ul.js-media-library-menu a:hover,
+html.dark .media-library-menu a:hover,
+html.dark ul.js-media-library-menu a:hover {
+  background: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .media-library-menu a.active,
+[data-theme="dark"] ul.js-media-library-menu a.active,
+html.dark .media-library-menu a.active,
+html.dark ul.js-media-library-menu a.active {
+  background: #881337 !important;
+  border-color: #881337 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(136, 19, 55, 0.4) !important;
+}
+
+/* 3.2 Right Column: Main Content Container */
+#media-library-content {
+  flex: 1 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+/* 3.3 "Add file" Dropzone Container */
+.media-library-add-form,
+#media-library-add-form {
+  border: 1.5px dashed #cbd5e1 !important;
+  border-radius: 10px !important;
+  background: #fbfcfe !important;
+  padding: 18px 24px !important;
+  margin-bottom: 8px !important;
+}
+
+[data-theme="dark"] .media-library-add-form,
+html.dark .media-library-add-form {
+  border-color: #3f3f46 !important;
+  background: #202024 !important;
+}
+
+.media-library-add-form h2,
+.media-library-add-form .heading {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.75rem !important;
+  color: inherit !important;
+}
+
+.media-library-add-form .description {
+  color: #64748b !important;
+  font-size: 0.825rem !important;
+  line-height: 1.45 !important;
+}
+
+[data-theme="dark"] .media-library-add-form .description {
+  color: #94a3b8 !important;
+}
+
+/* 3.4 Display Switcher: Grid / Table Pill Bar */
+.js-media-library-view > header,
+.media-library-view header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 4px !important;
+  background: #f0f3f8 !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 12px !important;
+}
+
+[data-theme="dark"] .js-media-library-view > header,
+[data-theme="dark"] .media-library-view header {
+  background: #27272a !important;
+}
+
+.js-media-library-view > header .views-display-link,
+.views-display-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 6px 22px !important;
+  border-radius: 6px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #64748b !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.js-media-library-view > header .views-display-link.is-active,
+.views-display-link.is-active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .views-display-link {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .js-media-library-view > header .views-display-link.is-active,
+[data-theme="dark"] .views-display-link.is-active {
+  background: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+/* 3.5 Filter Form Box (Name, Sort by, Apply filters) */
+.js-media-library-view .views-exposed-form,
+.media-library-view .views-exposed-form {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 16px 20px !important;
+  background: #ffffff !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  gap: 16px !important;
+  margin-bottom: 18px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+[data-theme="dark"] .js-media-library-view .views-exposed-form,
+[data-theme="dark"] .media-library-view .views-exposed-form {
+  border-color: #27272a !important;
+  background: #1e1e24 !important;
+}
+
+.js-media-library-view .views-exposed-form .form-item {
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+.js-media-library-view .views-exposed-form label {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+}
+
+[data-theme="dark"] .js-media-library-view .views-exposed-form label {
+  color: #cbd5e1 !important;
+}
+
+.js-media-library-view .views-exposed-form input[type="text"] {
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  width: 260px !important;
+  max-width: 100% !important;
+  background: #ffffff !important;
+  color: #1e293b !important;
+}
+
+.js-media-library-view .views-exposed-form select {
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  min-width: 160px !important;
+  background: #ffffff !important;
+  color: #1e293b !important;
+}
+
+[data-theme="dark"] .js-media-library-view .views-exposed-form input[type="text"],
+[data-theme="dark"] .js-media-library-view .views-exposed-form select {
+  background: #27272a !important;
+  border-color: #3f3f46 !important;
+  color: #f4f4f5 !important;
+}
+
+/* Apply filters button (Maroon) */
+.js-media-library-view .views-exposed-form input[type="submit"],
+.js-media-library-view .views-exposed-form .button {
+  background: #6e0d0d !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 9px 22px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease !important;
+  align-self: flex-end !important;
+}
+
+.js-media-library-view .views-exposed-form input[type="submit"]:hover {
+  background: #8b1515 !important;
+}
+
+[data-theme="dark"] .js-media-library-view .views-exposed-form input[type="submit"] {
+  background: #991b1b !important;
+}
+
+/* 3.6 Media Thumbnails Grid (4 Columns matching reference design) */
+form.js-media-library-views-form {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+}
+
+@media (max-width: 640px) {
+  form.js-media-library-views-form {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+form.js-media-library-views-form > .js-form-wrapper,
+form.js-media-library-views-form > .form-actions,
+form.js-media-library-views-form > input[type="hidden"] {
+  grid-column: 1 / -1 !important;
+}
+
+.js-media-library-item {
+  position: relative !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: #f8fafc !important;
+  border: 2px solid transparent !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease !important;
+}
+
+[data-theme="dark"] .js-media-library-item {
+  background: #27272a !important;
+}
+
+.js-media-library-item article,
+.js-media-library-item .views-field-rendered-entity,
+.js-media-library-item .js-media-library-item-preview,
+.js-media-library-item .field--name-thumbnail,
+.js-media-library-item .field__item {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.js-media-library-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 6px !important;
+}
+
+.js-media-library-item:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Hide label text and filename underneath to match reference image */
+.js-media-library-item .field__label,
+.js-media-library-item article > div:last-child {
+  display: none !important;
+}
+
+/* Checkbox at top-left corner */
+.js-media-library-item .views-field-media-library-select-form,
+.js-media-library-item .js-click-to-select-checkbox {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 10 !important;
+  margin: 0 !important;
+}
+
+.js-media-library-item .views-field-media-library-select-form input[type="checkbox"],
+.js-media-library-item .js-click-to-select-checkbox input[type="checkbox"] {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  accent-color: #6e0d0d !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Selected state (card outline & maroon ring) */
+.js-media-library-item.is-active,
+.js-media-library-item:has(input[type="checkbox"]:checked) {
+  border-color: #6e0d0d !important;
+  box-shadow: 0 0 0 3px rgba(110, 13, 13, 0.25) !important;
+}
+
+[data-theme="dark"] .js-media-library-item.is-active,
+[data-theme="dark"] .js-media-library-item:has(input[type="checkbox"]:checked) {
+  border-color: #991b1b !important;
+  box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.4) !important;
+}
+
+/* 3.7 Dialog Bottom Buttonpane (Status Count & "Insert selected" button) */
+.ui-dialog-buttonpane {
+  background: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+  padding: 16px 24px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-direction: row-reverse !important;
+}
+
+[data-theme="dark"] .ui-dialog-buttonpane {
+  background: #18181b !important;
+  border-top: 1px solid #27272a !important;
+}
+
+.media-library-selected-count {
+  color: #475569 !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  margin: 0 !important;
+}
+
+[data-theme="dark"] .media-library-selected-count {
+  color: #cbd5e1 !important;
+}
+
+.ui-dialog-buttonset .button--primary,
+.ui-dialog-buttonpane button {
+  background: #7a0b0b !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.ui-dialog-buttonset .button--primary:hover,
+.ui-dialog-buttonpane button:hover {
+  background: #900d0d !important;
+  box-shadow: 0 4px 12px rgba(122, 11, 11, 0.3) !important;
+}
+
+[data-theme="dark"] .ui-dialog-buttonset .button--primary,
+[data-theme="dark"] .ui-dialog-buttonpane button {
+  background: #991b1b !important;
 }
