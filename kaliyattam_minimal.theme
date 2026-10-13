@@ -32,4 +32,3 @@ function kaliyattam_minimal_preprocess_breadcrumb(array &$variables): void {
     }
   }
 }
-

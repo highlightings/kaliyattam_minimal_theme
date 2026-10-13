@@ -1172,32 +1172,17 @@ html.dark .timeline-toolbar__btn.is-active {
   order: 5;
 }
 
-.view-timeline-site .views-element-container + .button,
-.view-timeline-site a.button.btn-primary,
-.view-timeline-site .button--primary,
-.view-timeline-site [class*="add_content_by_bundle"] a,
-.view-timeline-site a[href*="/node/add/post"].btn,
-.view-timeline-site a[href*="/node/add/post"].button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: var(--theme-accent, #890000) !important;
-  color: #ffffff !important;
-  border-radius: 8px !important;
-  padding: 0.5rem 1.25rem !important;
-  font-weight: 700 !important;
-  font-size: 0.9rem !important;
-  text-decoration: none !important;
-  box-shadow: 0 1px 3px rgba(137, 0, 0, 0.2);
-  transition: all 0.2s ease;
-  margin-bottom: 1.25rem;
+/* "Add post" button on /posts feed matching "Add an Event" on /events page */
+.view-timeline-type header,
+.view-timeline-site header,
+.views-element-container header:has(a[href*="/node/add/post"]) {
+  margin-bottom: 1rem;
 }
 
-.view-timeline-site [class*="add_content_by_bundle"] a:hover,
-.view-timeline-site a[href*="/node/add/post"].btn:hover,
-.view-timeline-site a[href*="/node/add/post"].button:hover {
-  background: #6b0000 !important;
-  transform: translateY(-1px);
+.view-timeline-type header a,
+.view-timeline-site header a,
+.views-element-container header a[href*="/node/add/post"] {
+  margin-bottom: 0.5rem;
 }
 
 /* User Card in Left Sidebar */
@@ -1212,8 +1197,8 @@ html.dark .timeline-toolbar__btn.is-active {
 
 :root[data-theme="dark"] #block-kaliyattam-minimal-user-card,
 html.dark #block-kaliyattam-minimal-user-card {
-  background: var(--theme-surface, #18181b);
-  border-color: var(--theme-border, #27272a);
+  background: var(--theme-surface, #1e293b);
+  border-color: var(--theme-border, #334155);
 }
 
 .user-card-widget {
@@ -1327,30 +1312,38 @@ html.dark .user-card-role-badge {
   color: #ffffff !important;
 }
 
+:root[data-theme="dark"] .user-card-avatar,
+html.dark .user-card-avatar {
+  background: #b91c1c !important;
+  color: #ffffff !important;
+}
+
 :root[data-theme="dark"] .btn-user-profile,
 html.dark .btn-user-profile {
-  background: var(--theme-surface-alt, #27272a) !important;
-  color: var(--theme-text, #f4f4f5) !important;
-  border-color: var(--theme-border, #3f3f46) !important;
+  background: var(--theme-surface-alt, #27364b) !important;
+  color: var(--theme-text, #f1f5f9) !important;
+  border-color: var(--theme-border, #334155) !important;
 }
 
 :root[data-theme="dark"] .btn-user-profile:hover,
 html.dark .btn-user-profile:hover {
-  background: #3f3f46 !important;
-  border-color: #52525b !important;
+  background: #334155 !important;
+  border-color: #475569 !important;
+  color: #ffffff !important;
 }
 
 :root[data-theme="dark"] .btn-user-share,
 html.dark .btn-user-share {
-  background: var(--theme-accent, #890000) !important;
+  background: #b91c1c !important;
   color: #ffffff !important;
-  border-color: var(--theme-accent, #890000) !important;
+  border: 1px solid #b91c1c !important;
 }
 
 :root[data-theme="dark"] .btn-user-share:hover,
 html.dark .btn-user-share:hover {
-  background: #a80000 !important;
-  border-color: #a80000 !important;
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
 }
 
 /* About Kaliyattam block heading (Screenshot 1) */
