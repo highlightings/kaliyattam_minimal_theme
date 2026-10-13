@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * Event node in full view mode.
+ * Clean, modern layout matching the sacred Kaliyattam design and temple reference.
+ */
+#}
+{% set author = node.getOwner() %}
+{% set author_name = author.getDisplayName()|default('Kaliyattam Member') %}
+{% set author_url = '/user/' ~ author.id() ~ '/timeline?page=1' %}
+
+<article{{ attributes.addClass('node', 'node--type-event', 'node--view-mode-full', 'event-full-card', not node.isPublished() ? 'node--unpublished') }}>
+  <div{{ content_attributes.addClass('node__content') }}>
+    {# Subtle metadata line under title #}
+    <div class="node-meta-subtle event-meta-subtle">
+      <div class="event-meta-left">
+        <span class="node-meta-submitted">{{ 'Submitted by'|t }} <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a></span>
+        <span class="meta-dot">&middot;</span>
+        <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
+      </div>
+      <div class="event-meta-right">
+        <span class="node-bundle-pill node-bundle-pill--event">📅 {{ 'Event'|t }}</span>
+      </div>
+    </div>
+
+    {# Event Highlights Chips Row (When, Theyyam, Where) #}
+    <div class="event-chips-row">
+      {% if content.field_when is not empty %}
+        {{ content.field_when }}
+      {% endif %}
+      {% if content.field_theyyam is not empty %}
+        {{ content.field_theyyam }}
+      {% endif %}
+      {% if content.field_where is not empty %}
+        {{ content.field_where }}
+      {% endif %}
+    </div>
+
+    {# Media / Photo / Video #}
+    {% if content.field_media is not empty %}
+      <div class="event-media-cover">
+        {{ content.field_media }}
+      </div>
+    {% endif %}
+
+    {# Main Description Content #}
+    <div class="node-main-fields event-main-content">
+      {{ content|without('field_when', 'field_where', 'field_theyyam', 'field_media', 'field_comments', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+    </div>
+
+    {# Interaction Bar (Favorite, Like, Share, Comments) #}
+    {% include '@kaliyattam_minimal/templates/node-actions.html.twig' %}
+
+    {# Collapsible Comments Section #}
+    {% if content.field_comments is not empty %}
+      <section id="comments" class="node-comments-section comments-collapsible">
+        <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
+        {{ content.field_comments }}
+      </section>
+    {% endif %}
+  </div>
+</article>

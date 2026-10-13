@@ -23,46 +23,62 @@
   {{ title_prefix }}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {# Author & Date Metadata Header for Cards, Posts, or submitted content #}
-    {% if view_mode == 'card' or node.bundle == 'post' or (display_submitted and view_mode == 'full') %}
-      <div class="node-meta-bar">
-        <div class="node-author-group">
-          <a href="{{ author_url }}" class="node-author-avatar" aria-hidden="true" tabindex="-1">
-            <span class="avatar-initial">{{ author_initial }}</span>
-          </a>
-          <div class="node-meta-info">
-            <div class="node-meta-author-row">
-              <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a>
-              <span class="node-bundle-badge node-bundle-badge--{{ node.bundle|clean_class }}">
-                {% if node.bundle == 'event' %}📅 {{ 'Event'|t }}
-                {% elseif node.bundle == 'theyyam' %}🎭 {{ 'Theyyam'|t }}
-                {% elseif node.bundle == 'location' %}🛕 {{ 'Temple'|t }}
-                {% else %}📝 {{ 'Post'|t }}
-                {% endif %}
-              </span>
-            </div>
-            <div class="node-meta-date">
-              <time datetime="{{ node.getCreatedTime()|date('c') }}">
-                {{ node.getCreatedTime()|format_date('medium') }}
-              </time>
-            </div>
+    {# 1. FOR POSTS: LinkedIn style subtle author header #}
+    {% if node.bundle == 'post' %}
+      <div class="node-post-author-row">
+        <a href="{{ author_url }}" class="node-author-avatar-sm" aria-hidden="true" tabindex="-1">
+          <span class="avatar-initial">{{ author_initial }}</span>
+        </a>
+        <div class="node-author-meta">
+          <div class="node-author-name-line">
+            <a href="{{ author_url }}" class="node-author-name">{{ author_name }}</a>
+            <span class="node-author-badge">Devotee Member</span>
+          </div>
+          <div class="node-meta-time">
+            <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
           </div>
         </div>
         {% if node.isSticky() %}
-          <div class="node-pinned-badge">
-            <span>📌 {{ 'Pinned'|t }}</span>
-          </div>
+          <div class="node-pinned-badge"><span>📌 {{ 'Pinned'|t }}</span></div>
         {% endif %}
       </div>
-    {% elseif display_submitted and view_mode != 'full' %}
-      <p class="node__meta">{{ author_name }} &middot; {{ date }}</p>
+
+    {# 2. FOR ALL OTHER CONTENT TYPES (Events, Temples, Theyyam): Title first, then subtle metadata #}
+    {% else %}
+      <div class="node-header-row">
+        {% if label and not page %}
+          <h2{{ title_attributes.addClass('node__title') }}>
+            <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+          </h2>
+        {% endif %}
+        <div class="node-header-badges">
+          {% if node.bundle == 'event' %}
+            <span class="node-bundle-pill node-bundle-pill--event">📅 {{ 'Event'|t }}</span>
+          {% elseif node.bundle == 'theyyam' %}
+            <span class="node-bundle-pill node-bundle-pill--theyyam">🎭 {{ 'Theyyam'|t }}</span>
+          {% elseif node.bundle == 'location' %}
+            <span class="node-bundle-pill node-bundle-pill--location">🛕 {{ 'Temple / Place'|t }}</span>
+          {% endif %}
+          {% if node.isSticky() %}
+            <span class="node-pinned-badge">📌 {{ 'Pinned'|t }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {# Subtle metadata line under title #}
+      <div class="node-meta-subtle">
+        {% if node.bundle == 'event' %}
+          <span class="node-meta-submitted">{{ 'Submitted by'|t }} <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a></span>
+          <span class="meta-dot">&middot;</span>
+          <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
+        {% elseif node.bundle == 'theyyam' or node.bundle == 'location' %}
+          <span class="node-meta-updated">🕒 {{ 'Last updated on:'|t }} {{ node.getChangedTime()|format_date('medium') }}</span>
+        {% else %}
+          <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
+        {% endif %}
+      </div>
     {% endif %}
 
-    {% if label and not page and node.bundle != 'post' %}
-      <h2{{ title_attributes.addClass('node__title') }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h2>
-    {% endif %}
     {{ title_suffix }}
 
     {# Featured image #}

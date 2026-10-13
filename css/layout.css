@@ -271,7 +271,7 @@ html.dark .theme-toggle-icon--sun {
 .site-nav ul {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -279,25 +279,29 @@ html.dark .theme-toggle-icon--sun {
 
 .site-nav a {
   display: inline-block;
-  padding: 0.4rem 0.85rem;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
+  padding: 0.5rem 0.25rem 0.35rem;
+  border-radius: 0;
+  font-size: 1.05rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  transition: all 0.2s ease;
+  background: transparent;
+  border-bottom: 2.5px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .site-nav a:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: transparent;
   color: #ffffff;
 }
 
-.site-nav a.is-active {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: inset 0 -2px 0 var(--kaliyattam-gold-light, #fbbf24);
+.site-nav a.is-active,
+.site-nav a[aria-current="page"] {
+  background: transparent !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-bottom: 2.5px solid var(--kaliyattam-gold, #f59e0b) !important;
+  box-shadow: none !important;
 }
 
 .header-button {

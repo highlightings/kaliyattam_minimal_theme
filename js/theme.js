@@ -173,6 +173,14 @@
             }
           });
         });
+        // 6. Normalize main navigation active state on root/front page
+        if (window.location.pathname === '/' || window.location.pathname === '') {
+          var postsLink = document.querySelector('.site-nav a[href="/posts"].is-active');
+          if (postsLink) {
+            postsLink.classList.remove('is-active');
+            postsLink.removeAttribute('aria-current');
+          }
+        }
       });
     }
   };

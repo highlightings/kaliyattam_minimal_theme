@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * Custom exposed filter template for timeline_locations view (/temples).
+ * Provides the [ 📑 List View ] [ 🗺️ Map View ] [ 🔍 Search ] segmented control bar
+ * and a collapsible search drawer matching reference screenshot page-2026-10-*.png.
+ */
+#}
+{% if q is not empty %}
+  {{ q }}
+{% endif %}
+
+{% set search_val = form.search['#value']|default('') %}
+{% set has_search = search_val is not empty %}
+
+<div class="timeline-toolbar">
+  <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Temple views'|t }}">
+    <a href="/temples" class="timeline-toolbar__btn is-active">
+      <span aria-hidden="true">📑</span> {{ 'List View'|t }}
+    </a>
+    <a href="/temples/map" class="timeline-toolbar__btn">
+      <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
+    </a>
+    <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">
+      <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+    </button>
+  </div>
+
+  <div class="timeline-toolbar__search-drawer{{ has_search ? ' is-open' }}" id="timeline-search-drawer" {{ not has_search ? 'hidden' }}>
+    <div class="timeline-toolbar__search-inner">
+      {% if form.search %}
+        <div class="timeline-toolbar__filter-item">
+          {{ form.search }}
+        </div>
+      {% endif %}
+      {% if form.sort_by %}
+        <div class="timeline-toolbar__filter-item">
+          {{ form.sort_by }}
+        </div>
+      {% endif %}
+      <div class="timeline-toolbar__actions">
+        {{ form.actions }}
+      </div>
+    </div>
+  </div>
+
+  <div class="visually-hidden">
+    {{ form|without('q', 'search', 'sort_by', 'actions') }}
+  </div>
+</div>

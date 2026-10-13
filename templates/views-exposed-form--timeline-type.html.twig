@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Custom exposed filter template for timeline_type view (/posts and /theyyam).
+ * Provides the [ Latest ] [ Popular ] [ 🔍 Search ] segmented control bar
+ * and a collapsible search drawer.
+ */
+#}
+{% if q is not empty %}
+  {{ q }}
+{% endif %}
+
+{% set current_sort = form.sort_by['#value']|default('created') %}
+{% set search_val = form.search['#value']|default('') %}
+{% set has_search = search_val is not empty %}
+
+<div class="timeline-toolbar">
+  <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Filter and Sort'|t }}">
+    <button type="button" class="timeline-toolbar__btn{{ current_sort != 'count' ? ' is-active' }}" data-timeline-sort="created">
+      {{ 'Latest'|t }}
+    </button>
+    <button type="button" class="timeline-toolbar__btn{{ current_sort == 'count' ? ' is-active' }}" data-timeline-sort="count">
+      {{ 'Popular'|t }}
+    </button>
+    <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">
+      <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+    </button>
+  </div>
+
+  <div class="timeline-toolbar__search-drawer{{ has_search ? ' is-open' }}" id="timeline-search-drawer" {{ not has_search ? 'hidden' }}>
+    <div class="timeline-toolbar__search-inner">
+      {% if form.search %}
+        <div class="timeline-toolbar__filter-item">
+          {{ form.search }}
+        </div>
+      {% endif %}
+      <div class="timeline-toolbar__actions">
+        {{ form.actions }}
+      </div>
+    </div>
+  </div>
+
+  {# Keep sort select in the DOM but hidden so our buttons can set its value #}
+  <div class="visually-hidden">
+    {{ form.sort_by }}
+    {{ form|without('q', 'search', 'actions', 'sort_by') }}
+  </div>
+</div>
