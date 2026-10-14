@@ -56,43 +56,49 @@
     {% endif %}
 
     {# Related Theyyams at this Temple #}
-    {% if node.hasField('field_theyyam') and not node.field_theyyam.isEmpty() %}
+    {% if related_theyyams is not empty %}
       <div class="theyyam-related">
         <h2 class="theyyam-related-title">{{ 'Theyyam at this temple'|t }}</h2>
         <div class="theyyam-simple-list">
-          {% for item in node.field_theyyam %}
-            {% if item.entity and item.entity.access('view') %}
-              {% set theyyam = item.entity %}
-              {% set theyyam_url = path('entity.node.canonical', {'node': theyyam.id()}) %}
-              <article class="theyyam-list-row">
-                <div class="theyyam-list-media">
-                  {% if theyyam.hasField('field_featured_image') and not theyyam.get('field_featured_image').isEmpty() %}
-                    <a href="{{ theyyam_url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
-                      {{ theyyam.field_featured_image.view('thumbnail') }}
+          {% for theyyam in related_theyyams %}
+            <article class="theyyam-list-row">
+              <div class="theyyam-list-media">
+                {% if theyyam.thumbnail %}
+                  {% if theyyam.url %}
+                    <a href="{{ theyyam.url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
+                      {{ theyyam.thumbnail }}
                     </a>
                   {% else %}
-                    <a href="{{ theyyam_url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
-                      <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
-                    </a>
+                    {{ theyyam.thumbnail }}
                   {% endif %}
-                </div>
-                <div class="theyyam-list-body">
-                  <h3 class="theyyam-list-title">
-                    <a href="{{ theyyam_url }}">{{ theyyam.label() }}</a>
-                  </h3>
-                  {% if theyyam.hasField('body') and not theyyam.get('body').isEmpty() %}
-                    <div class="theyyam-list-snippet">
-                      {{ (theyyam.body.summary|default(theyyam.body.value)|striptags|trim)|slice(0, 140) }}…
-                    </div>
+                {% else %}
+                  <a href="{{ theyyam.url|default('#') }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
+                    <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
+                  </a>
+                {% endif %}
+              </div>
+              <div class="theyyam-list-body">
+                <h3 class="theyyam-list-title">
+                  {% if theyyam.url %}
+                    <a href="{{ theyyam.url }}">{{ theyyam.title }}</a>
+                  {% else %}
+                    <span>{{ theyyam.title }}</span>
                   {% endif %}
-                </div>
-                <div class="theyyam-list-action">
-                  <a href="{{ theyyam_url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.label() }}">
+                </h3>
+                {% if theyyam.snippet %}
+                  <div class="theyyam-list-snippet">
+                    {{ theyyam.snippet }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="theyyam-list-action">
+                {% if theyyam.url %}
+                  <a href="{{ theyyam.url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.title }}">
                     <span>{{ 'More'|t }} &raquo;</span>
                   </a>
-                </div>
-              </article>
-            {% endif %}
+                {% endif %}
+              </div>
+            </article>
           {% endfor %}
         </div>
       </div>

@@ -18,15 +18,21 @@
 
   <div class="timeline-toolbar">
     <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
-      <a href="{{ path('view.events.page_1') }}" class="timeline-toolbar__btn">
-        <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
-      </a>
-      <a href="{{ path('view.events.page_2') }}" class="timeline-toolbar__btn">
-        <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
-      </a>
-      <a href="{{ path('view.events_calendar.page_1') }}" class="timeline-toolbar__btn is-active">
-        <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
-      </a>
+      {% if url_events_upcoming %}
+        <a href="{{ url_events_upcoming }}" class="timeline-toolbar__btn">
+          <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+        </a>
+      {% endif %}
+      {% if url_events_past %}
+        <a href="{{ url_events_past }}" class="timeline-toolbar__btn">
+          <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
+        </a>
+      {% endif %}
+      {% if url_events_calendar %}
+        <a href="{{ url_events_calendar }}" class="timeline-toolbar__btn is-active">
+          <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+        </a>
+      {% endif %}
       <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search" data-timeline-toggle-search aria-expanded="false">
         <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
       </button>

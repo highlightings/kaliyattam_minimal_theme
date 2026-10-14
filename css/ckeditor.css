@@ -3,7 +3,8 @@
  * editing area looking like published text.
  */
 .ck-content {
-  color: var(--theme-text);
+  --ck-content-font-color: var(--theme-text);
+  color: var(--theme-text) !important;
   font: var(--text-base) / var(--leading-relaxed) var(--font-sans-body);
 }
 

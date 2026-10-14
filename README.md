@@ -28,11 +28,28 @@ Form layouts, field arrangements, and display modes are **intentionally configur
 Multi-image entity fields automatically render using a lightweight, performant carousel:
 - **Hardware-Accelerated**: Pure CSS scroll-snap (`overflow-x: auto; scroll-snap-type: x mandatory`).
 - **Resilient Slide Pitch Tracking**: Next/Prev navigation and active indicator dots use dynamic DOM offset measurements (`slides[i].offsetLeft - slides[0].offsetLeft`), remaining mathematically precise regardless of slide widths, peeks, gaps, or margins.
-- **Accessibility (WCAG)**: Carousel container declares `role="region" aria-roledescription="carousel"`, controls have descriptive `aria-label` attributes (`"Previous slide"`, `"Next slide"`), and dot indicators manage `aria-current`.
+- **Accessibility (WCAG)**: Carousel container declares `role="group" aria-roledescription="carousel"`, controls have descriptive `aria-label` attributes (`"Previous slide"|t`, `"Next slide"|t`), slides have translatable labels (`'@n of @total'|t`), and dot indicators manage `role="tab"` and `aria-selected`.
 
 ---
 
-## 4. File Structure
+## 4. Required Views & Safe Route Integration
+
+The theme provides integrated segmented control toolbars and author links that link to core site views. URLs for these routes are generated safely in preprocess hooks with `try / catch` handling, ensuring the site will never throw a fatal `RouteNotFoundException` (HTTP 500) if any view is uninstalled, renamed, or temporarily unavailable:
+
+| Route Name | Description | Default Path |
+| --- | --- | --- |
+| `view.events.page_1` | Upcoming Events | `/events` |
+| `view.events.page_2` | Past Events | `/events/past` |
+| `view.events_calendar.page_1` | Events FullCalendar | `/events/calendar` |
+| `view.timeline_locations.page_locations` | Temples List | `/temples` |
+| `view.locations_map.page_1` | Temples Map | `/temples/map` |
+| `view.timeline_user.page_timeline` | Member Timeline | `/user/{user}/timeline` |
+
+If any of these routes are missing, the corresponding tab/link is gracefully omitted.
+
+---
+
+## 5. File Structure
 
 ```
 kaliyattam_minimal/
@@ -41,9 +58,11 @@ kaliyattam_minimal/
 │   ├── tokens.css       # Design tokens and color-scheme definitions
 │   ├── layout.css       # Page layout grids, headers, and sidebars
 │   ├── components.css   # Reusable UI components, cards, toolbar, carousel
-│   └── forms.css        # Form element styles
+│   ├── forms.css        # Form element styles & CKEditor variables
+│   └── dialog.css       # On-demand dialog, off-canvas, and media library styles
 ├── js/
-│   └── theme.js         # Dark mode toggle, toolbar search drawer, and carousel behavior
+│   ├── theme-init.js    # Immediate <head> color scheme initialization and js class
+│   └── theme.js         # Theme toggle, mobile nav, hash listener, and carousel behavior
 ├── templates/           # Clean, minimalist Twig template overrides
 ├── kaliyattam_minimal.info.yml
 ├── kaliyattam_minimal.libraries.yml

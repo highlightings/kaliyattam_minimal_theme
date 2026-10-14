@@ -36,8 +36,14 @@
           btn.setAttribute('aria-expanded', 'true');
         }
         setTimeout(function () {
-          var target = document.querySelector(window.location.hash) || commentsSection;
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          var target = null;
+          try {
+            target = document.querySelector(window.location.hash);
+          }
+          catch (e) {
+            target = null;
+          }
+          (target || commentsSection).scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 150);
       }
     }
@@ -130,8 +136,8 @@
       // Automatically expand comments if hash matches on initial load or subsequent in-page hashchange
       once('km-comments-hash-listener', 'body', context).forEach(function () {
         window.addEventListener('hashchange', autoExpandComments);
+        autoExpandComments();
       });
-      autoExpandComments();
 
       // 4. Share / Copy Link Button
       once('km-copy-link', '.btn-copy-link', context).forEach(function (btn) {
@@ -268,6 +274,7 @@
             dots.forEach(function (dot, idx) {
               var isActive = idx === activeIndex;
               dot.classList.toggle('is-active', isActive);
+              dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
               dot.setAttribute('aria-current', isActive ? 'true' : 'false');
             });
           }

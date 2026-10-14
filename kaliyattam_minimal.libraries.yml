@@ -14,6 +14,10 @@ global:
     component:
       css/components.css: {}
       css/forms.css: {}
+
+dialog:
+  css:
+    theme:
       css/dialog.css: {}
 
 theme:

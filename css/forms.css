@@ -382,6 +382,8 @@ html.dark .composer__visibility-badge {
   --ck-color-base-border: var(--theme-input-border);
   --ck-color-base-foreground: var(--theme-surface-alt);
   --ck-color-base-text: var(--theme-text);
+  --ck-color-editor-base-text: var(--theme-text);
+  --ck-content-font-color: var(--theme-text);
   --ck-color-text: var(--theme-text);
   --ck-color-base-focus: var(--theme-accent);
   --ck-color-focus-border: var(--theme-accent);
@@ -394,4 +396,11 @@ html.dark .composer__visibility-badge {
   --ck-color-input-background: var(--theme-input-bg);
   --ck-color-input-border: var(--theme-input-border);
   --ck-color-input-text: var(--theme-text);
+}
+
+.ck.ck-content,
+.ck-editor__editable,
+.ck-editor__editable p {
+  color: var(--theme-text) !important;
+  --ck-content-font-color: var(--theme-text) !important;
 }

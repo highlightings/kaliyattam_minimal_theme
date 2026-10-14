@@ -612,8 +612,8 @@ html.dark .node-interaction-bar .action-flag-view-post:hover {
   color: var(--theme-accent, #890000) !important;
 }
 
-/* Collapsible Comments Section */
-.node-comments-section.comments-collapsible:not(.is-open) {
+/* Collapsible Comments Section: only hide when JavaScript is enabled */
+html.js .node-comments-section.comments-collapsible:not(.is-open) {
   display: none !important;
 }
 

@@ -17,7 +17,7 @@
 {% set author = node.getOwner() %}
 {% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
 {% set author_initial = author_name|slice(0, 1)|upper %}
-{% set author_url = author.id() > 0 ? path('view.timeline_user.page_timeline', {'user': author.id()}) : '' %}
+{% set author_url = author_timeline_url|default('') %}
 
 <article{{ attributes.addClass(classes) }}>
   {{ title_prefix }}

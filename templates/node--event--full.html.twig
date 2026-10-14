@@ -7,7 +7,7 @@
 #}
 {% set author = node.getOwner() %}
 {% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
-{% set author_url = author.id() > 0 ? path('view.timeline_user.page_timeline', {'user': author.id()}) : '' %}
+{% set author_url = author_timeline_url|default('') %}
 
 <article{{ attributes.addClass('node', 'node--type-event', 'node--view-mode-full', 'event-full-card', not node.isPublished() ? 'node--unpublished') }}>
   <div{{ content_attributes.addClass('node__content') }}>

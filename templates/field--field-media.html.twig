@@ -26,11 +26,11 @@
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
   {% endif %}
   {% if items|length > 1 %}
-    <div class="km-carousel" data-km-carousel role="region" aria-roledescription="carousel" aria-label="{{ label_hidden ? 'Media gallery'|t : label }}">
-      <div class="km-carousel__viewport" tabindex="0" aria-label="{{ 'Slides'|t }}">
+    <div class="km-carousel" data-km-carousel role="group" aria-roledescription="carousel" aria-label="{{ label_hidden ? 'Media gallery'|t : label }}">
+      <div class="km-carousel__viewport" tabindex="0">
         <div class="km-carousel__track">
           {% for item in items %}
-            <div{{ item.attributes.addClass('km-carousel__slide') }} role="group" aria-roledescription="slide" aria-label="{{ loop.index ~ ' of ' ~ loop.length }}">{{ item.content }}</div>
+            <div{{ item.attributes.addClass('km-carousel__slide') }} role="group" aria-roledescription="slide" aria-label="{{ '@n of @total'|t({'@n': loop.index, '@total': loop.length}) }}">{{ item.content }}</div>
           {% endfor %}
         </div>
       </div>
@@ -42,7 +42,7 @@
       </button>
       <div class="km-carousel__dots" data-carousel-dots role="tablist" aria-label="{{ 'Choose slide to display'|t }}">
         {% for item in items %}
-          <button type="button" class="km-carousel__dot{{ loop.first ? ' is-active' }}" data-slide-index="{{ loop.index0 }}" aria-label="{{ 'Slide ' ~ loop.index }}" aria-current="{{ loop.first ? 'true' : 'false' }}"></button>
+          <button type="button" class="km-carousel__dot{{ loop.first ? ' is-active' }}" role="tab" data-slide-index="{{ loop.index0 }}" aria-label="{{ 'Slide @n'|t({'@n': loop.index}) }}" aria-selected="{{ loop.first ? 'true' : 'false' }}"></button>
         {% endfor %}
       </div>
     </div>

@@ -17,4 +17,5 @@
     /* Storage blocked: fall back to light. */
   }
   document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.classList.add('js');
 })();

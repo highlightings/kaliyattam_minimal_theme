@@ -1,6 +1,6 @@
 name: Kaliyattam Minimal
 type: theme
-description: 'Small, config-first theme for kaliyattam.com. Design tokens plus plain CSS: no build step, no jQuery, no dialog or off-canvas theming. Post and event forms are built with form display and field groups, not theme code.'
+description: 'Small, config-first theme for kaliyattam.com. Design tokens plus plain CSS: no build step, no jQuery. Post and event forms are built with form display and field groups.'
 package: Kaliyattam
 core_version_requirement: ^10.3 || ^11
 base theme: false
@@ -12,6 +12,12 @@ libraries:
 
 libraries-override:
   views/views.module: false
+
+libraries-extend:
+  core/drupal.dialog:
+    - kaliyattam_minimal/dialog
+  core/drupal.dialog.off-canvas:
+    - kaliyattam_minimal/dialog
 
 # Loaded inside CKEditor 5 so the editing area matches the front end.
 ckeditor5-stylesheets:
