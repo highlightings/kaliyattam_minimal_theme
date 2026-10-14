@@ -485,6 +485,7 @@ html.dark #drupal-off-canvas .button--primary {
 .media-library-widget-modal {
   max-width: 980px !important;
   width: 92vw !important;
+  z-index: 1300 !important;
 }
 
 .media-library-widget-modal #drupal-modal {
