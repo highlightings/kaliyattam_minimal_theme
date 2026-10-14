@@ -294,25 +294,6 @@ input[type="button"]:hover {
   margin-left: auto;
 }
 
-.node-view-link {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-sm, 6px);
-  background: var(--theme-surface-subtle, #f4f4f5);
-  border: 1px solid var(--theme-border-subtle, #e4e4e7);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--theme-text-muted, #71717a);
-  text-decoration: none;
-  transition: all var(--transition-fast, 0.15s ease);
-}
-
-.node-view-link:hover {
-  background: var(--theme-accent-soft, #fef2f2);
-  color: var(--theme-accent, #890000);
-  border-color: rgba(137, 0, 0, 0.2);
-}
 
 .node-header-row {
   display: flex;
@@ -880,11 +861,6 @@ html.dark .theyyam-list-row {
   border-color: var(--theme-border);
 }
 
-:root[data-theme="dark"] .node-meta-bar,
-html.dark .node-meta-bar {
-  background: var(--theme-surface-raised, #18181b);
-  border-color: var(--theme-border-subtle, #27272a);
-}
 
 :root[data-theme="dark"] .node-author-link,
 html.dark .node-author-link {
@@ -1167,29 +1143,6 @@ html.dark .user-card-role-badge {
   display: none !important;
 }
 
-.btn-user-profile {
-  background: var(--theme-surface-alt, #f4f4f5) !important;
-  color: var(--theme-text, #18181b) !important;
-  border: 1px solid var(--theme-border, #e5e7eb) !important;
-}
-
-.btn-user-profile:hover {
-  background: #e4e4e7 !important;
-  border-color: #d4d4d8 !important;
-  color: var(--theme-text, #18181b) !important;
-}
-
-.btn-user-share {
-  background: var(--theme-accent, #890000) !important;
-  color: #ffffff !important;
-  border: 1px solid var(--theme-accent, #890000) !important;
-}
-
-.btn-user-share:hover {
-  background: #6b0000 !important;
-  border-color: #6b0000 !important;
-  color: #ffffff !important;
-}
 
 :root[data-theme="dark"] .user-card-avatar,
 html.dark .user-card-avatar {
@@ -1197,33 +1150,6 @@ html.dark .user-card-avatar {
   color: #ffffff !important;
 }
 
-:root[data-theme="dark"] .btn-user-profile,
-html.dark .btn-user-profile {
-  background: var(--theme-surface-alt, #27364b) !important;
-  color: var(--theme-text, #f1f5f9) !important;
-  border-color: var(--theme-border, #334155) !important;
-}
-
-:root[data-theme="dark"] .btn-user-profile:hover,
-html.dark .btn-user-profile:hover {
-  background: #334155 !important;
-  border-color: #475569 !important;
-  color: #ffffff !important;
-}
-
-:root[data-theme="dark"] .btn-user-share,
-html.dark .btn-user-share {
-  background: #b91c1c !important;
-  color: #ffffff !important;
-  border: 1px solid #b91c1c !important;
-}
-
-:root[data-theme="dark"] .btn-user-share:hover,
-html.dark .btn-user-share:hover {
-  background: #dc2626 !important;
-  border-color: #dc2626 !important;
-  color: #ffffff !important;
-}
 
 /* About Kaliyattam block heading (Screenshot 1) */
 #block-kaliyattam-minimal-about h2,
@@ -1411,19 +1337,6 @@ html.dark .event-chips-row .field--name-field-where {
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Hide unstyled duplicate header in locations timeline */
-.view-timeline-locations > header,
-.views-element-container header:has(a[href*="locations"]),
-.views-element-container header:has(a[href*="/temples"]) {
-  display: none !important;
-}
-
-/* Prevent both Home and Posts being underlined on front page */
-body.path-frontpage .site-nav a[href*="posts"].is-active {
-  border-bottom-color: transparent !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 500 !important;
-}
 
 .node-pinned-badge {
   display: inline-flex;
@@ -1457,11 +1370,10 @@ body.path-frontpage .site-nav a[href*="posts"].is-active {
   color: var(--theme-accent, #890000);
 }
 
-/* Content pills / chips for Event Date, Theyyam, and Temple (Screenshot 1) */
+/* Content pills for Event Date, Theyyam, and Temple */
 .node--view-mode-card .field--name-field-when,
 .node--view-mode-card .field--name-field-theyyam,
-.node--view-mode-card .field--name-field-where,
-.timeline-chip {
+.node--view-mode-card .field--name-field-where {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -1589,11 +1501,6 @@ html.dark .node--view-mode-card .field--name-field-where {
   color: var(--theme-accent, #890000);
 }
 
-/* Hide duplicate/broken Map View & List View links header if rendered anywhere */
-.locations-timeline-header,
-.view-timeline-locations .view-header:has(.locations-timeline-header) {
-  display: none !important;
-}
 
 /* Lightweight Performant Media Carousel (CSS Scroll-Snap) */
 .km-carousel {
@@ -1658,11 +1565,9 @@ html.dark .node--view-mode-card .field--name-field-where {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.95);
   color: #1f2937;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1695,14 +1600,14 @@ html.dark .node--view-mode-card .field--name-field-where {
 
 :root[data-theme="dark"] .km-carousel__btn,
 html.dark .km-carousel__btn {
-  background: rgba(31, 41, 55, 0.88);
+  background: rgba(30, 41, 59, 0.95);
   color: #f3f4f6;
   border-color: rgba(255, 255, 255, 0.15);
 }
 
 :root[data-theme="dark"] .km-carousel__btn:hover,
 html.dark .km-carousel__btn:hover {
-  background: #1f2937;
+  background: #1e293b;
   color: #ffffff;
 }
 
@@ -1716,9 +1621,7 @@ html.dark .km-carousel__btn:hover {
   z-index: 5;
   padding: 4px 8px;
   border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.65);
 }
 
 .km-carousel__dot {

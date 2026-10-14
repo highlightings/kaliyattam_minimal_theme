@@ -21,4 +21,4 @@ visibility:
   request_path:
     id: request_path
     negate: false
-    pages: "/updates_1\n/updates_1/*\n/theyyam\n/events\n/temples\n/posts\n/timeline\n/theyyam/*/timeline\n/events/*/timeline\n/temples/*/timeline\n/user/*"
+    pages: "/theyyam\n/events\n/temples\n/posts\n/timeline\n/theyyam/*/timeline\n/events/*/timeline\n/temples/*/timeline\n/user/*"

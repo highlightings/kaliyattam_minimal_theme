@@ -6,15 +6,22 @@
  */
 #}
 {% set author = node.getOwner() %}
-{% set author_name = author.getDisplayName()|default('Kaliyattam Member') %}
-{% set author_url = '/user/' ~ author.id() ~ '/timeline?page=1' %}
+{% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
+{% set author_url = author.id() > 0 ? path('view.timeline_user.page_timeline', {'user': author.id()}) : '' %}
 
 <article{{ attributes.addClass('node', 'node--type-event', 'node--view-mode-full', 'event-full-card', not node.isPublished() ? 'node--unpublished') }}>
   <div{{ content_attributes.addClass('node__content') }}>
     {# Subtle metadata line under title #}
     <div class="node-meta-subtle event-meta-subtle">
       <div class="event-meta-left">
-        <span class="node-meta-submitted">{{ 'Submitted by'|t }} <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a></span>
+        <span class="node-meta-submitted">
+          {{ 'Submitted by'|t }}
+          {% if author_url %}
+            <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a>
+          {% else %}
+            <span class="node-author-name">{{ author_name }}</span>
+          {% endif %}
+        </span>
         <span class="meta-dot">&middot;</span>
         <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
       </div>
@@ -56,17 +63,18 @@
 
     {# Main Description Content #}
     <div class="node-main-fields event-main-content">
-      {{ content|without('field_when', 'field_where', 'field_theyyam', 'field_media', 'field_comments', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+      {{ content|without('field_when', 'field_where', 'field_theyyam', 'field_media', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
     </div>
 
     {# Interaction Bar (Favorite, Like, Share, Comments) #}
     {% include '@kaliyattam_minimal/templates/node-actions.html.twig' %}
 
     {# Collapsible Comments Section #}
-    {% if content.field_comments is not empty %}
+    {% set comments_field = content.field_comments_without_title|default(content.field_comments) %}
+    {% if comments_field is not empty %}
       <section id="comments" class="node-comments-section comments-collapsible">
         <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
-        {{ content.field_comments }}
+        {{ comments_field }}
       </section>
     {% endif %}
   </div>

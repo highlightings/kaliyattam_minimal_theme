@@ -21,9 +21,12 @@
   ]
 %}
 
-{% if label_hidden %}
+<div{{ attributes.addClass(classes) }}>
+  {% if not label_hidden %}
+    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+  {% endif %}
   {% if items|length > 1 %}
-    <div{{ attributes.addClass(classes, 'km-carousel') }} data-km-carousel role="region" aria-roledescription="carousel" aria-label="{{ 'Media gallery'|t }}">
+    <div class="km-carousel" data-km-carousel role="region" aria-roledescription="carousel" aria-label="{{ label_hidden ? 'Media gallery'|t : label }}">
       <div class="km-carousel__viewport" tabindex="0" aria-label="{{ 'Slides'|t }}">
         <div class="km-carousel__track">
           {% for item in items %}
@@ -44,42 +47,10 @@
       </div>
     </div>
   {% else %}
-    <div{{ attributes.addClass(classes, 'field__items') }}>
+    <div class="field__items">
       {% for item in items %}
         <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% endif %}
-{% else %}
-  <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-    {% if items|length > 1 %}
-      <div class="km-carousel" data-km-carousel role="region" aria-roledescription="carousel" aria-label="{{ label }}">
-        <div class="km-carousel__viewport" tabindex="0" aria-label="{{ 'Slides'|t }}">
-          <div class="km-carousel__track">
-            {% for item in items %}
-              <div{{ item.attributes.addClass('km-carousel__slide') }} role="group" aria-roledescription="slide" aria-label="{{ loop.index ~ ' of ' ~ loop.length }}">{{ item.content }}</div>
-            {% endfor %}
-          </div>
-        </div>
-        <button type="button" class="km-carousel__btn km-carousel__btn--prev" aria-label="{{ 'Previous slide'|t }}" data-carousel-prev>
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button type="button" class="km-carousel__btn km-carousel__btn--next" aria-label="{{ 'Next slide'|t }}" data-carousel-next>
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
-        <div class="km-carousel__dots" data-carousel-dots role="tablist" aria-label="{{ 'Choose slide to display'|t }}">
-          {% for item in items %}
-            <button type="button" class="km-carousel__dot{{ loop.first ? ' is-active' }}" data-slide-index="{{ loop.index0 }}" aria-label="{{ 'Slide ' ~ loop.index }}" aria-current="{{ loop.first ? 'true' : 'false' }}"></button>
-          {% endfor %}
-        </div>
-      </div>
-    {% else %}
-      <div class="field__items">
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
+</div>

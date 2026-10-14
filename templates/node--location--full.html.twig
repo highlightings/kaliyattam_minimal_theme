@@ -61,14 +61,14 @@
         <h2 class="theyyam-related-title">{{ 'Theyyam at this temple'|t }}</h2>
         <div class="theyyam-simple-list">
           {% for item in node.field_theyyam %}
-            {% if item.entity %}
+            {% if item.entity and item.entity.access('view') %}
               {% set theyyam = item.entity %}
               {% set theyyam_url = path('entity.node.canonical', {'node': theyyam.id()}) %}
               <article class="theyyam-list-row">
                 <div class="theyyam-list-media">
                   {% if theyyam.hasField('field_featured_image') and not theyyam.get('field_featured_image').isEmpty() %}
                     <a href="{{ theyyam_url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
-                      {{ drupal_entity('media', theyyam.field_featured_image.target_id, 'thumbnail') }}
+                      {{ theyyam.field_featured_image.view('thumbnail') }}
                     </a>
                   {% else %}
                     <a href="{{ theyyam_url }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">

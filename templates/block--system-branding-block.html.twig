@@ -8,7 +8,11 @@
 {% block content %}
   <div class="site-branding">
     <a href="{{ path('<front>') }}" rel="home" class="site-branding__link" aria-label="{{ site_name ?: 'Home'|t }}">
-      <img src="/{{ directory }}/logo.svg" alt="" width="30" height="35" fetchpriority="high" />
+      {% if site_logo %}
+        <img src="{{ site_logo }}" alt="" width="30" height="35" />
+      {% else %}
+        <img src="/{{ directory }}/logo.svg" alt="" width="30" height="35" />
+      {% endif %}
       {% if site_name %}
         <span class="site-title">{{ site_name }}</span>
       {% endif %}

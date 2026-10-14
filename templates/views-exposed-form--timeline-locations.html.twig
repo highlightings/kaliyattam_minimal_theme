@@ -15,10 +15,10 @@
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Temple views'|t }}">
-    <a href="/temples" class="timeline-toolbar__btn is-active">
+    <a href="{{ path('view.timeline_locations.page_locations') }}" class="timeline-toolbar__btn is-active">
       <span aria-hidden="true">📑</span> {{ 'List View'|t }}
     </a>
-    <a href="/temples/map" class="timeline-toolbar__btn">
+    <a href="{{ path('view.locations_map.page_1') }}" class="timeline-toolbar__btn">
       <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
     </a>
     <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">

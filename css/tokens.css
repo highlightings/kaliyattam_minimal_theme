@@ -98,15 +98,18 @@
   /* Semantic Theme Tokens - Light Mode (Default) */
   --theme-bg: #faf8f5;
   --theme-surface: #ffffff;
+  --theme-surface-raised: #ffffff;
   --theme-surface-warm: #f4efe8;
+  --theme-surface-subtle: #f4efe8;
   --theme-surface-alt: #f8fafc;
   --theme-border: #cbd5e1;
   --theme-border-subtle: rgba(0, 0, 0, 0.08);
   --theme-border-hover: #94a3b8;
   --theme-text: #1c1917;
   --theme-text-secondary: #52525b;
-  --theme-text-muted: #71717a;
+  --theme-text-muted: #595960;
   --theme-accent: #890000;
+  --theme-accent-soft: rgba(137, 0, 0, 0.08);
   --theme-accent-hover: #5c0000;
   --theme-input-bg: #ffffff;
   --theme-input-border: #cbd5e1;
@@ -114,6 +117,12 @@
   --theme-header-top-bg: rgba(0, 0, 0, 0.15);
   --theme-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   --theme-card-shadow-hover: 0 8px 30px rgba(137, 0, 0, 0.15);
+}
+
+/* Malayalam language font stack override */
+:lang(ml) {
+  --font-serif-heading: "Noto Serif Malayalam", "Nirmala UI", "Manjari", serif;
+  --font-sans-body: "Noto Sans Malayalam", "Nirmala UI", "Manjari", system-ui, -apple-system, sans-serif;
 }
 
 /* ==========================================================================
@@ -126,15 +135,18 @@ html.dark {
   color-scheme: dark;
   --theme-bg: #0f172a;
   --theme-surface: #1e293b;
+  --theme-surface-raised: #243247;
   --theme-surface-warm: #243247;
+  --theme-surface-subtle: #182234;
   --theme-surface-alt: #27364b;
   --theme-border: #334155;
   --theme-border-subtle: rgba(148, 163, 184, 0.18);
   --theme-border-hover: #475569;
   --theme-text: #f1f5f9;
   --theme-text-secondary: #94a3b8;
-  --theme-text-muted: #64748b;
+  --theme-text-muted: #94a3b8;
   --theme-accent: #fca5a5;
+  --theme-accent-soft: rgba(248, 113, 113, 0.15);
   --theme-accent-hover: #fecaca;
   --theme-accent-solid: #b91c1c;
   --theme-accent-solid-hover: #dc2626;
@@ -152,7 +164,7 @@ html.dark {
   --kaliyattam-light: #1e293b;
   --kaliyattam-text: #f1f5f9;
   --kaliyattam-text-secondary: #94a3b8;
-  --kaliyattam-text-muted: #64748b;
+  --kaliyattam-text-muted: #94a3b8;
   --kaliyattam-border: #334155;
   --kaliyattam-border-subtle: rgba(148, 163, 184, 0.18);
   --kaliyattam-border-hover: #475569;

@@ -15,9 +15,9 @@
 %}
 
 {% set author = node.getOwner() %}
-{% set author_name = author.getDisplayName()|default('Kaliyattam Artist') %}
+{% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
 {% set author_initial = author_name|slice(0, 1)|upper %}
-{% set author_url = '/user/' ~ author.id() ~ '/timeline?page=1' %}
+{% set author_url = author.id() > 0 ? path('view.timeline_user.page_timeline', {'user': author.id()}) : '' %}
 
 <article{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
@@ -26,13 +26,23 @@
     {# 1. FOR POSTS: LinkedIn style subtle author header #}
     {% if node.bundle == 'post' %}
       <div class="node-post-author-row">
-        <a href="{{ author_url }}" class="node-author-avatar-sm" aria-hidden="true" tabindex="-1">
-          <span class="avatar-initial">{{ author_initial }}</span>
-        </a>
+        {% if author_url %}
+          <a href="{{ author_url }}" class="node-author-avatar-sm" aria-hidden="true" tabindex="-1">
+            <span class="avatar-initial">{{ author_initial }}</span>
+          </a>
+        {% else %}
+          <div class="node-author-avatar-sm" aria-hidden="true">
+            <span class="avatar-initial">{{ author_initial }}</span>
+          </div>
+        {% endif %}
         <div class="node-author-meta">
           <div class="node-author-name-line">
-            <a href="{{ author_url }}" class="node-author-name">{{ author_name }}</a>
-            <span class="node-author-badge">Devotee Member</span>
+            {% if author_url %}
+              <a href="{{ author_url }}" class="node-author-name">{{ author_name }}</a>
+            {% else %}
+              <span class="node-author-name">{{ author_name }}</span>
+            {% endif %}
+            <span class="node-author-badge">{{ 'Devotee Member'|t }}</span>
           </div>
           <div class="node-meta-time">
             <a href="{{ url }}" class="node-time-link" rel="bookmark" title="{{ 'View post'|t }}">
@@ -81,7 +91,14 @@
       {# Subtle metadata line under title #}
       <div class="node-meta-subtle">
         {% if node.bundle == 'event' %}
-          <span class="node-meta-submitted">{{ 'Submitted by'|t }} <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a></span>
+          <span class="node-meta-submitted">
+            {{ 'Submitted by'|t }}
+            {% if author_url %}
+              <a href="{{ author_url }}" class="node-author-link">{{ author_name }}</a>
+            {% else %}
+              <span class="node-author-name">{{ author_name }}</span>
+            {% endif %}
+          </span>
           <span class="meta-dot">&middot;</span>
           <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
         {% elseif node.bundle == 'theyyam' or node.bundle == 'location' %}

@@ -15,13 +15,13 @@
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
-    <a href="/events" class="timeline-toolbar__btn">
+    <a href="{{ path('view.events.page_1') }}" class="timeline-toolbar__btn">
       <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
     </a>
-    <a href="/events/past" class="timeline-toolbar__btn is-active">
+    <a href="{{ path('view.events.page_2') }}" class="timeline-toolbar__btn is-active">
       <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
     </a>
-    <a href="/events/calendar" class="timeline-toolbar__btn">
+    <a href="{{ path('view.events_calendar.page_1') }}" class="timeline-toolbar__btn">
       <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
     </a>
     <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">

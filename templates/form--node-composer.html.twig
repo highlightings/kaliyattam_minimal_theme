@@ -13,7 +13,12 @@
     <div class="composer__avatar-circle" aria-hidden="true">{{ user.displayname|first|upper }}</div>
     <div class="composer__meta">
       <span class="composer__author">{{ user.displayname }}</span>
-      <span class="composer__visibility-badge">🌐 {{ 'Public'|t }}</span>
+      {% set node_obj = element['#node']|default(null) %}
+      {% if node_obj and not node_obj.isPublished() %}
+        <span class="composer__visibility-badge composer__visibility-badge--draft">🔒 {{ 'Draft'|t }}</span>
+      {% else %}
+        <span class="composer__visibility-badge">🌐 {{ 'Public'|t }}</span>
+      {% endif %}
     </div>
   </div>
   {{ children }}

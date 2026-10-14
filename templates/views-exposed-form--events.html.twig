@@ -13,19 +13,19 @@
 {% set search_val = form.search['#value']|default('') %}
 {% set has_search = search_val is not empty %}
 
-{% set is_past = '/events/past' in app.request.pathinfo %}
-{% set is_cal = '/events/calendar' in app.request.pathinfo %}
+{% set is_past = current_route == 'view.events.page_2' or '/events/past' in current_path %}
+{% set is_cal = current_route == 'view.events_calendar.page_1' or '/events/calendar' in current_path %}
 {% set is_upcoming = not is_past and not is_cal %}
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
-    <a href="/events" class="timeline-toolbar__btn{{ is_upcoming ? ' is-active' }}">
+    <a href="{{ path('view.events.page_1') }}" class="timeline-toolbar__btn{{ is_upcoming ? ' is-active' }}">
       <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
     </a>
-    <a href="/events/past" class="timeline-toolbar__btn{{ is_past ? ' is-active' }}">
+    <a href="{{ path('view.events.page_2') }}" class="timeline-toolbar__btn{{ is_past ? ' is-active' }}">
       <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
     </a>
-    <a href="/events/calendar" class="timeline-toolbar__btn{{ is_cal ? ' is-active' }}">
+    <a href="{{ path('view.events_calendar.page_1') }}" class="timeline-toolbar__btn{{ is_cal ? ' is-active' }}">
       <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
     </a>
     <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">

@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Theme override for the main navigation menu.
+ * Ensures clean active states on the front page without CSS or JS symptom-hiding hacks.
+ */
+#}
+{% import _self as menus %}
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul{{ attributes }}>
+    {% else %}
+      <ul>
+    {% endif %}
+    {% for item in items %}
+      {% set is_on_front = path('<current>') == '/' or path('<current>') == '/posts' %}
+      {% set is_home_link = item.url.toString() in ['/', ''] %}
+      <li{{ item.attributes }}>
+        {% if is_on_front and not is_home_link %}
+          <a href="{{ item.url.toString() }}">{{ item.title }}</a>
+        {% else %}
+          {{ link(item.title, item.url) }}
+        {% endif %}
+        {% if item.below %}
+          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

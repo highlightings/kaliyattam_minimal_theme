@@ -136,8 +136,13 @@
       // 4. Share / Copy Link Button
       once('km-copy-link', '.btn-copy-link', context).forEach(function (btn) {
         btn.addEventListener('click', function (e) {
-          e.preventDefault();
-          var url = btn.getAttribute('data-url') || window.location.href;
+          var rawUrl = btn.getAttribute('data-url') || window.location.href;
+          var url = window.location.href;
+          try {
+            url = new URL(rawUrl, window.location.origin).href;
+          } catch (err) {
+            url = window.location.href;
+          }
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(url).then(function () {
               var label = btn.querySelector('.share-label');
@@ -195,14 +200,6 @@
             }
           });
         });
-        // 6. Normalize main navigation active state on root/front page
-        if (window.location.pathname === '/' || window.location.pathname === '') {
-          var postsLink = document.querySelector('.site-nav a[href="/posts"].is-active');
-          if (postsLink) {
-            postsLink.classList.remove('is-active');
-            postsLink.removeAttribute('aria-current');
-          }
-        }
       });
     }
   };

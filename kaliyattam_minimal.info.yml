@@ -10,6 +10,9 @@ libraries:
   - kaliyattam_minimal/global
   - kaliyattam_minimal/theme
 
+libraries-override:
+  views/views.module: false
+
 # Loaded inside CKEditor 5 so the editing area matches the front end.
 ckeditor5-stylesheets:
   - css/tokens.css

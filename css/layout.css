@@ -88,14 +88,18 @@
 }
 
 /* Divider between Account Menu and Language Selector */
-.site-header__top [id*="languageselector"] {
+.site-header__top [id*="languageselector"],
+.site-header__top [id*="language"],
+.site-header__top .block-language {
   position: relative;
   display: inline-flex;
   align-items: center;
   padding-left: 1rem;
 }
 
-.site-header__top [id*="languageselector"]::before {
+.site-header__top [id*="languageselector"]::before,
+.site-header__top [id*="language"]::before,
+.site-header__top .block-language::before {
   content: "";
   position: absolute;
   left: 0;
@@ -106,14 +110,16 @@
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* Advanced Language Selector - Pill State */
-.advanced-language-selector {
+/* Language Selector - Pill State (Supports both core language_block and advanced_language_selector) */
+.advanced-language-selector,
+.site-header__top .block-language {
   display: inline-flex;
   align-items: center;
 }
 
 .advanced-language-selector ul,
-.advanced-language-selector .nav {
+.advanced-language-selector .nav,
+.site-header__top .block-language ul {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -127,13 +133,15 @@
 }
 
 .advanced-language-selector li,
-.advanced-language-selector .nav-item {
+.advanced-language-selector .nav-item,
+.site-header__top .block-language li {
   margin: 0;
   list-style: none;
 }
 
 .advanced-language-selector .nav-link,
-.advanced-language-selector a {
+.advanced-language-selector a,
+.site-header__top .block-language a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -149,7 +157,8 @@
 }
 
 .advanced-language-selector .nav-link:hover,
-.advanced-language-selector a:hover {
+.advanced-language-selector a:hover,
+.site-header__top .block-language a:hover {
   color: #ffffff !important;
   background: rgba(255, 255, 255, 0.15);
 }
@@ -157,7 +166,9 @@
 .advanced-language-selector .nav-link.active,
 .advanced-language-selector .nav-link.is-active,
 .advanced-language-selector a.active,
-.advanced-language-selector a.is-active {
+.advanced-language-selector a.is-active,
+.site-header__top .block-language a.is-active,
+.site-header__top .block-language li.is-active a {
   background: #ffffff !important;
   color: var(--kaliyattam-primary, #890000) !important;
   font-weight: 700 !important;
@@ -384,11 +395,15 @@ html.dark .theme-toggle-icon--sun {
   }
 
   .nav-toggle {
+    display: none;
+  }
+
+  html.js .nav-toggle {
     display: inline-flex;
   }
 
   .site-nav {
-    display: none;
+    display: block;
     order: 5;
     flex-basis: 100%;
     margin-inline-start: 0;
@@ -397,10 +412,13 @@ html.dark .theme-toggle-icon--sun {
     background: rgba(0, 0, 0, 0.25);
     border-radius: var(--radius-lg, 12px);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
   }
 
-  .site-header[data-nav-open] .site-nav {
+  html.js .site-nav {
+    display: none;
+  }
+
+  html.js .site-header[data-nav-open] .site-nav {
     display: block;
     animation: kmNavSlideDown 0.22s ease-out;
   }
@@ -482,11 +500,13 @@ html.dark .theme-toggle-icon--sun {
 }
 
 /* Hide sidebars on node composer pages (add/edit) so form is clean and centered */
+body.has-composer .sidebar,
 .layout:has(.composer) .sidebar,
 .layout:has(form.composer) .sidebar {
   display: none !important;
 }
 
+body.has-composer .layout,
 .layout:has(.composer),
 .layout:has(form.composer) {
   display: block !important;
