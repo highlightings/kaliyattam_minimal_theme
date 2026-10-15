@@ -1641,3 +1641,16 @@ html.dark .km-carousel__btn:hover {
   border-radius: 4px;
 }
 
+/* Hide contextual link outlines and triggers on the front-end */
+.contextual,
+.contextual-links,
+[data-contextual-id],
+.contextual-region .contextual {
+  display: none !important;
+}
+
+.contextual-region {
+  outline: none !important;
+}
+
+
