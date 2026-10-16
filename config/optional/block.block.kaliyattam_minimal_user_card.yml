@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.user_card
+  module:
+    - views
+  theme:
+    - kaliyattam_minimal
+id: kaliyattam_minimal_user_card
+theme: kaliyattam_minimal
+region: sidebar_first
+weight: 1
+provider: null
+plugin: 'views_block:user_card-block_user_card'
+settings:
+  id: 'views_block:user_card-block_user_card'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: null
+visibility: {  }
