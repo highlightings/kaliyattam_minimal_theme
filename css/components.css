@@ -49,6 +49,7 @@
 
 /* Buttons */
 .button,
+.btn,
 input[type="submit"],
 input[type="button"] {
   display: inline-flex;
@@ -65,10 +66,11 @@ input[type="button"] {
   line-height: 1.2;
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
 .button:hover,
+.btn:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover {
   background: var(--theme-surface-warm);
@@ -77,20 +79,64 @@ input[type="button"]:hover {
 }
 
 .button--primary,
-.button--primary:hover {
+.button.btn-primary,
+.btn.btn-primary,
+.btn-primary,
+.button--primary:hover,
+.btn-primary:hover {
   border-color: transparent;
   background: var(--kaliyattam-gradient);
-  color: var(--kaliyattam-text-light);
+  color: var(--kaliyattam-text-light, #ffffff);
 }
 
-.button--primary:hover {
+.button--primary:hover,
+.btn-primary:hover {
   box-shadow: var(--shadow-crimson);
+  transform: translateY(-1px);
+  color: var(--kaliyattam-text-light, #ffffff);
 }
 
 .button--directions {
   font-size: 0.85rem;
   padding: 0.35rem 0.85rem;
   border: 1px solid var(--kaliyattam-border);
+}
+
+/* Sidebar "Add new content" quick action block */
+#block-kaliyattam-minimal-mnaddnewcontentblock {
+  margin-bottom: var(--space-4);
+}
+
+#block-kaliyattam-minimal-mnaddnewcontentblock .field__item,
+#block-kaliyattam-minimal-mnaddnewcontentblock .block__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+#block-kaliyattam-minimal-mnaddnewcontentblock a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--kaliyattam-gradient);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(137, 0, 0, 0.25);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+#block-kaliyattam-minimal-mnaddnewcontentblock a:hover {
+  background: #6b0000;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(137, 0, 0, 0.35);
+  transform: translateY(-1px);
 }
 
 /* Local tasks */

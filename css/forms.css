@@ -311,7 +311,7 @@ html.dark .composer details.field-group-advanced .js-filter-wrapper {
 /* Multi-value table (Smart Date, references, etc.) inside composer */
 .composer .tabledrag-toggle-weight-wrapper {
   text-align: right !important;
-  margin-block: -1.75rem 0.5rem !important;
+  margin: 0.25rem 0 0.5rem 0 !important;
 }
 
 .composer .tabledrag-toggle-weight {
@@ -333,6 +333,7 @@ html.dark .composer .tabledrag-toggle-weight {
   color: var(--theme-text-secondary, #94a3b8) !important;
 }
 
+/* Multi-value table converted into modern card stack */
 .composer .field-multiple-table {
   width: 100% !important;
   border: none !important;
@@ -340,43 +341,130 @@ html.dark .composer .tabledrag-toggle-weight {
   margin-block: 0.5rem !important;
 }
 
-.composer .field-multiple-table thead {
-  border-bottom: 1px solid var(--theme-border-subtle, #e5e7eb) !important;
+.composer #field-when-values {
+  display: block !important;
+  width: 100% !important;
 }
 
-.composer .field-multiple-table th,
-.composer .field-multiple-table td {
-  border: none !important;
-  padding: 0.6rem 0.35rem !important;
-  vertical-align: middle !important;
-  background: transparent !important;
+.composer #field-when-values thead {
+  display: none !important;
+}
+
+.composer #field-when-values tbody {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.85rem !important;
+  width: 100% !important;
+}
+
+.composer #field-when-values tr.draggable {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 1rem !important;
+  padding: 1rem 1.15rem !important;
+  border: 1px solid var(--theme-border, #e2e8f0) !important;
+  border-radius: var(--radius-lg, 14px) !important;
+  background: var(--theme-surface-alt, #f8fafc) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme="dark"] .composer #field-when-values tr.draggable,
+html.dark .composer #field-when-values tr.draggable {
+  background: var(--theme-surface, #1e293b) !important;
+  border-color: var(--theme-border, #334155) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
 }
 
 .composer .field-multiple-table td.field-multiple-drag {
   display: none !important;
 }
 
-.composer .field-multiple-table td:last-child {
-  width: 1% !important;
-  white-space: nowrap !important;
-  text-align: right !important;
+.composer #field-when-values td:nth-child(2),
+.composer #field-when-values td:has(.smartdate--widget) {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
-.composer .field-multiple-table .button {
-  padding: 0.35rem 0.85rem !important;
-  font-size: 0.82rem !important;
+.composer #field-when-values td:nth-child(3),
+.composer #field-when-values td:has(input[value="Remove"]),
+.composer #field-when-values td:nth-last-child(2) {
+  flex: 0 0 auto !important;
+  padding: 0 !important;
+  border: none !important;
+  margin-left: auto !important;
+}
+
+/* Remove button styling */
+.composer input[name*="_remove_button"],
+.composer #field-when-values input[value="Remove"],
+.composer .field-multiple-table input[value="Remove"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+  padding: 0.45rem 1.15rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #b91c1c !important;
+  background: #fef2f2 !important;
+  border: 1px solid #fecaca !important;
   border-radius: 9999px !important;
-  margin: 0 !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px rgba(185, 28, 28, 0.06) !important;
+  transition: all 0.18s ease !important;
+}
+
+.composer input[name*="_remove_button"]:hover,
+.composer #field-when-values input[value="Remove"]:hover,
+.composer .field-multiple-table input[value="Remove"]:hover {
+  background: #fee2e2 !important;
+  border-color: #f87171 !important;
+  color: #991b1b !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(185, 28, 28, 0.12) !important;
+}
+
+[data-theme="dark"] .composer input[name*="_remove_button"],
+[data-theme="dark"] .composer #field-when-values input[value="Remove"],
+[data-theme="dark"] .composer .field-multiple-table input[value="Remove"],
+html.dark .composer input[name*="_remove_button"],
+html.dark .composer #field-when-values input[value="Remove"],
+html.dark .composer .field-multiple-table input[value="Remove"] {
+  background: rgba(185, 28, 28, 0.15) !important;
+  color: #fca5a5 !important;
+  border-color: rgba(185, 28, 28, 0.35) !important;
 }
 
 .composer .field-add-more-submit {
-  margin-top: 0.5rem !important;
-  font-size: 0.85rem !important;
-  padding: 0.4rem 1.15rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  margin-top: 0.75rem !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  padding: 0.55rem 1.35rem !important;
   border-radius: 9999px !important;
+  border: 1px dashed var(--theme-border, #cbd5e1) !important;
+  background: var(--theme-surface, #ffffff) !important;
+  color: var(--theme-text, #1e293b) !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
 }
 
-/* Smart Date (events): clean flex layout for Start/End date and time */
+.composer .field-add-more-submit:hover {
+  background: var(--theme-surface-warm, #fdfaf7) !important;
+  border-color: var(--theme-accent, #890000) !important;
+  color: var(--theme-accent, #890000) !important;
+}
+
+/* Smart Date (events): clean two-row grid layout for Start/End date and time */
 .composer .smartdate--widget {
   border: none !important;
   padding: 0 !important;
@@ -387,9 +475,19 @@ html.dark .composer .tabledrag-toggle-weight {
 .composer .smartdate--widget .fieldset-wrapper {
   margin: 0 !important;
   display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.composer .smartdate--time-inline {
+  display: grid !important;
+  grid-template-columns: minmax(46px, auto) 1fr !important;
   gap: 0.5rem 0.75rem !important;
+  align-items: center !important;
+}
+
+.composer .smartdate--time-inline .smartdate--separator {
+  display: none !important;
 }
 
 .composer .smartdate--widget h4.label,
@@ -398,15 +496,16 @@ html.dark .composer .tabledrag-toggle-weight {
   font-size: 0.88rem !important;
   font-weight: 600 !important;
   margin: 0 !important;
-  min-width: 3rem !important;
+  min-width: 2.85rem !important;
   color: var(--theme-text-muted, #64748b) !important;
 }
 
 .composer .smartdate--widget .time-start,
 .composer .smartdate--widget .time-end {
   display: inline-flex !important;
+  flex-direction: row !important;
   align-items: center !important;
-  gap: 0.4rem !important;
+  gap: 0.45rem !important;
   flex-wrap: nowrap !important;
   margin: 0 !important;
 }
@@ -427,11 +526,12 @@ html.dark .composer .tabledrag-toggle-weight {
 }
 
 .composer .smartdate--widget .allday-label {
-  margin: 0 !important;
+  margin: 0.25rem 0 0 0 !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 0.35rem !important;
   font-size: 0.85rem !important;
+  color: var(--theme-text-muted, #64748b) !important;
   cursor: pointer;
 }
 
@@ -454,31 +554,6 @@ html.dark .composer .field--name-field-when > .form-item__label,
 html.dark .composer .field--name-field-when legend {
   color: var(--theme-text, #f1f5f9) !important;
   border-bottom-color: var(--theme-border-subtle, rgba(148, 163, 184, 0.18)) !important;
-}
-
-.composer .smartdate--widget input[type="submit"][value="Remove"],
-.composer .smartdate--widget .button[id*="delete"],
-.composer .smartdate--widget .button[data-drupal-selector*="delete"] {
-  background: rgba(148, 163, 184, 0.15) !important;
-  color: var(--theme-text, #1e293b) !important;
-  border: 1px solid var(--theme-border, #cbd5e1) !important;
-  border-radius: 9999px !important;
-  padding: 0.35rem 1.25rem !important;
-  font-size: 0.85rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.15s ease !important;
-}
-
-[data-theme="dark"] .composer .smartdate--widget input[type="submit"][value="Remove"],
-[data-theme="dark"] .composer .smartdate--widget .button[id*="delete"],
-[data-theme="dark"] .composer .smartdate--widget .button[data-drupal-selector*="delete"],
-html.dark .composer .smartdate--widget input[type="submit"][value="Remove"],
-html.dark .composer .smartdate--widget .button[id*="delete"],
-html.dark .composer .smartdate--widget .button[data-drupal-selector*="delete"] {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: var(--theme-text, #f1f5f9) !important;
-  border-color: rgba(255, 255, 255, 0.18) !important;
 }
 
 
