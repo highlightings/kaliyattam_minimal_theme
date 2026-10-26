@@ -1037,6 +1037,49 @@ html.dark a.timeline-toolbar__btn.is-active {
   margin: 0;
 }
 
+.timeline-toolbar__filter-item--proximity {
+  flex: 2;
+  min-width: 280px;
+}
+
+.timeline-toolbar__filter-item--proximity fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.timeline-toolbar__filter-item--proximity fieldset > legend {
+  display: none;
+}
+
+.timeline-toolbar__filter-item--proximity #edit-proximity-wrapper > .fieldset-wrapper,
+.timeline-toolbar__filter-item--proximity #edit-proximity > .fieldset-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.timeline-toolbar__filter-item--proximity .origin-address-autocomplete,
+.timeline-toolbar__filter-item--proximity .form-item-proximity-source-configuration-origin-address {
+  flex: 1 1 200px;
+  min-width: 180px;
+  order: 1;
+}
+
+.timeline-toolbar__filter-item--proximity .form-item-proximity-value {
+  flex: 0 0 90px;
+  max-width: 100px;
+  order: 2;
+}
+
+.timeline-toolbar__filter-item--proximity .description,
+.timeline-toolbar__filter-item--proximity [id*="description"],
+.timeline-toolbar__filter-item--proximity [class*="description"] {
+  display: none !important;
+}
+
 .timeline-toolbar__actions {
   margin: 0;
 }

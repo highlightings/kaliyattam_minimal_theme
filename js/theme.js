@@ -182,9 +182,27 @@
             toggleBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
             toggleBtn.classList.toggle('is-active', !isOpen);
             if (!isOpen) {
-              var searchInput = drawer.querySelector('input[type="text"], input[type="search"]');
+              var searchInput = drawer.querySelector('input[name="search"], input[type="text"], input[type="search"]');
               if (searchInput) {
                 setTimeout(function () { searchInput.focus(); }, 100);
+              }
+            }
+          });
+        }
+
+        var nearbyBtn = toolbar.querySelector('[data-timeline-nearby]');
+        if (nearbyBtn && drawer) {
+          nearbyBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var isOpen = drawer.classList.contains('is-open');
+            drawer.classList.toggle('is-open', !isOpen);
+            drawer.hidden = isOpen;
+            nearbyBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+            nearbyBtn.classList.toggle('is-active', !isOpen);
+            if (!isOpen) {
+              var proxInput = drawer.querySelector('input[name*="proximity"], #edit-proximity-source-configuration-origin-address, input[type="text"]');
+              if (proxInput) {
+                setTimeout(function () { proxInput.focus(); }, 100);
               }
             }
           });
@@ -207,167 +225,8 @@
           });
         });
       });
-
-      // 6. Nearby Button Handler (Works on both List views and Map views)
-      once('km-nearby-toggle', '[data-timeline-nearby]', context).forEach(function (btn) {
-        var defaultHtml = btn.innerHTML;
-        var isLocating = false;
-
-        btn.addEventListener('click', function (e) {
-          e.preventDefault();
-
-          if (isLocating) return;
-
-          var isActive = btn.classList.contains('is-active');
-
-          if (isActive) {
-            btn.classList.remove('is-active');
-            btn.setAttribute('aria-pressed', 'false');
-            restoreListOrder();
-            return;
-          }
-
-          if (!navigator.geolocation) {
-            alert(Drupal.t ? Drupal.t('Geolocation is not supported by your browser.') : 'Geolocation is not supported by your browser.');
-            return;
-          }
-
-          isLocating = true;
-          btn.innerHTML = '<span aria-hidden="true">⏳</span> ' + (Drupal.t ? Drupal.t('Locating...') : 'Locating...');
-
-          navigator.geolocation.getCurrentPosition(
-            function (position) {
-              isLocating = false;
-              btn.innerHTML = defaultHtml;
-              btn.classList.add('is-active');
-              btn.setAttribute('aria-pressed', 'true');
-
-              var userLat = position.coords.latitude;
-              var userLon = position.coords.longitude;
-
-              // Check if Leaflet map is present on page
-              handleLeafletMap(userLat, userLon);
-
-              // Handle list items / articles
-              handleNearbyList(userLat, userLon);
-            },
-            function (err) {
-              isLocating = false;
-              btn.innerHTML = defaultHtml;
-              var msg = Drupal.t ? Drupal.t('Unable to retrieve your location.') : 'Unable to retrieve your location.';
-              if (err.code === 1) {
-                msg = Drupal.t ? Drupal.t('Location permission denied.') : 'Location permission denied.';
-              }
-              alert(msg);
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-          );
-        });
-      });
     }
   };
-
-  function haversineDistanceKm(lat1, lon1, lat2, lon2) {
-    var R = 6371;
-    var dLat = (lat2 - lat1) * Math.PI / 180;
-    var dLon = (lon2 - lon1) * Math.PI / 180;
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-
-  function handleLeafletMap(lat, lon) {
-    if (!window.L) return false;
-    var maps = [];
-    if (window.Drupal && Drupal.Leaflet) {
-      Object.keys(Drupal.Leaflet).forEach(function (id) {
-        if (Drupal.Leaflet[id] && Drupal.Leaflet[id].lMap) {
-          maps.push(Drupal.Leaflet[id].lMap);
-        }
-      });
-    }
-    if (maps.length === 0) return false;
-
-    maps.forEach(function (lMap) {
-      var pulseIcon = L.divIcon({
-        className: 'km-user-location-marker',
-        html: '<span class="user-loc-pulse"></span>',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
-      });
-
-      if (lMap._kmUserMarker) {
-        lMap._kmUserMarker.setLatLng([lat, lon]);
-      } else {
-        lMap._kmUserMarker = L.marker([lat, lon], { icon: pulseIcon }).addTo(lMap)
-          .bindPopup('<b>' + (Drupal.t ? Drupal.t('You are here') : 'You are here') + '</b>');
-      }
-      lMap._kmUserMarker.openPopup();
-      lMap.setView([lat, lon], 13);
-    });
-    return true;
-  }
-
-  function handleNearbyList(userLat, userLon) {
-    var articles = Array.from(document.querySelectorAll('article[data-lat], .views-row:has(article[data-lat])'));
-    if (articles.length === 0) return;
-
-    var parent = articles[0].parentNode;
-    if (!parent) return;
-
-    if (!parent._kmInitialChildren) {
-      parent._kmInitialChildren = Array.from(parent.children);
-    }
-
-    var itemsWithDist = [];
-    Array.from(parent.children).forEach(function (child, idx) {
-      var art = child.matches('article[data-lat]') ? child : child.querySelector('article[data-lat]');
-      var lat = art ? parseFloat(art.getAttribute('data-lat')) : NaN;
-      var lon = art ? parseFloat(art.getAttribute('data-lon')) : NaN;
-
-      var dist = Infinity;
-      if (!isNaN(lat) && !isNaN(lon)) {
-        dist = haversineDistanceKm(userLat, userLon, lat, lon);
-        var badgesRow = (art || child).querySelector('.node-header-badges');
-        if (badgesRow) {
-          var existingBadge = badgesRow.querySelector('.node-nearby-distance-badge');
-          if (!existingBadge) {
-            existingBadge = document.createElement('span');
-            existingBadge.className = 'node-nearby-distance-badge';
-            badgesRow.appendChild(existingBadge);
-          }
-          var distLabel = dist < 1 ? Math.round(dist * 1000) + ' m' : dist.toFixed(1) + ' km';
-          existingBadge.innerHTML = '📍 ' + distLabel;
-        }
-      }
-      itemsWithDist.push({ el: child, dist: dist, originalIndex: idx });
-    });
-
-    itemsWithDist.sort(function (a, b) {
-      if (a.dist !== b.dist) return a.dist - b.dist;
-      return a.originalIndex - b.originalIndex;
-    });
-
-    itemsWithDist.forEach(function (item) {
-      parent.appendChild(item.el);
-    });
-  }
-
-  function restoreListOrder() {
-    var articles = document.querySelectorAll('article[data-lat], .views-row:has(article[data-lat])');
-    if (articles.length === 0) return;
-    var parent = articles[0].parentNode;
-    if (parent && parent._kmInitialChildren) {
-      parent._kmInitialChildren.forEach(function (el) {
-        parent.appendChild(el);
-      });
-    }
-    document.querySelectorAll('.node-nearby-distance-badge').forEach(function (badge) {
-      badge.remove();
-    });
-  }
 
   // 7. Performant Lightweight Media Carousel Behavior
   Drupal.behaviors.kmCarousel = {

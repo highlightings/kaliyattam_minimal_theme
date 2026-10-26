@@ -3,7 +3,7 @@
  * @file
  * Custom exposed filter template for timeline_locations view (/temples).
  * Provides the [ 📑 List View ] [ 🗺️ Map View ] [ 📍 Nearby ] [ 🔍 Search ] segmented control bar
- * and a collapsible search drawer without any .theme preprocess overrides.
+ * and a collapsible search drawer with native Geofield Proximity search.
  */
 #}
 {% if q is not empty %}
@@ -15,7 +15,8 @@
 {% set is_list = not is_map %}
 
 {% set search_val = form.search['#value']|default('') %}
-{% set has_search = search_val is not empty %}
+{% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
+{% set has_search = search_val is not empty or prox_origin is not empty %}
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Temple views'|t }}">
@@ -25,7 +26,7 @@
     <a href="/temples/map" class="timeline-toolbar__btn{{ is_map ? ' is-active' }}">
       <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
     </a>
-    <button type="button" class="timeline-toolbar__btn" data-timeline-nearby aria-pressed="false" title="{{ 'Sort or center by nearest to your location'|t }}">
+    <button type="button" class="timeline-toolbar__btn{{ prox_origin is not empty ? ' is-active' }}" data-timeline-nearby aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Search temples near a location or city'|t }}">
       <span aria-hidden="true">📍</span> {{ 'Nearby'|t }}
     </button>
     <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">
@@ -40,6 +41,15 @@
           {{ form.search }}
         </div>
       {% endif %}
+      {% if form.proximity_wrapper %}
+        <div class="timeline-toolbar__filter-item timeline-toolbar__filter-item--proximity">
+          {{ form.proximity_wrapper }}
+        </div>
+      {% elseif form.proximity %}
+        <div class="timeline-toolbar__filter-item timeline-toolbar__filter-item--proximity">
+          {{ form.proximity }}
+        </div>
+      {% endif %}
       {% if form.sort_by %}
         <div class="timeline-toolbar__filter-item">
           {{ form.sort_by }}
@@ -52,6 +62,6 @@
   </div>
 
   <div class="visually-hidden">
-    {{ form|without('q', 'search', 'sort_by', 'actions') }}
+    {{ form|without('q', 'search', 'proximity', 'proximity_wrapper', 'sort_by', 'actions') }}
   </div>
 </div>
