@@ -1715,9 +1715,11 @@ html.dark .node--view-mode-card .field--name-field-where {
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Leaflet map on /temples/map */
+/* Leaflet map on /temples/map and /events/map */
 #leaflet-map-view-locations-map-page-1,
-.view-locations-map .leaflet-container {
+.view-locations-map .leaflet-container,
+#leaflet-map-view-events-page-map,
+.view-events .leaflet-container {
   border-radius: var(--radius-lg, 12px);
   border: 1px solid var(--theme-border-subtle, #e4e4e7);
   box-shadow: var(--theme-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.05));
