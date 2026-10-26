@@ -19,7 +19,17 @@
 {% set author_initial = author_name|slice(0, 1)|upper %}
 {% set author_url = author_timeline_url|default('') %}
 
-<article{{ attributes.addClass(classes) }}>
+{% set node_lat = '' %}
+{% set node_lon = '' %}
+{% if node.bundle == 'location' and node.hasField('field_geofield') and not node.field_geofield.isEmpty() %}
+  {% set node_lat = node.field_geofield.lat %}
+  {% set node_lon = node.field_geofield.lon %}
+{% elseif node.bundle == 'event' and node.hasField('field_where') and not node.field_where.isEmpty() and node.field_where.entity and node.field_where.entity.hasField('field_geofield') and not node.field_where.entity.field_geofield.isEmpty() %}
+  {% set node_lat = node.field_where.entity.field_geofield.lat %}
+  {% set node_lon = node.field_where.entity.field_geofield.lon %}
+{% endif %}
+
+<article{{ attributes.addClass(classes) }}{% if node_lat %} data-lat="{{ node_lat }}" data-lon="{{ node_lon }}"{% endif %}>
   {{ title_prefix }}
 
   <div{{ content_attributes.addClass('node__content') }}>

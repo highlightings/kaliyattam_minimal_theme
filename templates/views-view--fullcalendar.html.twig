@@ -2,7 +2,7 @@
 /**
  * @file
  * Fullcalendar view template for kaliyattam_minimal (/events/calendar).
- * Provides the [ 📅 Upcoming ] [ 🕰️ Past Events ] [ 🗓️ Calendar ] segmented control bar.
+ * Provides the [ 📅 Upcoming ] [ 🕰️ Past Events ] [ 🗓️ Calendar ] [ 🗺️ Events Map ] [ 📍 Nearby ] [ 🔍 Search ] segmented control bar.
  */
 #}
 {%
@@ -18,21 +18,21 @@
 
   <div class="timeline-toolbar">
     <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
-      {% if url_events_upcoming %}
-        <a href="{{ url_events_upcoming }}" class="timeline-toolbar__btn">
-          <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
-        </a>
-      {% endif %}
-      {% if url_events_past %}
-        <a href="{{ url_events_past }}" class="timeline-toolbar__btn">
-          <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
-        </a>
-      {% endif %}
-      {% if url_events_calendar %}
-        <a href="{{ url_events_calendar }}" class="timeline-toolbar__btn is-active">
-          <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
-        </a>
-      {% endif %}
+      <a href="/events" class="timeline-toolbar__btn">
+        <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+      </a>
+      <a href="/events/past" class="timeline-toolbar__btn">
+        <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
+      </a>
+      <a href="/events/calendar" class="timeline-toolbar__btn is-active">
+        <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+      </a>
+      <a href="/events/map" class="timeline-toolbar__btn">
+        <span aria-hidden="true">🗺️</span> {{ 'Events Map'|t }}
+      </a>
+      <button type="button" class="timeline-toolbar__btn" data-timeline-nearby aria-pressed="false" title="{{ 'Sort or center by nearest to your location'|t }}">
+        <span aria-hidden="true">📍</span> {{ 'Nearby'|t }}
+      </button>
       <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search" data-timeline-toggle-search aria-expanded="false">
         <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
       </button>

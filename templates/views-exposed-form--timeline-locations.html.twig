@@ -2,29 +2,32 @@
 /**
  * @file
  * Custom exposed filter template for timeline_locations view (/temples).
- * Provides the [ 📑 List View ] [ 🗺️ Map View ] [ 🔍 Search ] segmented control bar
- * and a collapsible search drawer matching reference screenshot page-2026-10-*.png.
+ * Provides the [ 📑 List View ] [ 🗺️ Map View ] [ 📍 Nearby ] [ 🔍 Search ] segmented control bar
+ * and a collapsible search drawer without any .theme preprocess overrides.
  */
 #}
 {% if q is not empty %}
   {{ q }}
 {% endif %}
 
+{% set current_path = app.request.pathInfo %}
+{% set is_map = '/temples/map' in current_path %}
+{% set is_list = not is_map %}
+
 {% set search_val = form.search['#value']|default('') %}
 {% set has_search = search_val is not empty %}
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Temple views'|t }}">
-    {% if url_temples_list %}
-      <a href="{{ url_temples_list }}" class="timeline-toolbar__btn is-active">
-        <span aria-hidden="true">📑</span> {{ 'List View'|t }}
-      </a>
-    {% endif %}
-    {% if url_temples_map %}
-      <a href="{{ url_temples_map }}" class="timeline-toolbar__btn">
-        <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
-      </a>
-    {% endif %}
+    <a href="/temples" class="timeline-toolbar__btn{{ is_list ? ' is-active' }}">
+      <span aria-hidden="true">📑</span> {{ 'List View'|t }}
+    </a>
+    <a href="/temples/map" class="timeline-toolbar__btn{{ is_map ? ' is-active' }}">
+      <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
+    </a>
+    <button type="button" class="timeline-toolbar__btn" data-timeline-nearby aria-pressed="false" title="{{ 'Sort or center by nearest to your location'|t }}">
+      <span aria-hidden="true">📍</span> {{ 'Nearby'|t }}
+    </button>
     <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">
       <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
     </button>

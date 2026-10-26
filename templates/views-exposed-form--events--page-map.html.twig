@@ -1,0 +1,54 @@
+{#
+/**
+ * @file
+ * Custom exposed filter template for events map view (/events/map).
+ * Provides the [ 📅 Upcoming ] [ 🕰️ Past Events ] [ 🗓️ Calendar ] [ 🗺️ Events Map ] [ 📍 Nearby ] [ 🔍 Search ]
+ * segmented control bar with "Events Map" active and collapsible search drawer.
+ */
+#}
+{% if q is not empty %}
+  {{ q }}
+{% endif %}
+
+{% set search_val = form.search['#value']|default('') %}
+{% set has_search = search_val is not empty %}
+
+<div class="timeline-toolbar">
+  <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
+    <a href="/events" class="timeline-toolbar__btn">
+      <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+    </a>
+    <a href="/events/past" class="timeline-toolbar__btn">
+      <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
+    </a>
+    <a href="/events/calendar" class="timeline-toolbar__btn">
+      <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+    </a>
+    <a href="/events/map" class="timeline-toolbar__btn is-active">
+      <span aria-hidden="true">🗺️</span> {{ 'Events Map'|t }}
+    </a>
+    <button type="button" class="timeline-toolbar__btn" data-timeline-nearby aria-pressed="false" title="{{ 'Sort or center by nearest to your location'|t }}">
+      <span aria-hidden="true">📍</span> {{ 'Nearby'|t }}
+    </button>
+    <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">
+      <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+    </button>
+  </div>
+
+  <div class="timeline-toolbar__search-drawer{{ has_search ? ' is-open' }}" id="timeline-search-drawer" {{ not has_search ? 'hidden' }}>
+    <div class="timeline-toolbar__search-inner">
+      {% if form.search %}
+        <div class="timeline-toolbar__filter-item">
+          {{ form.search }}
+        </div>
+      {% endif %}
+      <div class="timeline-toolbar__actions">
+        {{ form.actions }}
+      </div>
+    </div>
+  </div>
+
+  <div class="visually-hidden">
+    {{ form|without('q', 'search', 'actions') }}
+  </div>
+</div>
