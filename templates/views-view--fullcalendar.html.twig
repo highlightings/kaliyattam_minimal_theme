@@ -16,26 +16,34 @@
   {{ title }}
   {{ title_suffix }}
 
-  <div class="timeline-toolbar">
-    <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Event views'|t }}">
-      <a href="/events" class="timeline-toolbar__btn">
-        <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
-      </a>
-      <a href="/events/past" class="timeline-toolbar__btn">
-        <span aria-hidden="true">🕰️</span> {{ 'Past Events'|t }}
-      </a>
-      <a href="/events/calendar" class="timeline-toolbar__btn is-active">
-        <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
-      </a>
-      <a href="/events/map" class="timeline-toolbar__btn">
-        <span aria-hidden="true">🗺️</span> {{ 'Events Map'|t }}
-      </a>
-      <button type="button" class="timeline-toolbar__btn" data-timeline-nearby aria-pressed="false" title="{{ 'Sort or center by nearest to your location'|t }}">
-        <span aria-hidden="true">📍</span> {{ 'Nearby'|t }}
-      </button>
-      <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search" data-timeline-toggle-search aria-expanded="false">
-        <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
-      </button>
+  <div class="timeline-toolbar events-toolbar">
+    <div class="events-toolbar__header">
+      <div class="events-toolbar__filters" role="group" aria-label="{{ 'Filter events'|t }}">
+        <a href="/events" class="events-pill">
+          <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+        </a>
+        <button type="button" class="events-pill events-pill--nearby" data-events-near-me aria-expanded="false" title="{{ 'Find events near your current location'|t }}">
+          <span aria-hidden="true">📍</span> <span class="events-pill__label">{{ 'Near Me'|t }}</span>
+        </button>
+        <a href="/events/past" class="events-pill">
+          <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
+        </a>
+        <button type="button" class="events-pill events-pill--search" data-timeline-toggle-search aria-expanded="false" title="{{ 'Search and filters'|t }}">
+          <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+        </button>
+      </div>
+
+      <div class="events-toolbar__views" role="group" aria-label="{{ 'View layout'|t }}">
+        <a href="/events" class="events-view-btn" title="{{ 'Card list view'|t }}">
+          <span aria-hidden="true">📑</span> {{ 'Cards'|t }}
+        </a>
+        <a href="/events/map" class="events-view-btn" title="{{ 'Map view'|t }}">
+          <span aria-hidden="true">🗺️</span> {{ 'Map'|t }}
+        </a>
+        <a href="/events/calendar" class="events-view-btn is-active" title="{{ 'Calendar view'|t }}">
+          <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+        </a>
+      </div>
     </div>
 
     <div class="timeline-toolbar__search-drawer" id="timeline-search-drawer" hidden>

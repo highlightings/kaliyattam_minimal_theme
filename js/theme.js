@@ -190,22 +190,100 @@
           });
         }
 
-        var nearbyBtn = toolbar.querySelector('[data-timeline-nearby]');
-        if (nearbyBtn && drawer) {
+        var nearbyBtn = toolbar.querySelector('[data-timeline-nearby], [data-events-near-me]');
+        if (nearbyBtn) {
+          // Handle clear reset button if active
+          var clearBtn = nearbyBtn.querySelector('[data-events-clear-near]');
+          if (clearBtn) {
+            clearBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              e.preventDefault();
+              var originInput = document.querySelector('#edit-proximity-source-configuration-origin-address, input[name*="origin_address"]');
+              if (originInput) {
+                originInput.value = '';
+              }
+              if (form) {
+                var submitBtn = form.querySelector('[data-drupal-selector*="edit-submit"], input[type="submit"]');
+                if (submitBtn) {
+                  submitBtn.click();
+                } else {
+                  form.submit();
+                }
+              } else {
+                window.location.href = window.location.pathname;
+              }
+            });
+          }
+
           nearbyBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            var isOpen = drawer.classList.contains('is-open');
-            drawer.classList.toggle('is-open', !isOpen);
-            drawer.hidden = isOpen;
-            nearbyBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
-            nearbyBtn.classList.toggle('is-active', !isOpen);
-            if (!isOpen) {
-              var proxInput = drawer.querySelector('input[name*="proximity"], #edit-proximity-source-configuration-origin-address, input[type="text"]');
-              if (proxInput) {
-                setTimeout(function () { proxInput.focus(); }, 100);
-              }
+
+            // If browser geolocation is available, attempt one-click GPS detection
+            if (!navigator.geolocation) {
+              fallbackToOriginInput(Drupal.t('Geolocation is not supported by your browser. Please enter your city or town below.'));
+              return;
             }
+
+            var labelEl = nearbyBtn.querySelector('.events-pill__label') || nearbyBtn;
+            var originalText = labelEl.textContent;
+            labelEl.textContent = '⏳ ' + (Drupal.t ? Drupal.t('Locating...') : 'Locating...');
+
+            navigator.geolocation.getCurrentPosition(
+              function (position) {
+                var lat = position.coords.latitude.toFixed(4);
+                var lon = position.coords.longitude.toFixed(4);
+                var coordsStr = lat + ', ' + lon;
+
+                var originInput = document.querySelector('#edit-proximity-source-configuration-origin-address, input[name*="origin_address"]');
+                var distInput = document.querySelector('#edit-proximity-value, input[name*="proximity[value]"]');
+
+                if (originInput) {
+                  originInput.value = coordsStr;
+                }
+                if (distInput && (!distInput.value || distInput.value.trim() === '')) {
+                  distInput.value = '50';
+                }
+
+                if (form) {
+                  var submitBtn = form.querySelector('[data-drupal-selector*="edit-submit"], input[type="submit"]');
+                  if (submitBtn) {
+                    submitBtn.click();
+                  } else {
+                    form.submit();
+                  }
+                } else {
+                  window.location.href = '/events?proximity[value]=50&proximity[source_configuration][origin_address]=' + encodeURIComponent(coordsStr);
+                }
+              },
+              function (err) {
+                labelEl.textContent = originalText;
+                var msg = Drupal.t ? Drupal.t('Location access was denied. Please enter your city or town below.') : 'Location access was denied. Please enter your city or town below.';
+                if (err.code !== 1) {
+                  msg = Drupal.t ? Drupal.t('Unable to determine location. Please enter your city or town below.') : 'Unable to determine location. Please enter your city or town below.';
+                }
+                fallbackToOriginInput(msg);
+              },
+              { timeout: 10000, enableHighAccuracy: true, maximumAge: 60000 }
+            );
           });
+        }
+
+        function fallbackToOriginInput(message) {
+          if (drawer) {
+            drawer.classList.add('is-open');
+            drawer.hidden = false;
+            var notice = drawer.querySelector('.km-geo-fallback-notice');
+            if (!notice) {
+              notice = document.createElement('div');
+              notice.className = 'km-geo-fallback-notice';
+              drawer.prepend(notice);
+            }
+            notice.textContent = message;
+            var proxInput = drawer.querySelector('#edit-proximity-source-configuration-origin-address, input[name*="origin_address"], input[type="text"]');
+            if (proxInput) {
+              setTimeout(function () { proxInput.focus(); }, 150);
+            }
+          }
         }
 
         sortBtns.forEach(function (btn) {
