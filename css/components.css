@@ -1625,7 +1625,7 @@ html.dark .event-chips-row .field--name-field-where {
 
 /* 1. Date pill: Mint green */
 .node--view-mode-card .field--name-field-when {
-  display: flex;
+  display: inline-flex;
   background: #ecfdf5;
   color: #065f46;
   border: 1px solid #a7f3d0;
@@ -1659,6 +1659,22 @@ html.dark .event-chips-row .field--name-field-where {
 .node--view-mode-card .field--name-field-where::before {
   content: "📍";
   font-size: 0.95rem;
+}
+
+.node--view-mode-card .field--name-field-when .field__label,
+.node--view-mode-card .field--name-field-theyyam .field__label,
+.node--view-mode-card .field--name-field-where .field__label {
+  display: none !important;
+}
+
+.node--view-mode-card .field--name-field-when .field__items,
+.node--view-mode-card .field--name-field-when .field__item,
+.node--view-mode-card .field--name-field-theyyam .field__items,
+.node--view-mode-card .field--name-field-theyyam .field__item,
+.node--view-mode-card .field--name-field-where .field__items,
+.node--view-mode-card .field--name-field-where .field__item {
+  display: inline-flex;
+  align-items: center;
 }
 
 .node--view-mode-card .field--name-field-theyyam a,
