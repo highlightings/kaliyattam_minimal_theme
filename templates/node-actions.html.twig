@@ -14,8 +14,8 @@
     {{ content.flag_follow_content }}
   {% else %}
     {% set login_url = path('user.login', {}, {'query': {'destination': node_target_url}}) %}
-    <a href="{{ logged_in ? '#' : login_url }}" class="action-flag action-flag-favorite" title="{{ logged_in ? 'Favorite'|t : 'Log in to add to favorites'|t }}">
-      <span>{{ 'Favorite'|t }}</span>
+    <a href="{{ logged_in ? '#' : login_url }}" class="action-flag action-flag-favorite" title="{{ logged_in ? 'Favorite'|t : 'Log in to add to favorites'|t }}" aria-label="{{ 'Favorite'|t }}">
+      <span class="visually-hidden">{{ 'Favorite'|t }}</span>
     </a>
   {% endif %}
 
@@ -24,19 +24,19 @@
     {{ content.flag_like_node }}
   {% else %}
     {% set login_url = path('user.login', {}, {'query': {'destination': node_target_url}}) %}
-    <a href="{{ logged_in ? '#' : login_url }}" class="action-flag action-flag-like" title="{{ logged_in ? 'Like'|t : 'Log in to like this content'|t }}">
-      <span>{{ 'Like'|t }}</span>
+    <a href="{{ logged_in ? '#' : login_url }}" class="action-flag action-flag-like" title="{{ logged_in ? 'Like'|t : 'Log in to like this content'|t }}" aria-label="{{ 'Like'|t }}">
+      <span class="visually-hidden">{{ 'Like'|t }}</span>
     </a>
   {% endif %}
 
   {# 3. Share Button #}
   <button type="button" class="action-flag timeline-action-btn btn-copy-link" data-url="{{ node_target_url }}" title="{{ 'Copy link to clipboard'|t }}" aria-label="{{ 'Share this content'|t }}">
-    <span class="share-label">{{ 'Share'|t }}</span>
+    <span class="visually-hidden share-label">{{ 'Share'|t }}</span>
   </button>
 
   {# 4. Comments Button #}
-  <a href="{{ node_target_url }}#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Jump to comments'|t }}" aria-expanded="false">
-    <span>{{ 'Comments'|t }}</span>
+  <a href="{{ node_target_url }}#comments" class="action-flag timeline-action-link comments-scroll-btn" title="{{ 'Comments'|t }}" aria-label="{{ 'Comments'|t }}" aria-expanded="false">
+    <span class="visually-hidden">{{ 'Comments'|t }}</span>
     {% if total_comments > 0 %}
       <span class="action-count">{{ total_comments }}</span>
     {% endif %}

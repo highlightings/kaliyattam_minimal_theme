@@ -10,9 +10,8 @@
   {{ q }}
 {% endif %}
 
-{% set current_path = app.request.pathInfo %}
-{% set is_map = '/temples/map' in current_path %}
-{% set is_list = not is_map %}
+{% set is_map = false %}
+{% set is_list = true %}
 
 {% set search_val = form.search['#value']|default('') %}
 {% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}

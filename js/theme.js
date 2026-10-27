@@ -173,6 +173,20 @@
         var toggleBtn = toolbar.querySelector('[data-timeline-toggle-search]');
         var sortBtns = toolbar.querySelectorAll('[data-timeline-sort]');
 
+        // Sync view switcher buttons (.events-view-btn) to current URL pathname
+        var currentPath = window.location.pathname.replace(/\/+$/, '');
+        var viewBtns = toolbar.querySelectorAll('.events-view-btn');
+        if (viewBtns.length) {
+          viewBtns.forEach(function (btn) {
+            var href = (btn.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '');
+            if (href === currentPath) {
+              btn.classList.add('is-active');
+            } else if (href) {
+              btn.classList.remove('is-active');
+            }
+          });
+        }
+
         if (toggleBtn && drawer) {
           toggleBtn.addEventListener('click', function (e) {
             e.preventDefault();

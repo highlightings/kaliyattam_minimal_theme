@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present all user data in kaliyattam_minimal.
+ *
+ * Prevents displaying the follow button when a user views their own profile.
+ */
+#}
+{% set current_uid = drupal_token('current-user:uid') %}
+{% set is_own_profile = logged_in and (current_uid == user.id()) %}
+
+<article{{ attributes.addClass('user-profile-card') }}>
+  {% if content %}
+    {% if is_own_profile %}
+      {{ content|without('flag_following') }}
+    {% else %}
+      {{ content }}
+    {% endif %}
+  {% endif %}
+</article>
