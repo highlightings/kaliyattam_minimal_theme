@@ -8,23 +8,31 @@
 
 <div class="node-interaction-bar post-interaction-bar">
   {# 1. Favorite Button #}
-  {% if logged_in and content.flag_bookmark is not empty %}
-    {{ content.flag_bookmark }}
-  {% elseif logged_in and content.flag_follow_content is not empty %}
-    {{ content.flag_follow_content }}
+  {% if logged_in %}
+    {% if content.flag_bookmark is not empty %}
+      {{ content.flag_bookmark }}
+    {% elseif content.flag_follow_content is not empty %}
+      {{ content.flag_follow_content }}
+    {% elseif node is defined and node.id() %}
+      {{ flaglink('node', node.id(), 'bookmark') }}
+    {% endif %}
   {% else %}
     {% set login_url = path('user.login', {}, {'query': {'destination': node_target_url}}) %}
-    <a href="{{ logged_in ? '#' : login_url }}" class="action-flag action-flag-favorite" title="{{ logged_in ? 'Favorite'|t : 'Log in to add to favorites'|t }}" aria-label="{{ 'Favorite'|t }}">
+    <a href="{{ login_url }}" class="action-flag action-flag-favorite" title="{{ 'Log in to add to favorites'|t }}" aria-label="{{ 'Favorite'|t }}">
       <span class="visually-hidden">{{ 'Favorite'|t }}</span>
     </a>
   {% endif %}
 
   {# 2. Like Button #}
-  {% if logged_in and content.flag_like_node is not empty %}
-    {{ content.flag_like_node }}
+  {% if logged_in %}
+    {% if content.flag_like_node is not empty %}
+      {{ content.flag_like_node }}
+    {% elseif node is defined and node.id() %}
+      {{ flaglink('node', node.id(), 'like_node') }}
+    {% endif %}
   {% else %}
     {% set login_url = path('user.login', {}, {'query': {'destination': node_target_url}}) %}
-    <a href="{{ logged_in ? '#' : login_url }}" class="action-flag action-flag-like" title="{{ logged_in ? 'Like'|t : 'Log in to like this content'|t }}" aria-label="{{ 'Like'|t }}">
+    <a href="{{ login_url }}" class="action-flag action-flag-like" title="{{ 'Log in to like this content'|t }}" aria-label="{{ 'Like'|t }}">
       <span class="visually-hidden">{{ 'Like'|t }}</span>
     </a>
   {% endif %}
