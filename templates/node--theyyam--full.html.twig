@@ -24,7 +24,7 @@
 
     {# Main Content & Description #}
     <div class="node-main-fields">
-      {{ content|without('field_featured_image', 'field_media', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+      {{ content|without('field_featured_image', 'field_media', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links', 'flag_bookmark') }}
     </div>
 
     {# Referenced Events & Posts via Views #}
