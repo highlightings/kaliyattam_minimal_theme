@@ -923,6 +923,100 @@ html.dark .minicard-theyyam:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
+/* Referenced Events & Posts on Temples and Theyyam */
+.referenced-references-section {
+  margin-block: 2.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.referenced-block {
+  background: var(--theme-surface-warm, #f8fafc);
+  border: 1px solid var(--theme-border-subtle, #e2e8f0);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.referenced-block:hover {
+  border-color: var(--theme-border, #cbd5e1);
+  box-shadow: var(--shadow-sm);
+}
+
+.referenced-block-title {
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.85rem;
+  color: var(--theme-text, #1c1917);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.referenced-icon {
+  font-size: 1.15rem;
+}
+
+.referenced-titles-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.referenced-title-item {
+  position: relative;
+  padding-left: 1.25rem;
+  line-height: 1.45;
+}
+
+.referenced-title-item::before {
+  content: "•";
+  position: absolute;
+  left: 0.25rem;
+  color: var(--theme-accent, #890000);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.referenced-title-link {
+  color: var(--theme-text, #1c1917);
+  text-decoration: none;
+  font-size: 0.98rem;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.referenced-title-link:hover {
+  color: var(--theme-accent, #890000);
+  text-decoration: underline;
+}
+
+:root[data-theme="dark"] .referenced-block,
+html.dark .referenced-block {
+  background: var(--theme-surface, #18181b);
+  border-color: var(--theme-border, #27272a);
+}
+
+:root[data-theme="dark"] .referenced-title-link,
+html.dark .referenced-title-link {
+  color: var(--theme-text, #e2e8f0);
+}
+
+:root[data-theme="dark"] .referenced-title-link:hover,
+html.dark .referenced-title-link:hover {
+  color: #fca5a5;
+}
+
+:root[data-theme="dark"] .referenced-title-item::before,
+html.dark .referenced-title-item::before {
+  color: #fca5a5;
+}
+
 .theyyam-simple-list {
   display: flex;
   flex-direction: column;

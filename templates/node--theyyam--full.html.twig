@@ -1,0 +1,90 @@
+{#
+/**
+ * @file
+ * Theyyam node in full view mode.
+ * Clean, uncluttered layout matching the sacred Kaliyattam design.
+ */
+#}
+<article{{ attributes.addClass('node', 'node--type-theyyam', 'node--view-mode-full', 'wiki-node-view', not node.isPublished() ? 'node--unpublished') }}>
+  {{ title_prefix }}
+  {% if label and not page %}
+    <h1{{ title_attributes.addClass('node__title') }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h1>
+  {% endif %}
+  {{ title_suffix }}
+
+  <div{{ content_attributes.addClass('node__content') }}>
+    {# Cover / Featured Image #}
+    {% if content.field_featured_image is not empty %}
+      <div class="theyyam-cover-image node-cover-image">
+        {{ content.field_featured_image }}
+      </div>
+    {% endif %}
+
+    {# Main Content & Description #}
+    <div class="node-main-fields">
+      {{ content|without('field_featured_image', 'field_media', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+    </div>
+
+    {# Referenced Events & Posts #}
+    {% if referenced_events is not empty or referenced_posts is not empty %}
+      <section class="referenced-references-section">
+        {% if referenced_events is not empty %}
+          <div class="referenced-block">
+            <h3 class="referenced-block-title">
+              <span class="referenced-icon" aria-hidden="true">📅</span>
+              <span>{{ 'Related Events'|t }}</span>
+            </h3>
+            <ul class="referenced-titles-list">
+              {% for event in referenced_events %}
+                <li class="referenced-title-item">
+                  <a href="{{ event.url }}" class="referenced-title-link">{{ event.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if referenced_posts is not empty %}
+          <div class="referenced-block">
+            <h3 class="referenced-block-title">
+              <span class="referenced-icon" aria-hidden="true">📝</span>
+              <span>{{ 'Related Posts'|t }}</span>
+            </h3>
+            <ul class="referenced-titles-list">
+              {% for post in referenced_posts %}
+                <li class="referenced-title-item">
+                  <a href="{{ post.url }}" class="referenced-title-link">{{ post.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    {% include '@kaliyattam_minimal/templates/node-actions.html.twig' %}
+
+    {# Wiki Page Metadata Footer #}
+    <footer class="wiki-node-footer">
+      <div class="wiki-last-updated">
+        <span>🕒 {{ 'Last updated on'|t }} {{ node.getChangedTime()|format_date('medium') }}</span>
+      </div>
+      <div class="wiki-history-links">
+        <a href="{{ logged_in ? path('entity.node.version_history', {'node': node.id}) : path('user.login', {}, {'query': {'destination': path('entity.node.version_history', {'node': node.id})}}) }}">
+          <span>📖 {{ 'View versions & revision history'|t }}</span>
+        </a>
+      </div>
+    </footer>
+
+    {% set comment_content = content.field_comments_without_title|default(content.field_comments) %}
+    {% if comment_content is not empty %}
+      <section id="comments" class="node-comments-section comments-collapsible">
+        <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
+        {{ comment_content }}
+      </section>
+    {% endif %}
+  </div>
+</article>
+
