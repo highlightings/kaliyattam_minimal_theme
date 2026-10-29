@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Template for displaying a node in minicard view mode.
+ * Styled as a visual image card with title overlay.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    'node--view-mode-minicard',
+    'minicard-theyyam',
+    not node.isPublished() ? 'node--unpublished',
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  <a href="{{ url }}" class="minicard-theyyam__link" title="{{ node.label() }}" aria-label="{{ node.label() }}">
+    <div class="minicard-theyyam__media">
+      {% if content.field_featured_image is not empty %}
+        {{ content.field_featured_image }}
+      {% else %}
+        <div class="minicard-theyyam__placeholder" aria-hidden="true">
+          <span class="minicard-theyyam__placeholder-icon">🎭</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="minicard-theyyam__overlay">
+      <h3 class="minicard-theyyam__title">
+        <span>{{ node.label() }}</span>
+      </h3>
+    </div>
+  </a>
+  {{ title_suffix }}
+</article>

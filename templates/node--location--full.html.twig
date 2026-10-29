@@ -56,52 +56,20 @@
     {% endif %}
 
     {# Related Theyyams at this Temple #}
-    {% if related_theyyams is not empty %}
-      <div class="theyyam-related">
-        <h2 class="theyyam-related-title">{{ 'Theyyam at this temple'|t }}</h2>
-        <div class="theyyam-simple-list">
-          {% for theyyam in related_theyyams %}
-            <article class="theyyam-list-row">
-              <div class="theyyam-list-media">
-                {% if theyyam.thumbnail %}
-                  {% if theyyam.url %}
-                    <a href="{{ theyyam.url }}" class="theyyam-list-media-link" tabindex="-1" aria-hidden="true">
-                      {{ theyyam.thumbnail }}
-                    </a>
-                  {% else %}
-                    {{ theyyam.thumbnail }}
-                  {% endif %}
-                {% else %}
-                  <a href="{{ theyyam.url|default('#') }}" class="theyyam-list-placeholder-link" tabindex="-1" aria-hidden="true">
-                    <span class="theyyam-list-icon" aria-hidden="true">🎭</span>
-                  </a>
-                {% endif %}
-              </div>
-              <div class="theyyam-list-body">
-                <h3 class="theyyam-list-title">
-                  {% if theyyam.url %}
-                    <a href="{{ theyyam.url }}">{{ theyyam.title }}</a>
-                  {% else %}
-                    <span>{{ theyyam.title }}</span>
-                  {% endif %}
-                </h3>
-                {% if theyyam.snippet %}
-                  <div class="theyyam-list-snippet">
-                    {{ theyyam.snippet }}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="theyyam-list-action">
-                {% if theyyam.url %}
-                  <a href="{{ theyyam.url }}" class="theyyam-list-more-btn" title="{{ 'View details for'|t }} {{ theyyam.title }}">
-                    <span>{{ 'More'|t }} &raquo;</span>
-                  </a>
-                {% endif %}
-              </div>
-            </article>
+    {% if node.field_theyyam is not empty %}
+      <section class="theyyam-related">
+        <h2 class="theyyam-related-title">
+          <span class="theyyam-related-icon" aria-hidden="true">🎭</span>
+          <span>{{ 'Theyyam at this temple'|t }}</span>
+        </h2>
+        <div class="theyyam-cards-grid">
+          {% for theyyam_item in node.field_theyyam %}
+            <div class="theyyam-card-wrapper">
+              {{ drupal_entity('node', theyyam_item.target_id, 'minicard') }}
+            </div>
           {% endfor %}
         </div>
-      </div>
+      </section>
     {% endif %}
 
     {# Main Content & Description #}

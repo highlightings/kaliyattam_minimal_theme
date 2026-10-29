@@ -782,15 +782,145 @@ html.js .node-comments-section.comments-collapsible:not(.is-open) {
 }
 
 .theyyam-related {
-  margin-block: 2rem;
+  margin-block: 2.5rem;
 }
 
 .theyyam-related-title {
   font-family: var(--font-serif-heading);
   font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   color: var(--theme-text, #1c1917);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theyyam-related-icon {
+  font-size: 1.35rem;
+}
+
+.theyyam-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 1.25rem;
+}
+
+.theyyam-card-wrapper {
+  display: flex;
+}
+
+.theyyam-card-wrapper > article {
+  width: 100%;
+}
+
+/* Minicard: Visual Thumbnail Card with Gradient Title Overlay (Inspired by reference) */
+.minicard-theyyam {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--theme-surface-warm, #1c1917);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--theme-border-subtle, #e5e7eb);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.minicard-theyyam:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  border-color: var(--theme-accent, #890000);
+}
+
+.minicard-theyyam__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+
+.minicard-theyyam__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.minicard-theyyam__media div,
+.minicard-theyyam__media picture {
+  width: 100%;
+  height: 100%;
+}
+
+.minicard-theyyam__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.minicard-theyyam:hover .minicard-theyyam__media img {
+  transform: scale(1.05);
+}
+
+.minicard-theyyam__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2c2523 0%, #1a1615 100%);
+}
+
+.minicard-theyyam__placeholder-icon {
+  font-size: 3rem;
+  opacity: 0.6;
+}
+
+.minicard-theyyam__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem 1rem 1rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.5) 40%,
+    rgba(0, 0, 0, 0.1) 70%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.minicard-theyyam__title {
+  margin: 0;
+  color: #ffffff !important;
+  font-family: var(--font-serif-heading, Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Dark mode enhancements for minicard */
+:root[data-theme="dark"] .minicard-theyyam,
+html.dark .minicard-theyyam {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .minicard-theyyam:hover,
+html.dark .minicard-theyyam:hover {
+  border-color: #f87171;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .theyyam-simple-list {
