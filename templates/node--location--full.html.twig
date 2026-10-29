@@ -77,38 +77,28 @@
       {{ content|without('field_featured_image', 'field_location_address', 'field_geofield', 'field_theyyam', 'field_media', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
     </div>
 
-    {# Referenced Events & Posts #}
-    {% if referenced_events is not empty or referenced_posts is not empty %}
+    {# Referenced Events & Posts via Views #}
+    {% set related_events = drupal_view_result('related_content', 'events_by_temple', node.id) %}
+    {% set related_posts = drupal_view_result('related_content', 'posts_by_temple', node.id) %}
+    {% if related_events is not empty or related_posts is not empty %}
       <section class="referenced-references-section">
-        {% if referenced_events is not empty %}
+        {% if related_events is not empty %}
           <div class="referenced-block">
             <h3 class="referenced-block-title">
               <span class="referenced-icon" aria-hidden="true">📅</span>
               <span>{{ 'Related Events'|t }}</span>
             </h3>
-            <ul class="referenced-titles-list">
-              {% for event in referenced_events %}
-                <li class="referenced-title-item">
-                  <a href="{{ event.url }}" class="referenced-title-link">{{ event.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
+            {{ drupal_view('related_content', 'events_by_temple', node.id) }}
           </div>
         {% endif %}
 
-        {% if referenced_posts is not empty %}
+        {% if related_posts is not empty %}
           <div class="referenced-block">
             <h3 class="referenced-block-title">
               <span class="referenced-icon" aria-hidden="true">📝</span>
               <span>{{ 'Related Posts'|t }}</span>
             </h3>
-            <ul class="referenced-titles-list">
-              {% for post in referenced_posts %}
-                <li class="referenced-title-item">
-                  <a href="{{ post.url }}" class="referenced-title-link">{{ post.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
+            {{ drupal_view('related_content', 'posts_by_temple', node.id) }}
           </div>
         {% endif %}
       </section>

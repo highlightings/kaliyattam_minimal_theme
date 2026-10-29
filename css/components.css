@@ -983,7 +983,8 @@ html.dark .minicard-theyyam:hover {
   line-height: 1.2;
 }
 
-.referenced-title-link {
+.referenced-title-link,
+.referenced-title-item a {
   color: var(--theme-text, #1c1917);
   text-decoration: none;
   font-size: 0.98rem;
@@ -991,7 +992,8 @@ html.dark .minicard-theyyam:hover {
   transition: color 0.15s ease;
 }
 
-.referenced-title-link:hover {
+.referenced-title-link:hover,
+.referenced-title-item a:hover {
   color: var(--theme-accent, #890000);
   text-decoration: underline;
 }
@@ -1003,12 +1005,16 @@ html.dark .referenced-block {
 }
 
 :root[data-theme="dark"] .referenced-title-link,
-html.dark .referenced-title-link {
+:root[data-theme="dark"] .referenced-title-item a,
+html.dark .referenced-title-link,
+html.dark .referenced-title-item a {
   color: var(--theme-text, #e2e8f0);
 }
 
 :root[data-theme="dark"] .referenced-title-link:hover,
-html.dark .referenced-title-link:hover {
+:root[data-theme="dark"] .referenced-title-item a:hover,
+html.dark .referenced-title-link:hover,
+html.dark .referenced-title-item a:hover {
   color: #fca5a5;
 }
 
