@@ -124,7 +124,13 @@
     {# Featured image #}
     {% if content.field_featured_image is not empty %}
       <div class="node-cover-image">
-        {{ content.field_featured_image }}
+        {% if view_mode == 'card' or view_mode == 'teaser' %}
+          <a href="{{ url }}" rel="bookmark" tabindex="-1" aria-hidden="true">
+            {{ content.field_featured_image }}
+          </a>
+        {% else %}
+          {{ content.field_featured_image }}
+        {% endif %}
       </div>
     {% endif %}
 
