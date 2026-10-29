@@ -130,7 +130,11 @@
 
     {# Main content fields: cleanly strip comments, forms, and loose flags from body #}
     <div class="node-main-fields">
-      {{ content|without('field_featured_image', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links') }}
+      {% if view_mode == 'card' or view_mode == 'teaser' %}
+        {{ content|without('field_where', 'field_theyyam', 'field_events', 'field_featured_image', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links') }}
+      {% else %}
+        {{ content|without('field_featured_image', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'flag_subscribe_node', 'links') }}
+      {% endif %}
     </div>
 
     {# Interaction Bar (Favorite, Like, Share, Comments) #}

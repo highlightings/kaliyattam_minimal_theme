@@ -1,0 +1,79 @@
+{#
+/**
+ * @file
+ * Post node in full view mode.
+ * Clean, modern layout matching the sacred Kaliyattam design with themed reference chips.
+ */
+#}
+{% set author = node.getOwner() %}
+{% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
+{% set author_initial = author_name|slice(0, 1)|upper %}
+{% set author_url = author_timeline_url|default('') %}
+
+<article{{ attributes.addClass('node', 'node--type-post', 'node--view-mode-full', 'post-full-card', not node.isPublished() ? 'node--unpublished') }}>
+  <div{{ content_attributes.addClass('node__content') }}>
+    {# Post Author Header #}
+    <div class="node-post-author-row">
+      {% if author_url %}
+        <a href="{{ author_url }}" class="node-author-avatar-sm" aria-hidden="true" tabindex="-1">
+          <span class="avatar-initial">{{ author_initial }}</span>
+        </a>
+      {% else %}
+        <div class="node-author-avatar-sm" aria-hidden="true">
+          <span class="avatar-initial">{{ author_initial }}</span>
+        </div>
+      {% endif %}
+      <div class="node-author-meta">
+        <div class="node-author-name-line">
+          {% if author_url %}
+            <a href="{{ author_url }}" class="node-author-name">{{ author_name }}</a>
+          {% else %}
+            <span class="node-author-name">{{ author_name }}</span>
+          {% endif %}
+          <span class="node-author-badge">{{ 'Devotee Member'|t }}</span>
+        </div>
+        <div class="node-meta-time">
+          <a href="{{ url }}" class="node-time-link" rel="bookmark" title="{{ 'View post'|t }}">
+            <time datetime="{{ node.getCreatedTime()|date('c') }}">{{ node.getCreatedTime()|format_date('medium') }}</time>
+          </a>
+        </div>
+      </div>
+      {% if node.isSticky() %}
+        <div class="node-pinned-badge"><span>📌 {{ 'Pinned'|t }}</span></div>
+      {% endif %}
+    </div>
+
+    {# Post Reference Chips Row (Where/Temple, Theyyam, Events) #}
+    {% if content.field_where is not empty or content.field_theyyam is not empty or content.field_events is not empty %}
+      <div class="event-chips-row post-chips-row">
+        {% if content.field_where is not empty %}
+          {{ content.field_where }}
+        {% endif %}
+        {% if content.field_theyyam is not empty %}
+          {{ content.field_theyyam }}
+        {% endif %}
+        {% if content.field_events is not empty %}
+          {{ content.field_events }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Main Post Body Content #}
+    <div class="node-main-fields post-main-content">
+      {{ content|without('field_where', 'field_theyyam', 'field_events', 'field_tags', 'field_comments', 'field_comments_without_title', 'flag_like_node', 'flag_follow_content', 'flag_offensive_content', 'flag_bookmark', 'flag_following', 'flag_sticky_timeline', 'flag_sticky_user_timeline', 'links') }}
+    </div>
+
+    {# Interaction Bar (Favorite, Like, Share, Comments) #}
+    {% include '@kaliyattam_minimal/templates/node-actions.html.twig' %}
+
+    {# Comments Section #}
+    {% set comments_field = content.field_comments_without_title|default(content.field_comments) %}
+    {% if comments_field is not empty %}
+      <section id="comments" class="node-comments-section comments-collapsible">
+        <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
+        {{ comments_field }}
+      </section>
+    {% endif %}
+  </div>
+</article>
+

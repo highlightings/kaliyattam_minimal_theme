@@ -1,0 +1,60 @@
+uuid: 0c95e967-811f-417e-899f-8120b517892c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card
+    - field.field.node.post.field_comments_without_title
+    - field.field.node.post.field_content
+    - field.field.node.post.field_events
+    - field.field.node.post.field_tags
+    - field.field.node.post.field_theyyam
+    - field.field.node.post.field_where
+    - node.type.post
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: eKfO74-H8kFuHNJkhPwb-bEHtpNettfBK67tERiDvXQ
+id: node.post.card
+targetEntityType: node
+bundle: post
+mode: card
+content:
+  field_content:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  flag_bookmark:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  flag_like_node:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  flag_sticky_timeline:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  flag_sticky_user_timeline:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  content_moderation_control: true
+  field_comments_without_title: true
+  field_events: true
+  field_tags: true
+  field_theyyam: true
+  field_where: true
+  langcode: true
+  links: true
+
