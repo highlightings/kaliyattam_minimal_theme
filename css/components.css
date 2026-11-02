@@ -2451,6 +2451,37 @@ html.dark .node-nearby-distance-badge,
   text-decoration: underline;
 }
 
+/* Help Documentation Images & Video Embedding */
+.help-page-content img,
+.help-doc-img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e2e8f0 !important;
+  margin: 1.25rem 0 !important;
+  display: block;
+}
+
+.help-page-content video,
+.help-doc-video {
+  width: 100% !important;
+  max-width: 860px !important;
+  height: auto !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+}
+
+.help-video-card {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: #faf5f5;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  text-align: center;
+}
+
+
 
 
 
