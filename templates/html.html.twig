@@ -1,9 +1,17 @@
 {#
 /**
  * @file
- * Page shell. Same as core's, with a skip link styled by base.css.
+ * Page shell. Same as core's, with standard body classes and a skip link styled by base.css.
  */
 #}
+{%
+  set body_classes = [
+    logged_in ? 'user-logged-in',
+    not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+    node_type ? 'page-node-type-' ~ node_type|clean_class,
+    db_offline ? 'db-offline',
+  ]
+%}
 <!DOCTYPE html>
 <html{{ html_attributes }}>
   <head>
@@ -13,7 +21,7 @@
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
   </head>
-  <body{{ attributes }}>
+  <body{{ attributes.addClass(body_classes) }}>
     <a href="#main-content" class="skip-link">{{ 'Skip to main content'|t }}</a>
     {{ page_top }}
     {{ page }}

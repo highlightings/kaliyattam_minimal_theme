@@ -307,7 +307,10 @@ html.dark .theme-toggle-icon--sun {
 }
 
 .site-nav a.is-active,
-.site-nav a[aria-current="page"] {
+.site-nav a[aria-current="page"],
+body.path-frontpage .site-nav a[data-drupal-link-system-path="<front>"],
+body.path-events .site-nav a[data-drupal-link-system-path="events"],
+body.path-posts .site-nav a[data-drupal-link-system-path="posts"] {
   background: transparent !important;
   color: #ffffff !important;
   font-weight: 600;
@@ -441,7 +444,10 @@ html.dark .theme-toggle-icon--sun {
   }
 
   .site-nav a:hover,
-  .site-nav a.is-active {
+  .site-nav a.is-active,
+  body.path-frontpage .site-nav a[data-drupal-link-system-path="<front>"],
+  body.path-events .site-nav a[data-drupal-link-system-path="events"],
+  body.path-posts .site-nav a[data-drupal-link-system-path="posts"] {
     background: rgba(255, 255, 255, 0.15);
     color: #ffffff;
   }

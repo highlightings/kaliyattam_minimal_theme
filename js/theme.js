@@ -443,6 +443,35 @@
     }
   };
 
+  // 8. Main Nav Active State for Section Sub-routes (e.g. /events/map, /events/calendar)
+  Drupal.behaviors.kmActiveNav = {
+    attach: function (context) {
+      var path = window.location.pathname;
+      var isFront = path === '/' || path === '/ml' || path === '/timeline' || path === '/ml/timeline';
+      if (isFront) {
+        var homeLink = document.querySelector('.site-nav a[data-drupal-link-system-path="<front>"]');
+        if (homeLink && !homeLink.classList.contains('is-active')) {
+          homeLink.classList.add('is-active');
+          homeLink.setAttribute('aria-current', 'page');
+        }
+      }
+      else if (/^\/([a-z]{2}\/)?events(\/.*)?$/.test(path)) {
+        var eventsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="events"]');
+        if (eventsLink && !eventsLink.classList.contains('is-active')) {
+          eventsLink.classList.add('is-active');
+          eventsLink.setAttribute('aria-current', 'page');
+        }
+      }
+      else if (/^\/([a-z]{2}\/)?posts(\/.*)?$/.test(path)) {
+        var postsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="posts"]');
+        if (postsLink && !postsLink.classList.contains('is-active')) {
+          postsLink.classList.add('is-active');
+          postsLink.setAttribute('aria-current', 'page');
+        }
+      }
+    }
+  };
+
 })(Drupal, once);
 
 

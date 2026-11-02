@@ -20,7 +20,7 @@
 <div class="timeline-toolbar events-toolbar">
   <div class="events-toolbar__header">
     <div class="events-toolbar__filters" role="group" aria-label="{{ 'Filter events'|t }}">
-      <a href="/events" class="events-pill">
+      <a href="{{ path('view.events.page_1') }}" class="events-pill">
         <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
       </a>
       <button type="button" class="events-pill events-pill--nearby{{ is_near_active ? ' is-active' }}" data-events-near-me aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Find events near your current location'|t }}">
@@ -29,7 +29,7 @@
           <span class="events-pill__reset" data-events-clear-near title="{{ 'Clear proximity'|t }}">×</span>
         {% endif %}
       </button>
-      <a href="/events/past" class="events-pill">
+      <a href="{{ path('view.events.page_2') }}" class="events-pill">
         <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
       </a>
       <button type="button" class="events-pill events-pill--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Search and filters'|t }}">
@@ -38,13 +38,13 @@
     </div>
 
     <div class="events-toolbar__views" role="group" aria-label="{{ 'View layout'|t }}">
-      <a href="/events" class="events-view-btn" title="{{ 'Card list view'|t }}">
+      <a href="{{ path('view.events.page_1') }}" class="events-view-btn" title="{{ 'Card list view'|t }}">
         <span aria-hidden="true">📑</span> {{ 'Cards'|t }}
       </a>
-      <a href="/events/map" class="events-view-btn is-active" title="{{ 'Map view'|t }}">
+      <a href="{{ path('view.events.page_map') }}" class="events-view-btn is-active" title="{{ 'Map view'|t }}">
         <span aria-hidden="true">🗺️</span> {{ 'Map'|t }}
       </a>
-      <a href="/events/calendar" class="events-view-btn" title="{{ 'Calendar view'|t }}">
+      <a href="{{ path('view.events_calendar.page_1') }}" class="events-view-btn" title="{{ 'Calendar view'|t }}">
         <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
       </a>
     </div>
