@@ -12,7 +12,8 @@
 
 {% set current_sort = form.sort_by['#value']|default('created') %}
 {% set search_val = form.search['#value']|default('') %}
-{% set has_search = search_val is not empty %}
+{% set lang_val = form.langcode['#value']|default('') %}
+{% set has_search = search_val is not empty or (lang_val is not empty and lang_val != 'All') %}
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Filter and Sort'|t }}">
@@ -34,6 +35,11 @@
           {{ form.search }}
         </div>
       {% endif %}
+      {% if form.langcode %}
+        <div class="timeline-toolbar__filter-item">
+          {{ form.langcode }}
+        </div>
+      {% endif %}
       <div class="timeline-toolbar__actions">
         {{ form.actions }}
       </div>
@@ -43,6 +49,6 @@
   {# Keep sort select in the DOM but hidden so our buttons can set its value #}
   <div class="visually-hidden">
     {{ form.sort_by }}
-    {{ form|without('q', 'search', 'actions', 'sort_by') }}
+    {{ form|without('q', 'search', 'langcode', 'actions', 'sort_by') }}
   </div>
 </div>
