@@ -34,9 +34,11 @@
             <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
           </a>
         {% endif %}
-        <button type="button" class="events-pill events-pill--search" data-timeline-toggle-search aria-expanded="false" title="{{ 'Search and filters'|t }}">
-          <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
-        </button>
+        {% if routes.events %}
+          <button type="button" class="events-pill events-pill--search" data-timeline-toggle-search aria-expanded="false" title="{{ 'Search and filters'|t }}">
+            <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+          </button>
+        {% endif %}
       </div>
 
       <div class="events-toolbar__views" role="group" aria-label="{{ 'View layout'|t }}">
@@ -58,20 +60,22 @@
       </div>
     </div>
 
-    <div class="timeline-toolbar__search-drawer" id="timeline-search-drawer" hidden>
-      <div class="timeline-toolbar__search-inner">
-        <form action="{{ routes.events|default('/events') }}" method="get">
-          <div class="timeline-toolbar__filter-item">
-            <div class="js-form-item form-item js-form-type-textfield form-type--textfield form-item-search">
-              <input type="text" name="search" placeholder="{{ 'Search events...'|t }}" class="form-text">
+    {% if routes.events %}
+      <div class="timeline-toolbar__search-drawer" id="timeline-search-drawer" hidden>
+        <div class="timeline-toolbar__search-inner">
+          <form action="{{ routes.events }}" method="get">
+            <div class="timeline-toolbar__filter-item">
+              <div class="js-form-item form-item js-form-type-textfield form-type--textfield form-item-search">
+                <input type="text" name="search" placeholder="{{ 'Search events...'|t }}" class="form-text">
+              </div>
             </div>
-          </div>
-          <div class="timeline-toolbar__actions form-actions js-form-wrapper form-wrapper">
-            <input type="submit" value="{{ 'Apply'|t }}" class="button js-form-submit form-submit">
-          </div>
-        </form>
+            <div class="timeline-toolbar__actions form-actions js-form-wrapper form-wrapper">
+              <input type="submit" value="{{ 'Apply'|t }}" class="button js-form-submit form-submit">
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 
   {% if header %}

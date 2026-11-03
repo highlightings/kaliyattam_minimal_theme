@@ -7,13 +7,15 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\CacheableMetadata;
 use Drupal\Core\Url;
 use Drupal\views\Views;
 
 /**
- * Safely generates a URL from a route name without throwing RouteNotFoundException.
+ * Safely generates a URL from a route name.
+ *
+ * Avoids throwing RouteNotFoundException when routes are uninstalled.
  */
 function _kaliyattam_minimal_safe_url(string $route_name, array $params = [], array $options = []): string {
   try {
@@ -50,6 +52,16 @@ function kaliyattam_minimal_form_alter(array &$form, FormStateInterface $form_st
         $form['#composer_is_draft'] = !$entity->isNew() && !$entity->isPublished();
       }
     }
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function kaliyattam_minimal_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state): void {
+  $view = $form_state->get('view');
+  if ($view) {
+    $form['#km_view_id'] = $view->id();
   }
 }
 
@@ -133,9 +145,9 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
           ->getViewBuilder('node')
           ->viewMultiple($theyyam_nodes, 'minicard');
         $cards = [];
-        foreach ($theyyam_nodes as $theyyam_node) {
-          if (isset($built[$theyyam_node->id()])) {
-            $cards[] = $built[$theyyam_node->id()];
+        foreach ($theyyam_nodes as $delta => $theyyam_node) {
+          if (isset($built[$delta])) {
+            $cards[] = $built[$delta];
           }
         }
         $variables['theyyam_minicards'] = $cards;
@@ -159,14 +171,15 @@ function kaliyattam_minimal_preprocess_user(array &$variables): void {
  * Implements hook_preprocess_views_exposed_form().
  */
 function kaliyattam_minimal_preprocess_views_exposed_form(array &$variables): void {
-  $view = $variables['view'] ?? NULL;
-  if (!$view || !in_array($view->id(), ['events', 'timeline_locations', 'timeline_type', 'timeline_site', 'locations_map'], TRUE)) {
+  $view_id = $variables['form']['#km_view_id'] ?? '';
+  if (!in_array($view_id, ['events', 'timeline_locations', 'timeline_type', 'timeline_site', 'locations_map'], TRUE)) {
     return;
   }
 
   $request = \Drupal::request();
   $current_user = \Drupal::currentUser();
-  // Safe query parameter extraction avoiding Symfony InputBag non-scalar 400 exception.
+  // Safe query parameter extraction avoiding Symfony InputBag non-scalar
+  // 400 Bad Request exception.
   $query_all = $request->query->all();
   $raw_uid = $query_all['uid'] ?? '';
   $uid_param = is_scalar($raw_uid) ? (string) $raw_uid : '';
