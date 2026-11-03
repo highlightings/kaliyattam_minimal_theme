@@ -10,6 +10,11 @@
   {{ q }}
 {% endif %}
 
+{% set form_action = form['#action']|default('') %}
+{% set current_path = current_path|default(app.request.pathInfo|default('')) %}
+{% set is_posts = '/posts' in current_path or '/posts' in form_action %}
+{% set is_my = is_my is defined ? is_my : (app.request.query.get('my') == '1') %}
+
 {% set current_sort = form.sort_by['#value']|default('created') %}
 {% set search_val = form.search['#value']|default('') %}
 {% set lang_val = form.langcode['#value']|default('') %}
@@ -17,12 +22,20 @@
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Filter and Sort'|t }}">
-    <button type="button" class="timeline-toolbar__btn{{ current_sort != 'count' ? ' is-active' }}" data-timeline-sort="created">
+    <button type="button" class="timeline-toolbar__btn{{ current_sort != 'count' and not is_my ? ' is-active' }}" data-timeline-sort="created">
       {{ 'Latest'|t }}
     </button>
-    <button type="button" class="timeline-toolbar__btn{{ current_sort == 'count' ? ' is-active' }}" data-timeline-sort="count">
+    <button type="button" class="timeline-toolbar__btn{{ current_sort == 'count' and not is_my ? ' is-active' }}" data-timeline-sort="count">
       {{ 'Popular'|t }}
     </button>
+    {% if logged_in and is_posts %}
+      <a href="{{ is_my ? path('view.timeline_type.post_page') : path('view.timeline_type.post_page', {}, {'query': {'my': '1'}}) }}" class="timeline-toolbar__btn timeline-toolbar__btn--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all posts'|t : 'Show only my posts'|t }}">
+        <span aria-hidden="true">👤</span> <span>{{ 'My posts'|t }}</span>
+        {% if is_my %}
+          <span class="events-pill__reset" title="{{ 'Clear filter'|t }}">×</span>
+        {% endif %}
+      </a>
+    {% endif %}
     <button type="button" class="timeline-toolbar__btn timeline-toolbar__btn--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}">
       <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
     </button>
@@ -48,6 +61,9 @@
 
   {# Keep sort select in the DOM but hidden so our buttons can set its value #}
   <div class="visually-hidden">
+    {% if is_my %}
+      <input type="hidden" name="my" value="1">
+    {% endif %}
     {{ form.sort_by }}
     {{ form|without('q', 'search', 'langcode', 'actions', 'sort_by') }}
   </div>

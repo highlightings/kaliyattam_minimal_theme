@@ -1472,6 +1472,27 @@ html.dark a.timeline-toolbar__btn.is-active {
   color: #890000;
 }
 
+.timeline-toolbar__btn .events-pill__reset {
+  background: rgba(137, 0, 0, 0.12);
+  color: var(--theme-accent, #890000);
+}
+
+.timeline-toolbar__btn .events-pill__reset:hover {
+  background: rgba(137, 0, 0, 0.25);
+  color: var(--theme-accent, #890000);
+}
+
+:root[data-theme="dark"] .timeline-toolbar__btn .events-pill__reset,
+html.dark .timeline-toolbar__btn .events-pill__reset {
+  background: rgba(251, 191, 36, 0.2);
+  color: var(--theme-accent, #fbbf24);
+}
+
+:root[data-theme="dark"] .timeline-toolbar__btn .events-pill__reset:hover,
+html.dark .timeline-toolbar__btn .events-pill__reset:hover {
+  background: rgba(251, 191, 36, 0.35);
+}
+
 .events-view-btn {
   display: inline-flex;
   align-items: center;
