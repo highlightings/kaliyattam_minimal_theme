@@ -10,13 +10,9 @@
   {{ q }}
 {% endif %}
 
-{% set is_map = false %}
-{% set is_list = true %}
-
 {% set search_val = form.search['#value']|default('') %}
 {% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
 {% set has_search = search_val is not empty or prox_origin is not empty %}
-
 {% set is_near_active = prox_origin is not empty %}
 
 <div class="timeline-toolbar events-toolbar">
@@ -34,10 +30,10 @@
     </div>
 
     <div class="events-toolbar__views" role="group" aria-label="{{ 'Temple views'|t }}">
-      <a href="{{ path('view.timeline_locations.page_locations') }}" class="events-view-btn{{ is_list ? ' is-active' }}" title="{{ 'List view'|t }}">
+      <a href="{{ path('view.timeline_locations.page_locations') }}" class="events-view-btn is-active" title="{{ 'List view'|t }}">
         <span aria-hidden="true">📑</span> {{ 'List View'|t }}
       </a>
-      <a href="{{ path('view.locations_map.page_1') }}" class="events-view-btn{{ is_map ? ' is-active' }}" title="{{ 'Map view'|t }}">
+      <a href="{{ path('view.locations_map.page_1') }}" class="events-view-btn" title="{{ 'Map view'|t }}">
         <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
       </a>
     </div>

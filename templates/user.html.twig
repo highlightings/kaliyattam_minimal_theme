@@ -6,8 +6,7 @@
  * Prevents displaying the follow button when a user views their own profile.
  */
 #}
-{% set current_uid = drupal_token('current-user:uid') %}
-{% set is_own_profile = logged_in and (current_uid == user.id()) %}
+{% set is_own_profile = is_own_profile|default(false) %}
 
 <article{{ attributes.addClass('user-profile-card') }}>
   {% if content %}

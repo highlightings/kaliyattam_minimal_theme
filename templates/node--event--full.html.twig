@@ -5,8 +5,7 @@
  * Clean, modern layout matching the sacred Kaliyattam design and temple reference.
  */
 #}
-{% set author = node.getOwner() %}
-{% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
+{% set author_name = author_name|default('Kaliyattam Member'|t) %}
 {% set author_url = author_timeline_url|default('') %}
 
 <article{{ attributes.addClass('node', 'node--type-event', 'node--view-mode-full', 'event-full-card', not node.isPublished() ? 'node--unpublished') }}>
@@ -67,15 +66,14 @@
     </div>
 
     {# Referenced Posts via Views #}
-    {% set related_posts = drupal_view_result('related_content', 'posts_by_event', node.id) %}
-    {% if related_posts is not empty %}
+    {% if related_posts %}
       <section class="referenced-references-section">
         <div class="referenced-block">
           <h3 class="referenced-block-title">
             <span class="referenced-icon" aria-hidden="true">📝</span>
             <span>{{ 'Related Posts'|t }}</span>
           </h3>
-          {{ drupal_view('related_content', 'posts_by_event', node.id) }}
+          {{ related_posts }}
         </div>
       </section>
     {% endif %}

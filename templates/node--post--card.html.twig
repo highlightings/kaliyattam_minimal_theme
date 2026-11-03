@@ -6,9 +6,8 @@
  * Referenced nodes are explicitly excluded.
  */
 #}
-{% set author = node.getOwner() %}
-{% set author_name = author.getDisplayName()|default('Kaliyattam Member'|t) %}
-{% set author_initial = author_name|slice(0, 1)|upper %}
+{% set author_name = author_name|default('Kaliyattam Member'|t) %}
+{% set author_initial = author_initial|default('K') %}
 {% set author_url = author_timeline_url|default('') %}
 
 <article{{ attributes.addClass('node', 'node--type-post', 'node--view-mode-card', not node.isPublished() ? 'node--unpublished') }}>

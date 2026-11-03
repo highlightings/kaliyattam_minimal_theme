@@ -7,14 +7,17 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Url;
+use Drupal\views\Views;
+
 /**
  * Safely generates a URL from a route name without throwing RouteNotFoundException.
  */
 function _kaliyattam_minimal_safe_url(string $route_name, array $params = []): string {
   try {
-    return \Drupal\Core\Url::fromRoute($route_name, $params)->toString();
+    return Url::fromRoute($route_name, $params)->toString();
   }
-  catch (\Exception $e) {
+  catch (\Throwable $e) {
     return '';
   }
 }
@@ -30,6 +33,26 @@ function kaliyattam_minimal_theme_suggestions_form_alter(array &$suggestions, ar
 }
 
 /**
+ * Implements hook_preprocess_form().
+ */
+function kaliyattam_minimal_preprocess_form(array &$variables): void {
+  $id = $variables['element']['#id'] ?? '';
+  if (preg_match('/^node-(post|event|theyyam|location)-(edit-)?form/', $id)) {
+    $variables['composer_is_draft'] = false;
+    $form_state = $variables['element']['#form_state'] ?? NULL;
+    if ($form_state && method_exists($form_state, 'getFormObject')) {
+      $form_object = $form_state->getFormObject();
+      if ($form_object && method_exists($form_object, 'getEntity')) {
+        $entity = $form_object->getEntity();
+        if ($entity && method_exists($entity, 'isPublished') && !$entity->isNew() && !$entity->isPublished()) {
+          $variables['composer_is_draft'] = true;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_node().
  */
 function kaliyattam_minimal_preprocess_node(array &$variables): void {
@@ -39,15 +62,82 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
   }
 
   $renderer = \Drupal::service('renderer');
-  if ($node->getOwner()) {
-    $renderer->addCacheableDependency($variables, $node->getOwner());
+  $owner = $node->getOwner();
+  if ($owner) {
+    $renderer->addCacheableDependency($variables, $owner);
   }
 
-  // Author timeline link if available.
-  $author = $variables['author'] ?? $node->getOwner();
-  if ($author && $author->id() > 0) {
-    $variables['author_timeline_url'] = _kaliyattam_minimal_safe_url('view.timeline_user.page_timeline', ['user' => $author->id()]);
+  // Ensure role-based cache context is attached because interaction bar
+  // elements vary between anonymous (login prompt) and authenticated users.
+  $variables['#cache']['contexts'][] = 'user.roles:authenticated';
+
+  // Author details and timeline link.
+  $author = $variables['author'] ?? $owner;
+  if ($author) {
+    $variables['author_name'] = $author->getDisplayName();
+    $variables['author_initial'] = mb_strtoupper(mb_substr((string) $variables['author_name'], 0, 1));
+    if ($author->id() > 0) {
+      $variables['author_timeline_url'] = _kaliyattam_minimal_safe_url('view.timeline_user.page_timeline', ['user' => $author->id()]);
+    }
   }
+  else {
+    $variables['author_name'] = (string) t('Kaliyattam Member');
+    $variables['author_initial'] = 'K';
+  }
+
+  // In full view mode, optimize related views and referenced entity cards
+  // so templates avoid redundant double-execution and individual N+1 queries.
+  if (($variables['view_mode'] ?? '') === 'full') {
+    $bundle = $node->bundle();
+    $nid = $node->id();
+
+    $displays = match ($bundle) {
+      'event' => ['related_posts' => 'posts_by_event'],
+      'theyyam' => [
+        'related_events' => 'events_by_theyyam',
+        'related_posts' => 'posts_by_theyyam',
+      ],
+      'location' => [
+        'related_events' => 'events_by_temple',
+        'related_posts' => 'posts_by_temple',
+      ],
+      default => [],
+    };
+
+    foreach ($displays as $var_name => $display_id) {
+      $view = Views::getView('related_content');
+      if ($view && $view->access($display_id)) {
+        $view->setDisplay($display_id);
+        $view->setArguments([$nid]);
+        $view->preExecute();
+        $view->execute();
+        if (!empty($view->result)) {
+          $variables[$var_name] = $view->buildRenderable($display_id, [$nid]);
+          $renderer->addCacheableDependency($variables, $view->storage);
+        }
+      }
+    }
+
+    // Batch load and render referenced Theyyam minicards on location full view.
+    if ($bundle === 'location' && $node->hasField('field_theyyam') && !$node->get('field_theyyam')->isEmpty()) {
+      $theyyam_nodes = $node->get('field_theyyam')->referencedEntities();
+      if (!empty($theyyam_nodes)) {
+        $variables['theyyam_minicards'] = \Drupal::entityTypeManager()
+          ->getViewBuilder('node')
+          ->viewMultiple($theyyam_nodes, 'minicard');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_user().
+ */
+function kaliyattam_minimal_preprocess_user(array &$variables): void {
+  $current_user = \Drupal::currentUser();
+  $account = $variables['user'] ?? NULL;
+  $variables['is_own_profile'] = $account && $current_user->isAuthenticated() && ((int) $account->id() === (int) $current_user->id());
+  $variables['#cache']['contexts'][] = 'user';
 }
 
 /**
@@ -56,11 +146,18 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
 function kaliyattam_minimal_preprocess_views_exposed_form(array &$variables): void {
   $request = \Drupal::request();
   $current_user = \Drupal::currentUser();
-  $uid_param = $request->query->get('uid');
+  $raw_uid = $request->query->get('uid');
+  $uid_param = is_scalar($raw_uid) ? (string) $raw_uid : '';
   $is_logged_in = $current_user->isAuthenticated();
 
   $variables['logged_in'] = $is_logged_in;
   $variables['current_uid'] = $is_logged_in ? (string) $current_user->id() : '';
-  $variables['is_my'] = ($is_logged_in && (string) $uid_param === (string) $current_user->id());
+  $variables['is_my'] = ($is_logged_in && $uid_param === (string) $current_user->id());
   $variables['current_path'] = $request->getPathInfo();
+
+  // Attach cache contexts to prevent render cache pollution and ensure
+  // user-specific filters and active states are securely cached.
+  $variables['#cache']['contexts'][] = 'user';
+  $variables['#cache']['contexts'][] = 'url.query_args:uid';
+  $variables['#cache']['contexts'][] = 'url.path';
 }

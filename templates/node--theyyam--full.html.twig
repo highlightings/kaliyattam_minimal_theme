@@ -28,27 +28,25 @@
     </div>
 
     {# Referenced Events & Posts via Views #}
-    {% set related_events = drupal_view_result('related_content', 'events_by_theyyam', node.id) %}
-    {% set related_posts = drupal_view_result('related_content', 'posts_by_theyyam', node.id) %}
-    {% if related_events is not empty or related_posts is not empty %}
+    {% if related_events or related_posts %}
       <section class="referenced-references-section">
-        {% if related_events is not empty %}
+        {% if related_events %}
           <div class="referenced-block">
             <h3 class="referenced-block-title">
               <span class="referenced-icon" aria-hidden="true">📅</span>
               <span>{{ 'Related Events'|t }}</span>
             </h3>
-            {{ drupal_view('related_content', 'events_by_theyyam', node.id) }}
+            {{ related_events }}
           </div>
         {% endif %}
 
-        {% if related_posts is not empty %}
+        {% if related_posts %}
           <div class="referenced-block">
             <h3 class="referenced-block-title">
               <span class="referenced-icon" aria-hidden="true">📝</span>
               <span>{{ 'Related Posts'|t }}</span>
             </h3>
-            {{ drupal_view('related_content', 'posts_by_theyyam', node.id) }}
+            {{ related_posts }}
           </div>
         {% endif %}
       </section>

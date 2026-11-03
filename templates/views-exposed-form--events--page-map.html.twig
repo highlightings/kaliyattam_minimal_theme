@@ -10,13 +10,10 @@
   {{ q }}
 {% endif %}
 
-{% set current_path = current_path|default(app.request.pathInfo|default('')) %}
 {% set is_my = is_my|default(false) %}
 {% set search_val = form.search['#value']|default('') %}
 {% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
 {% set has_search = search_val is not empty or prox_origin is not empty %}
-
-{% set is_map = true %}
 {% set is_near_active = prox_origin is not empty %}
 
 <div class="timeline-toolbar events-toolbar">

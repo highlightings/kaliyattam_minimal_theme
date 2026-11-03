@@ -37,11 +37,9 @@
         }
         setTimeout(function () {
           var target = null;
-          try {
-            target = document.querySelector(window.location.hash);
-          }
-          catch (e) {
-            target = null;
+          var hash = window.location.hash;
+          if (/^#[a-zA-Z0-9_\-]+$/.test(hash)) {
+            target = document.getElementById(hash.slice(1));
           }
           (target || commentsSection).scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 150);
@@ -109,7 +107,8 @@
 
       // 3. Collapsible Comments Toggle
       once('km-comments-toggle', '.comments-scroll-btn', context).forEach(function (btn) {
-        var commentsSection = document.querySelector('.node-comments-section');
+        var parentNode = btn.closest('article, .node, .site-main') || document;
+        var commentsSection = parentNode.querySelector('.node-comments-section');
         if (!commentsSection) return;
 
         btn.addEventListener('click', function (e) {
@@ -266,7 +265,8 @@
                     form.submit();
                   }
                 } else {
-                  window.location.href = '/events?proximity[value]=50&proximity[source_configuration][origin_address]=' + encodeURIComponent(coordsStr);
+                  var baseUrl = window.location.pathname;
+                  window.location.href = baseUrl + '?proximity[value]=50&proximity[source_configuration][origin_address]=' + encodeURIComponent(coordsStr);
                 }
               },
               function (err) {
@@ -426,12 +426,14 @@
 
         // Recalculate controls when images finish loading or viewport resizes
         carousel.querySelectorAll('img').forEach(function (img) {
-          if (!img.complete) {
+          if (!img.complete && !img._kmBound) {
+            img._kmBound = true;
             img.addEventListener('load', updateControls);
           }
         });
 
-        if (window.ResizeObserver) {
+        if (window.ResizeObserver && !carousel._kmResizeObserved) {
+          carousel._kmResizeObserved = true;
           var ro = new ResizeObserver(function () {
             updateControls();
           });
@@ -446,43 +448,45 @@
   // 8. Main Nav Active State for Section Sub-routes (e.g. /events/map, /events/calendar)
   Drupal.behaviors.kmActiveNav = {
     attach: function (context) {
-      var path = window.location.pathname;
-      var isFront = path === '/' || path === '/ml' || path === '/timeline' || path === '/ml/timeline';
-      if (isFront) {
-        var homeLink = document.querySelector('.site-nav a[data-drupal-link-system-path="<front>"]');
-        if (homeLink && !homeLink.classList.contains('is-active')) {
-          homeLink.classList.add('is-active');
-          homeLink.setAttribute('aria-current', 'page');
+      once('km-active-nav', 'body', context).forEach(function () {
+        var path = window.location.pathname;
+        var isFront = path === '/' || path === '/ml' || path === '/timeline' || path === '/ml/timeline';
+        if (isFront) {
+          var homeLink = document.querySelector('.site-nav a[data-drupal-link-system-path="<front>"]');
+          if (homeLink && !homeLink.classList.contains('is-active')) {
+            homeLink.classList.add('is-active');
+            homeLink.setAttribute('aria-current', 'page');
+          }
         }
-      }
-      else if (/^\/([a-z]{2}\/)?events(\/.*)?$/.test(path)) {
-        var eventsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="events"]');
-        if (eventsLink && !eventsLink.classList.contains('is-active')) {
-          eventsLink.classList.add('is-active');
-          eventsLink.setAttribute('aria-current', 'page');
+        else if (/^\/([a-z]{2}\/)?events(\/.*)?$/.test(path)) {
+          var eventsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="events"]');
+          if (eventsLink && !eventsLink.classList.contains('is-active')) {
+            eventsLink.classList.add('is-active');
+            eventsLink.setAttribute('aria-current', 'page');
+          }
         }
-      }
-      else if (/^\/([a-z]{2}\/)?(theyyam)(\/.*)?$/.test(path)) {
-        var theyyamLink = document.querySelector('.site-nav a[data-drupal-link-system-path="theyyam"]');
-        if (theyyamLink && !theyyamLink.classList.contains('is-active')) {
-          theyyamLink.classList.add('is-active');
-          theyyamLink.setAttribute('aria-current', 'page');
+        else if (/^\/([a-z]{2}\/)?(theyyam)(\/.*)?$/.test(path)) {
+          var theyyamLink = document.querySelector('.site-nav a[data-drupal-link-system-path="theyyam"]');
+          if (theyyamLink && !theyyamLink.classList.contains('is-active')) {
+            theyyamLink.classList.add('is-active');
+            theyyamLink.setAttribute('aria-current', 'page');
+          }
         }
-      }
-      else if (/^\/([a-z]{2}\/)?(temples?)(\/.*)?$/.test(path)) {
-        var templesLink = document.querySelector('.site-nav a[data-drupal-link-system-path="temples"]');
-        if (templesLink && !templesLink.classList.contains('is-active')) {
-          templesLink.classList.add('is-active');
-          templesLink.setAttribute('aria-current', 'page');
+        else if (/^\/([a-z]{2}\/)?(temples?)(\/.*)?$/.test(path)) {
+          var templesLink = document.querySelector('.site-nav a[data-drupal-link-system-path="temples"]');
+          if (templesLink && !templesLink.classList.contains('is-active')) {
+            templesLink.classList.add('is-active');
+            templesLink.setAttribute('aria-current', 'page');
+          }
         }
-      }
-      else if (/^\/([a-z]{2}\/)?posts(\/.*)?$/.test(path)) {
-        var postsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="posts"]');
-        if (postsLink && !postsLink.classList.contains('is-active')) {
-          postsLink.classList.add('is-active');
-          postsLink.setAttribute('aria-current', 'page');
+        else if (/^\/([a-z]{2}\/)?posts(\/.*)?$/.test(path)) {
+          var postsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="posts"]');
+          if (postsLink && !postsLink.classList.contains('is-active')) {
+            postsLink.classList.add('is-active');
+            postsLink.setAttribute('aria-current', 'page');
+          }
         }
-      }
+      });
     }
   };
 
