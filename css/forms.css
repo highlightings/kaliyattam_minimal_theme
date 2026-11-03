@@ -55,11 +55,7 @@ legend {
   font-weight: 550;
   line-height: 1.35;
   letter-spacing: -0.01em;
-}
-
-.form-item--name > label,
-.user-login-form .form-item > label {
-  white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 .form-type-checkbox > label,
@@ -845,9 +841,49 @@ html.dark .composer details.path-form {
 .user-login-form .form-submit:hover,
 .user-pass .form-submit:hover,
 .user-register-form .form-submit:hover {
+  background: #6b0000;
   box-shadow: var(--shadow-crimson);
   transform: translateY(-1px);
   color: #ffffff;
+}
+
+/* Sidebar and block user login form */
+.sidebar .user-login-form,
+.block-user-login-block .user-login-form,
+[id*="userlogin"] .user-login-form {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.sidebar .user-login-form .form-item,
+.block-user-login-block .user-login-form .form-item,
+[id*="userlogin"] .user-login-form .form-item {
+  margin-block: 0.75rem !important;
+}
+
+.sidebar .user-login-form .form-item > label,
+.block-user-login-block .user-login-form .form-item > label,
+[id*="userlogin"] .user-login-form .form-item > label {
+  font-size: 0.88rem;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar .user-login-form .form-actions,
+.block-user-login-block .user-login-form .form-actions,
+[id*="userlogin"] .user-login-form .form-actions {
+  margin-top: 1rem;
+}
+
+.sidebar .user-login-form .form-submit,
+.block-user-login-block .user-login-form .form-submit,
+[id*="userlogin"] .user-login-form .form-submit {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
 }
 
 :root[data-theme="dark"] .user-login-form,
@@ -859,5 +895,49 @@ html.dark .user-register-form {
   background: var(--theme-surface, #1e293b);
   border-color: var(--theme-border, #334155);
   box-shadow: var(--theme-card-shadow, 0 4px 20px rgba(0, 0, 0, 0.3));
+}
+
+/* Dark mode buttons matching quick action buttons (deep ritual maroon) */
+:root[data-theme="dark"] .user-login-form .form-submit,
+:root[data-theme="dark"] .user-pass .form-submit,
+:root[data-theme="dark"] .user-register-form .form-submit,
+:root[data-theme="dark"] #block-kaliyattam-minimal-userlogin .form-submit,
+:root[data-theme="dark"] .block-user-login-block .form-submit,
+:root[data-theme="dark"] form[id*="user-login"] .form-submit,
+:root[data-theme="dark"] form[id*="user-register"] .form-submit,
+:root[data-theme="dark"] form[id*="user-pass"] .form-submit,
+html.dark .user-login-form .form-submit,
+html.dark .user-pass .form-submit,
+html.dark .user-register-form .form-submit,
+html.dark #block-kaliyattam-minimal-userlogin .form-submit,
+html.dark .block-user-login-block .form-submit,
+html.dark form[id*="user-login"] .form-submit,
+html.dark form[id*="user-register"] .form-submit,
+html.dark form[id*="user-pass"] .form-submit {
+  background: linear-gradient(135deg, #5c0000 0%, #3c0000 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .user-login-form .form-submit:hover,
+:root[data-theme="dark"] .user-pass .form-submit:hover,
+:root[data-theme="dark"] .user-register-form .form-submit:hover,
+:root[data-theme="dark"] #block-kaliyattam-minimal-userlogin .form-submit:hover,
+:root[data-theme="dark"] .block-user-login-block .form-submit:hover,
+:root[data-theme="dark"] form[id*="user-login"] .form-submit:hover,
+:root[data-theme="dark"] form[id*="user-register"] .form-submit:hover,
+:root[data-theme="dark"] form[id*="user-pass"] .form-submit:hover,
+html.dark .user-login-form .form-submit:hover,
+html.dark .user-pass .form-submit:hover,
+html.dark .user-register-form .form-submit:hover,
+html.dark #block-kaliyattam-minimal-userlogin .form-submit:hover,
+html.dark .block-user-login-block .form-submit:hover,
+html.dark form[id*="user-login"] .form-submit:hover,
+html.dark form[id*="user-register"] .form-submit:hover,
+html.dark form[id*="user-pass"] .form-submit:hover {
+  background: linear-gradient(135deg, #700000 0%, #4a0000 100%) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-1px);
 }
 
