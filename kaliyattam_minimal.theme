@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\CacheableMetadata;
 use Drupal\Core\Url;
 use Drupal\views\Views;
 
@@ -18,6 +20,10 @@ function _kaliyattam_minimal_safe_url(string $route_name, array $params = [], ar
     return Url::fromRoute($route_name, $params, $options)->toString();
   }
   catch (\Throwable $e) {
+    \Drupal::logger('kaliyattam_minimal')->debug('Failed generating URL for route @route: @message', [
+      '@route' => $route_name,
+      '@message' => $e->getMessage(),
+    ]);
     return '';
   }
 }
@@ -33,23 +39,25 @@ function kaliyattam_minimal_theme_suggestions_form_alter(array &$suggestions, ar
 }
 
 /**
- * Implements hook_preprocess_form().
+ * Implements hook_form_alter().
  */
-function kaliyattam_minimal_preprocess_form(array &$variables): void {
-  $form_id = $variables['element']['#form_id'] ?? '';
+function kaliyattam_minimal_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   if (preg_match('/^node_(post|event|theyyam|location)_(edit_)?form$/', $form_id)) {
-    $variables['composer_is_draft'] = false;
-    $form_state = $variables['element']['#form_state'] ?? NULL;
-    if ($form_state && method_exists($form_state, 'getFormObject')) {
-      $form_object = $form_state->getFormObject();
-      if ($form_object && method_exists($form_object, 'getEntity')) {
-        $entity = $form_object->getEntity();
-        if ($entity && method_exists($entity, 'isPublished') && !$entity->isNew() && !$entity->isPublished()) {
-          $variables['composer_is_draft'] = true;
-        }
+    $form_object = $form_state->getFormObject();
+    if ($form_object && method_exists($form_object, 'getEntity')) {
+      $entity = $form_object->getEntity();
+      if ($entity && method_exists($entity, 'isPublished')) {
+        $form['#composer_is_draft'] = !$entity->isNew() && !$entity->isPublished();
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_form().
+ */
+function kaliyattam_minimal_preprocess_form(array &$variables): void {
+  $variables['composer_is_draft'] = (bool) ($variables['element']['#composer_is_draft'] ?? FALSE);
 }
 
 /**
@@ -85,8 +93,8 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
     $variables['author_initial'] = 'K';
   }
 
-  // In full view mode, optimize related views and referenced entity cards
-  // so templates avoid redundant double-execution and individual N+1 queries.
+  // In full view mode, optimize related views and referenced entity cards.
+  // Execute views once and always bubble cacheable metadata.
   if (($variables['view_mode'] ?? '') === 'full') {
     $bundle = $node->bundle();
     $nid = $node->id();
@@ -107,13 +115,12 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
     foreach ($displays as $var_name => $display_id) {
       $view = Views::getView('related_content');
       if ($view && $view->access($display_id)) {
-        $view->setDisplay($display_id);
-        $view->setArguments([$nid]);
-        $view->preExecute();
-        $view->execute();
-        if (!empty($view->result)) {
-          $variables[$var_name] = $view->buildRenderable($display_id, [$nid]);
-          $renderer->addCacheableDependency($variables, $view->storage);
+        $build = $view->executeDisplay($display_id, [$nid]);
+        if ($build) {
+          $renderer->addCacheableDependency($variables, CacheableMetadata::createFromRenderArray($build));
+          if (!empty($view->result)) {
+            $variables[$var_name] = $build;
+          }
         }
       }
     }
@@ -122,9 +129,17 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
     if ($bundle === 'location' && $node->hasField('field_theyyam') && !$node->get('field_theyyam')->isEmpty()) {
       $theyyam_nodes = $node->get('field_theyyam')->referencedEntities();
       if (!empty($theyyam_nodes)) {
-        $variables['theyyam_minicards'] = \Drupal::entityTypeManager()
+        $built = \Drupal::entityTypeManager()
           ->getViewBuilder('node')
           ->viewMultiple($theyyam_nodes, 'minicard');
+        $cards = [];
+        foreach ($theyyam_nodes as $theyyam_node) {
+          if (isset($built[$theyyam_node->id()])) {
+            $cards[] = $built[$theyyam_node->id()];
+          }
+        }
+        $variables['theyyam_minicards'] = $cards;
+        $renderer->addCacheableDependency($variables, CacheableMetadata::createFromRenderArray($built));
       }
     }
   }
@@ -144,9 +159,16 @@ function kaliyattam_minimal_preprocess_user(array &$variables): void {
  * Implements hook_preprocess_views_exposed_form().
  */
 function kaliyattam_minimal_preprocess_views_exposed_form(array &$variables): void {
+  $view = $variables['view'] ?? NULL;
+  if (!$view || !in_array($view->id(), ['events', 'timeline_locations', 'timeline_type', 'timeline_site', 'locations_map'], TRUE)) {
+    return;
+  }
+
   $request = \Drupal::request();
   $current_user = \Drupal::currentUser();
-  $raw_uid = $request->query->get('uid');
+  // Safe query parameter extraction avoiding Symfony InputBag non-scalar 400 exception.
+  $query_all = $request->query->all();
+  $raw_uid = $query_all['uid'] ?? '';
   $uid_param = is_scalar($raw_uid) ? (string) $raw_uid : '';
   $is_logged_in = $current_user->isAuthenticated();
 
@@ -182,6 +204,11 @@ function kaliyattam_minimal_preprocess_views_exposed_form(array &$variables): vo
  * Implements hook_preprocess_views_view().
  */
 function kaliyattam_minimal_preprocess_views_view(array &$variables): void {
+  $view = $variables['view'] ?? NULL;
+  if (!$view || !in_array($view->id(), ['events_calendar', 'timeline_site'], TRUE)) {
+    return;
+  }
+
   $variables['routes'] = [
     'events' => _kaliyattam_minimal_safe_url('view.events.page_1'),
     'events_past' => _kaliyattam_minimal_safe_url('view.events.page_2'),

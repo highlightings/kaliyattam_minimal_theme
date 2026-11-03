@@ -27,11 +27,12 @@
   {% endif %}
   {% if items|length > 1 %}
     {{ attach_library('kaliyattam_minimal/carousel') }}
+    {% set carousel_id = element['#object'] ? ('km-' ~ element['#object'].getEntityTypeId() ~ '-' ~ element['#object'].id()) : ('km-' ~ random(1000, 9999)) %}
     <div class="km-carousel" data-km-carousel role="region" aria-roledescription="carousel" aria-label="{{ label_hidden ? 'Media gallery'|t : label }}">
       <div class="km-carousel__viewport" tabindex="0">
         <div class="km-carousel__track">
           {% for item in items %}
-            <div id="km-slide-{{ loop.index0 }}" {{ item.attributes.addClass('km-carousel__slide') }} role="tabpanel" aria-roledescription="slide" aria-label="{{ '@n of @total'|t({'@n': loop.index, '@total': loop.length}) }}">{{ item.content }}</div>
+            <div id="{{ carousel_id }}-slide-{{ loop.index0 }}" {{ item.attributes.addClass('km-carousel__slide') }} role="tabpanel" aria-roledescription="slide" aria-label="{{ '@n of @total'|t({'@n': loop.index, '@total': loop.length}) }}">{{ item.content }}</div>
           {% endfor %}
         </div>
       </div>
@@ -43,7 +44,7 @@
       </button>
       <div class="km-carousel__dots" data-carousel-dots role="tablist" aria-label="{{ 'Choose slide to display'|t }}">
         {% for item in items %}
-          <button type="button" class="km-carousel__dot{{ loop.first ? ' is-active' }}" role="tab" id="km-tab-{{ loop.index0 }}" aria-controls="km-slide-{{ loop.index0 }}" data-slide-index="{{ loop.index0 }}" aria-label="{{ 'Slide @n'|t({'@n': loop.index}) }}" aria-selected="{{ loop.first ? 'true' : 'false' }}"></button>
+          <button type="button" class="km-carousel__dot{{ loop.first ? ' is-active' }}" role="tab" id="{{ carousel_id }}-tab-{{ loop.index0 }}" aria-controls="{{ carousel_id }}-slide-{{ loop.index0 }}" data-slide-index="{{ loop.index0 }}" aria-label="{{ 'Slide @n'|t({'@n': loop.index}) }}" aria-selected="{{ loop.first ? 'true' : 'false' }}"></button>
         {% endfor %}
       </div>
     </div>

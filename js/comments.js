@@ -18,7 +18,7 @@
         }
         setTimeout(function () {
           var target = null;
-          if (/^#[a-zA-Z0-9_\-]+$/.test(hash)) {
+          if (/^#[a-zA-Z0-9_-]+$/.test(hash)) {
             target = document.getElementById(hash.slice(1));
           }
           (target || commentsSection).scrollIntoView({ behavior: 'smooth', block: 'start' });

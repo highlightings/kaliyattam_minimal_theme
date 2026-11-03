@@ -60,7 +60,7 @@
 
     <div class="timeline-toolbar__search-drawer" id="timeline-search-drawer" hidden>
       <div class="timeline-toolbar__search-inner">
-        <form action="{{ routes.events ?: path('view.events.page_1') }}" method="get">
+        <form action="{{ routes.events|default('/events') }}" method="get">
           <div class="timeline-toolbar__filter-item">
             <div class="js-form-item form-item js-form-type-textfield form-type--textfield form-item-search">
               <input type="text" name="search" placeholder="{{ 'Search events...'|t }}" class="form-text">

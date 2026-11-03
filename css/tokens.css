@@ -99,8 +99,7 @@
    Semantic Theme Tokens - Dark Mode
    #0f172a body bg, #1e293b card bg, #334155 border, #f1f5f9 / #94a3b8 text
    ========================================================================== */
-:root[data-theme="dark"],
-html.dark {
+:root[data-theme="dark"] {
   color-scheme: dark;
   --theme-bg: #0f172a;
   --theme-surface: #1e293b;

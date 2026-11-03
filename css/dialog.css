@@ -27,8 +27,7 @@
   z-index: 1200 !important;
 }
 
-[data-theme="dark"] .ui-dialog,
-html.dark .ui-dialog {
+[data-theme="dark"] .ui-dialog {
   background: var(--theme-surface, #1e293b);
   border-color: var(--theme-border, #334155);
   color: var(--theme-text, #f1f5f9);
@@ -47,8 +46,7 @@ html.dark .ui-dialog {
   position: relative;
 }
 
-[data-theme="dark"] .ui-dialog .ui-dialog-titlebar,
-html.dark .ui-dialog .ui-dialog-titlebar {
+[data-theme="dark"] .ui-dialog .ui-dialog-titlebar {
   background: var(--theme-surface-alt, #27364b) !important;
   border-bottom: 1px solid var(--theme-border, #334155) !important;
   color: var(--theme-text, #f1f5f9) !important;
@@ -102,8 +100,7 @@ html.dark .ui-dialog .ui-dialog-titlebar {
   overflow-y: auto;
 }
 
-[data-theme="dark"] .ui-dialog .ui-dialog-content,
-html.dark .ui-dialog .ui-dialog-content {
+[data-theme="dark"] .ui-dialog .ui-dialog-content {
   background: var(--theme-surface, #1e293b);
   color: var(--theme-text, #f1f5f9);
 }
@@ -128,8 +125,7 @@ html.dark .ui-dialog .ui-dialog-content {
   box-shadow: none !important;
 }
 
-[data-theme="dark"] .ui-dialog .composer,
-html.dark .ui-dialog .composer {
+[data-theme="dark"] .ui-dialog .composer {
   background: var(--theme-surface-subtle, #141c2c) !important;
   border-color: var(--theme-border-subtle, rgba(148, 163, 184, 0.18)) !important;
 }
@@ -191,8 +187,7 @@ html:not([data-theme="dark"]) #drupal-off-canvas-wrapper,
 }
 
 /* Dark Mode Off-Canvas */
-[data-theme="dark"] #drupal-off-canvas-wrapper,
-html.dark #drupal-off-canvas-wrapper {
+[data-theme="dark"] #drupal-off-canvas-wrapper {
   --off-canvas-background-color: var(--theme-surface, #1e293b);
   --off-canvas-background-color-light: var(--theme-surface-alt, #27364b);
   --off-canvas-background-color-medium: var(--theme-surface, #1e293b);
@@ -238,8 +233,7 @@ html:not([data-theme="dark"]) #drupal-off-canvas-wrapper .ui-dialog-titlebar,
   color: #ffffff !important;
 }
 
-[data-theme="dark"] #drupal-off-canvas-wrapper .ui-dialog-titlebar,
-html.dark #drupal-off-canvas-wrapper .ui-dialog-titlebar {
+[data-theme="dark"] #drupal-off-canvas-wrapper .ui-dialog-titlebar {
   background: #1c1917 !important;
   border-bottom: 1px solid #27272a !important;
   color: #f4f4f5 !important;
@@ -395,15 +389,12 @@ html:not([data-theme="dark"]) #drupal-off-canvas summary,
 }
 
 [data-theme="dark"] #drupal-off-canvas fieldset,
-[data-theme="dark"] #drupal-off-canvas details,
-html.dark #drupal-off-canvas fieldset,
-html.dark #drupal-off-canvas details {
+[data-theme="dark"] #drupal-off-canvas details {
   background: #202024 !important;
   border: 1px solid #27272a !important;
 }
 
-[data-theme="dark"] #drupal-off-canvas summary,
-html.dark #drupal-off-canvas summary {
+[data-theme="dark"] #drupal-off-canvas summary {
   background: #27272a !important;
   color: #f4f4f5 !important;
   border: 1px solid #3f3f46 !important;
@@ -428,8 +419,7 @@ html:not([data-theme="dark"]) #drupal-off-canvas .field--widget-media-library-wi
   border: 1px solid #e2e8f0 !important;
 }
 
-[data-theme="dark"] #drupal-off-canvas .field--widget-media-library-widget,
-html.dark #drupal-off-canvas .field--widget-media-library-widget {
+[data-theme="dark"] #drupal-off-canvas .field--widget-media-library-widget {
   background: #222227 !important;
   border: 1px solid #27272a !important;
 }
@@ -459,15 +449,13 @@ html:not([data-theme="dark"]) #drupal-off-canvas .js-media-library-open-button:h
   background: #fef2f2 !important;
 }
 
-[data-theme="dark"] #drupal-off-canvas .js-media-library-open-button,
-html.dark #drupal-off-canvas .js-media-library-open-button {
+[data-theme="dark"] #drupal-off-canvas .js-media-library-open-button {
   background: #27272a !important;
   border: 1.5px solid #3f3f46 !important;
   color: #f4f4f5 !important;
 }
 
-[data-theme="dark"] #drupal-off-canvas .js-media-library-open-button:hover,
-html.dark #drupal-off-canvas .js-media-library-open-button:hover {
+[data-theme="dark"] #drupal-off-canvas .js-media-library-open-button:hover {
   border-color: #f59e0b !important;
   color: #f59e0b !important;
 }
@@ -507,8 +495,7 @@ html.dark #drupal-off-canvas .js-media-library-open-button:hover {
 }
 
 [data-theme="dark"] #drupal-off-canvas .button--primary,
-[data-theme="dark"] #drupal-off-canvas input[value="Save"],
-html.dark #drupal-off-canvas .button--primary {
+[data-theme="dark"] #drupal-off-canvas input[value="Save"] {
   background: #991b1b !important;
 }
 
@@ -622,26 +609,20 @@ html:not([data-theme="dark"]) ul.js-media-library-menu a.active,
 
 /* Inactive tabs (Dark mode) */
 [data-theme="dark"] .media-library-menu a,
-[data-theme="dark"] ul.js-media-library-menu a,
-html.dark .media-library-menu a,
-html.dark ul.js-media-library-menu a {
+[data-theme="dark"] ul.js-media-library-menu a {
   background: #27272a !important;
   border: 1px solid #3f3f46 !important;
   color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] .media-library-menu a:hover,
-[data-theme="dark"] ul.js-media-library-menu a:hover,
-html.dark .media-library-menu a:hover,
-html.dark ul.js-media-library-menu a:hover {
+[data-theme="dark"] ul.js-media-library-menu a:hover {
   background: #3f3f46 !important;
   color: #ffffff !important;
 }
 
 [data-theme="dark"] .media-library-menu a.active,
-[data-theme="dark"] ul.js-media-library-menu a.active,
-html.dark .media-library-menu a.active,
-html.dark ul.js-media-library-menu a.active {
+[data-theme="dark"] ul.js-media-library-menu a.active {
   background: #881337 !important;
   border-color: #881337 !important;
   color: #ffffff !important;
@@ -667,8 +648,7 @@ html.dark ul.js-media-library-menu a.active {
   margin-bottom: 8px !important;
 }
 
-[data-theme="dark"] .media-library-add-form,
-html.dark .media-library-add-form {
+[data-theme="dark"] .media-library-add-form {
   border-color: #3f3f46 !important;
   background: #202024 !important;
 }
@@ -998,10 +978,7 @@ form.js-media-library-views-form > input[type="hidden"] {
 
 [data-theme="dark"] .ui-dialog:has(.composer) .ui-dialog-buttonpane,
 [data-theme="dark"] .ui-dialog:has(.node-form) .ui-dialog-buttonpane,
-[data-theme="dark"] .ui-dialog:has(#drupal-modal-event) .ui-dialog-buttonpane,
-html.dark .ui-dialog:has(.composer) .ui-dialog-buttonpane,
-html.dark .ui-dialog:has(.node-form) .ui-dialog-buttonpane,
-html.dark .ui-dialog:has(#drupal-modal-event) .ui-dialog-buttonpane {
+[data-theme="dark"] .ui-dialog:has(#drupal-modal-event) .ui-dialog-buttonpane {
   background: var(--theme-surface, #1e293b) !important;
 }
 

@@ -182,8 +182,7 @@ details > :last-child {
   align-self: flex-start;
 }
 
-:root[data-theme="dark"] .composer__visibility-badge,
-html.dark .composer__visibility-badge {
+:root[data-theme="dark"] .composer__visibility-badge {
   background: rgba(30, 64, 175, 0.2);
   color: #93c5fd;
   border-color: rgba(30, 64, 175, 0.3);
@@ -257,9 +256,7 @@ html.dark .composer__visibility-badge {
 }
 
 [data-theme="dark"] .composer details.field-group-advanced .filter-wrapper,
-[data-theme="dark"] .composer details.field-group-advanced .js-filter-wrapper,
-html.dark .composer details.field-group-advanced .filter-wrapper,
-html.dark .composer details.field-group-advanced .js-filter-wrapper {
+[data-theme="dark"] .composer details.field-group-advanced .js-filter-wrapper {
   background: var(--theme-surface, #1e293b) !important;
   border-color: var(--theme-border, #334155) !important;
 }
@@ -360,16 +357,13 @@ html.dark .composer details.field-group-advanced .js-filter-wrapper {
   gap: 0.4rem;
 }
 
-:root[data-theme="dark"] .composer .field--name-field-featured-image,
-html.dark .composer .field--name-field-featured-image {
+:root[data-theme="dark"] .composer .field--name-field-featured-image {
   background: var(--theme-surface-alt, #27364b);
   border-color: var(--theme-border, #334155);
 }
 
 :root[data-theme="dark"] .composer .image-preview,
-:root[data-theme="dark"] .image-preview,
-html.dark .composer .image-preview,
-html.dark .image-preview {
+:root[data-theme="dark"] .image-preview {
   background: var(--theme-surface, #1e293b);
   border-color: var(--theme-border, #334155);
 }
@@ -394,9 +388,7 @@ html.dark .image-preview {
 }
 
 :root[data-theme="dark"] .composer .field--name-field-location-address,
-:root[data-theme="dark"] .composer .field--name-field-geofield,
-html.dark .composer .field--name-field-location-address,
-html.dark .composer .field--name-field-geofield {
+:root[data-theme="dark"] .composer .field--name-field-geofield {
   background: var(--theme-surface-alt, #27364b);
   border-color: var(--theme-border, #334155);
 }
@@ -419,8 +411,7 @@ html.dark .composer .field--name-field-geofield {
   text-decoration: none !important;
 }
 
-[data-theme="dark"] .composer .tabledrag-toggle-weight,
-html.dark .composer .tabledrag-toggle-weight {
+[data-theme="dark"] .composer .tabledrag-toggle-weight {
   background: var(--theme-surface-alt, #27364b) !important;
   border-color: var(--theme-border, #334155) !important;
   color: var(--theme-text-secondary, #94a3b8) !important;
@@ -466,8 +457,7 @@ html.dark .composer .tabledrag-toggle-weight {
   transition: all 0.2s ease !important;
 }
 
-[data-theme="dark"] .composer #field-when-values tr.draggable,
-html.dark .composer #field-when-values tr.draggable {
+[data-theme="dark"] .composer #field-when-values tr.draggable {
   background: var(--theme-surface, #1e293b) !important;
   border-color: var(--theme-border, #334155) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
@@ -526,10 +516,7 @@ html.dark .composer #field-when-values tr.draggable {
 
 [data-theme="dark"] .composer input[name*="_remove_button"],
 [data-theme="dark"] .composer #field-when-values input[value="Remove"],
-[data-theme="dark"] .composer .field-multiple-table input[value="Remove"],
-html.dark .composer input[name*="_remove_button"],
-html.dark .composer #field-when-values input[value="Remove"],
-html.dark .composer .field-multiple-table input[value="Remove"] {
+[data-theme="dark"] .composer .field-multiple-table input[value="Remove"] {
   background: rgba(185, 28, 28, 0.15) !important;
   color: #fca5a5 !important;
   border-color: rgba(185, 28, 28, 0.35) !important;
@@ -642,9 +629,7 @@ html.dark .composer .field-multiple-table input[value="Remove"] {
 }
 
 [data-theme="dark"] .composer .field--name-field-when > .form-item__label,
-[data-theme="dark"] .composer .field--name-field-when legend,
-html.dark .composer .field--name-field-when > .form-item__label,
-html.dark .composer .field--name-field-when legend {
+[data-theme="dark"] .composer .field--name-field-when legend {
   color: var(--theme-text, #f1f5f9) !important;
   border-bottom-color: var(--theme-border-subtle, rgba(148, 163, 184, 0.18)) !important;
 }
@@ -778,8 +763,7 @@ html.dark .composer .field--name-field-when legend {
   background: var(--theme-surface, #ffffff) !important;
 }
 
-[data-theme="dark"] .composer details.path-form,
-html.dark .composer details.path-form {
+[data-theme="dark"] .composer details.path-form {
   background: var(--theme-surface, #1e293b) !important;
   border-color: var(--theme-border, #334155) !important;
 }
@@ -888,10 +872,7 @@ html.dark .composer details.path-form {
 
 :root[data-theme="dark"] .user-login-form,
 :root[data-theme="dark"] .user-pass,
-:root[data-theme="dark"] .user-register-form,
-html.dark .user-login-form,
-html.dark .user-pass,
-html.dark .user-register-form {
+:root[data-theme="dark"] .user-register-form {
   background: var(--theme-surface, #1e293b);
   border-color: var(--theme-border, #334155);
   box-shadow: var(--theme-card-shadow, 0 4px 20px rgba(0, 0, 0, 0.3));
@@ -905,15 +886,7 @@ html.dark .user-register-form {
 :root[data-theme="dark"] .block-user-login-block .form-submit,
 :root[data-theme="dark"] form[id*="user-login"] .form-submit,
 :root[data-theme="dark"] form[id*="user-register"] .form-submit,
-:root[data-theme="dark"] form[id*="user-pass"] .form-submit,
-html.dark .user-login-form .form-submit,
-html.dark .user-pass .form-submit,
-html.dark .user-register-form .form-submit,
-html.dark #block-kaliyattam-minimal-userlogin .form-submit,
-html.dark .block-user-login-block .form-submit,
-html.dark form[id*="user-login"] .form-submit,
-html.dark form[id*="user-register"] .form-submit,
-html.dark form[id*="user-pass"] .form-submit {
+:root[data-theme="dark"] form[id*="user-pass"] .form-submit {
   background: linear-gradient(135deg, #5c0000 0%, #3c0000 100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
@@ -927,15 +900,7 @@ html.dark form[id*="user-pass"] .form-submit {
 :root[data-theme="dark"] .block-user-login-block .form-submit:hover,
 :root[data-theme="dark"] form[id*="user-login"] .form-submit:hover,
 :root[data-theme="dark"] form[id*="user-register"] .form-submit:hover,
-:root[data-theme="dark"] form[id*="user-pass"] .form-submit:hover,
-html.dark .user-login-form .form-submit:hover,
-html.dark .user-pass .form-submit:hover,
-html.dark .user-register-form .form-submit:hover,
-html.dark #block-kaliyattam-minimal-userlogin .form-submit:hover,
-html.dark .block-user-login-block .form-submit:hover,
-html.dark form[id*="user-login"] .form-submit:hover,
-html.dark form[id*="user-register"] .form-submit:hover,
-html.dark form[id*="user-pass"] .form-submit:hover {
+:root[data-theme="dark"] form[id*="user-pass"] .form-submit:hover {
   background: linear-gradient(135deg, #700000 0%, #4a0000 100%) !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35) !important;
   transform: translateY(-1px);

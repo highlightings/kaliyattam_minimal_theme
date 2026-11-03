@@ -68,6 +68,7 @@
     {# Comments Section #}
     {% set comments_field = content.field_comments_without_title|default(content.field_comments) %}
     {% if comments_field is not empty %}
+      {{ attach_library('kaliyattam_minimal/comments') }}
       <section id="comments" class="node-comments-section comments-collapsible">
         <h3 class="comments-title">💬 {{ 'Comments'|t }}</h3>
         {{ comments_field }}
