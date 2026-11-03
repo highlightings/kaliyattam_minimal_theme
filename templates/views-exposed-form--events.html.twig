@@ -16,7 +16,7 @@
 {% set is_cal = '/events/calendar' in current_path or '/events/calendar' in form_action %}
 {% set is_map = '/events/map' in current_path or '/events/map' in form_action %}
 {% set is_my = is_my is defined ? is_my : (app.request.query.get('my') == '1') %}
-{% set is_upcoming = not is_past and not is_cal and not is_map and not is_my %}
+{% set is_upcoming = not is_past and not is_cal and not is_map %}
 
 {% set search_val = form.search['#value']|default('') %}
 {% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
@@ -37,11 +37,11 @@
           <span class="events-pill__reset" data-events-clear-near title="{{ 'Clear proximity'|t }}">×</span>
         {% endif %}
       </button>
-      <a href="{{ path('view.events.page_2') }}" class="events-pill{{ is_past and not is_my ? ' is-active' }}">
+      <a href="{{ is_my ? path('view.events.page_2', {}, {'query': {'my': '1'}}) : path('view.events.page_2') }}" class="events-pill{{ is_past ? ' is-active' }}">
         <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
       </a>
       {% if logged_in %}
-        <a href="{{ is_my ? path('view.events.page_1') : path('view.events.page_1', {}, {'query': {'my': '1'}}) }}" class="events-pill events-pill--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all events'|t : 'Show only my events'|t }}">
+        <a href="{{ is_my ? path(is_past ? 'view.events.page_2' : 'view.events.page_1') : path(is_past ? 'view.events.page_2' : 'view.events.page_1', {}, {'query': {'my': '1'}}) }}" class="events-pill events-pill--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all events'|t : 'Show only my events'|t }}">
           <span aria-hidden="true">👤</span> <span class="events-pill__label">{{ 'My events'|t }}</span>
           {% if is_my %}
             <span class="events-pill__reset" title="{{ 'Clear filter'|t }}">×</span>

@@ -22,10 +22,10 @@
 
 <div class="timeline-toolbar">
   <div class="timeline-toolbar__segmented-bar" role="group" aria-label="{{ 'Filter and Sort'|t }}">
-    <button type="button" class="timeline-toolbar__btn{{ current_sort != 'count' and not is_my ? ' is-active' }}" data-timeline-sort="created">
+    <button type="button" class="timeline-toolbar__btn{{ current_sort != 'count' ? ' is-active' }}" data-timeline-sort="created">
       {{ 'Latest'|t }}
     </button>
-    <button type="button" class="timeline-toolbar__btn{{ current_sort == 'count' and not is_my ? ' is-active' }}" data-timeline-sort="count">
+    <button type="button" class="timeline-toolbar__btn{{ current_sort == 'count' ? ' is-active' }}" data-timeline-sort="count">
       {{ 'Popular'|t }}
     </button>
     {% if logged_in and is_posts %}
