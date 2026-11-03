@@ -13,7 +13,7 @@
 {% set form_action = form['#action']|default('') %}
 {% set current_path = current_path|default(app.request.pathInfo|default('')) %}
 {% set is_posts = '/posts' in current_path or '/posts' in form_action %}
-{% set is_my = is_my is defined ? is_my : (app.request.query.get('my') == '1') %}
+{% set is_my = is_my|default(false) %}
 
 {% set current_sort = form.sort_by['#value']|default('created') %}
 {% set search_val = form.search['#value']|default('') %}
@@ -29,7 +29,7 @@
       {{ 'Popular'|t }}
     </button>
     {% if logged_in and is_posts %}
-      <a href="{{ is_my ? path('view.timeline_type.post_page') : path('view.timeline_type.post_page', {}, {'query': {'my': '1'}}) }}" class="timeline-toolbar__btn timeline-toolbar__btn--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all posts'|t : 'Show only my posts'|t }}">
+      <a href="{{ is_my ? path('view.timeline_type.post_page') : path('view.timeline_type.post_page', {}, {'query': {'uid': current_uid}}) }}" class="timeline-toolbar__btn timeline-toolbar__btn--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all posts'|t : 'Show only my posts'|t }}">
         <span aria-hidden="true">👤</span> <span>{{ 'My posts'|t }}</span>
         {% if is_my %}
           <span class="events-pill__reset" title="{{ 'Clear filter'|t }}">×</span>
@@ -62,7 +62,7 @@
   {# Keep sort select in the DOM but hidden so our buttons can set its value #}
   <div class="visually-hidden">
     {% if is_my %}
-      <input type="hidden" name="my" value="1">
+      <input type="hidden" name="uid" value="{{ current_uid }}">
     {% endif %}
     {{ form.sort_by }}
     {{ form|without('q', 'search', 'langcode', 'actions', 'sort_by') }}

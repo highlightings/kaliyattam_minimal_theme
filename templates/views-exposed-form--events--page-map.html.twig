@@ -11,7 +11,7 @@
 {% endif %}
 
 {% set current_path = current_path|default(app.request.pathInfo|default('')) %}
-{% set is_my = is_my is defined ? is_my : (app.request.query.get('my') == '1') %}
+{% set is_my = is_my|default(false) %}
 {% set search_val = form.search['#value']|default('') %}
 {% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
 {% set has_search = search_val is not empty or prox_origin is not empty %}
@@ -35,7 +35,7 @@
         <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
       </a>
       {% if logged_in %}
-        <a href="{{ is_my ? path('view.events.page_map') : path('view.events.page_map', {}, {'query': {'my': '1'}}) }}" class="events-pill events-pill--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all events'|t : 'Show only my events'|t }}">
+        <a href="{{ is_my ? path('view.events.page_map') : path('view.events.page_map', {}, {'query': {'uid': current_uid}}) }}" class="events-pill events-pill--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all events'|t : 'Show only my events'|t }}">
           <span aria-hidden="true">👤</span> <span class="events-pill__label">{{ 'My events'|t }}</span>
           {% if is_my %}
             <span class="events-pill__reset" title="{{ 'Clear filter'|t }}">×</span>
@@ -84,7 +84,7 @@
 
   <div class="visually-hidden">
     {% if is_my %}
-      <input type="hidden" name="my" value="1">
+      <input type="hidden" name="uid" value="{{ current_uid }}">
     {% endif %}
     {{ form|without('q', 'search', 'proximity', 'proximity_wrapper', 'actions') }}
   </div>

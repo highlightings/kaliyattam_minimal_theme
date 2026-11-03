@@ -49,3 +49,18 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
     $variables['author_timeline_url'] = _kaliyattam_minimal_safe_url('view.timeline_user.page_timeline', ['user' => $author->id()]);
   }
 }
+
+/**
+ * Implements hook_preprocess_views_exposed_form().
+ */
+function kaliyattam_minimal_preprocess_views_exposed_form(array &$variables): void {
+  $request = \Drupal::request();
+  $current_user = \Drupal::currentUser();
+  $uid_param = $request->query->get('uid');
+  $is_logged_in = $current_user->isAuthenticated();
+
+  $variables['logged_in'] = $is_logged_in;
+  $variables['current_uid'] = $is_logged_in ? (string) $current_user->id() : '';
+  $variables['is_my'] = ($is_logged_in && (string) $uid_param === (string) $current_user->id());
+  $variables['current_path'] = $request->getPathInfo();
+}
