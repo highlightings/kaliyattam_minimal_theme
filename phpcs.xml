@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="kaliyattam_minimal">
+  <description>PHP_CodeSniffer configuration for Kaliyattam Minimal Theme.</description>
+  <file>.</file>
+  <arg name="extensions" value="php,module,theme,inc,install,test,profile,theme"/>
+  <arg value="s"/>
+
+  <!-- Exclude third party or test specs -->
+  <exclude-pattern>./tests/*</exclude-pattern>
+
+  <!-- Drupal coding standards -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+</ruleset>
+

@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "selector-pseudo-element-no-unknown": true,
+    "property-no-unknown": true,
+    "block-no-empty": true
+  }
+}
+

@@ -46,9 +46,10 @@ test('event form renders', async ({ page }) => {
 
 test('dark mode toggle persists', async ({ page }) => {
   await page.goto(base);
+  const initial = (await page.locator('html').getAttribute('data-theme')) || 'light';
   await page.click('[data-theme-toggle]');
-  await expect(page.locator('html')).toHaveAttribute('data-theme', /dark|light/);
-  const first = await page.locator('html').getAttribute('data-theme');
+  const expected = initial === 'dark' ? 'light' : 'dark';
+  await expect(page.locator('html')).toHaveAttribute('data-theme', expected);
   await page.reload();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', first);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', expected);
 });

@@ -1,0 +1,113 @@
+{#
+/**
+ * @file
+ * Shared events toolbar include for /events, /events/past, and /events/map.
+ */
+#}
+{% if q is not empty %}
+  {{ q }}
+{% endif %}
+
+{% set form_action = form['#action']|default('') %}
+{% set current_path = current_path|default('') %}
+{% set is_past = is_past|default('/events/past' in current_path or '/events/past' in form_action) %}
+{% set is_cal = is_cal|default('/events/calendar' in current_path or '/events/calendar' in form_action) %}
+{% set is_map = is_map|default('/events/map' in current_path or '/events/map' in form_action) %}
+{% set is_my = is_my|default(false) %}
+{% set is_upcoming = is_upcoming|default(not is_past and not is_cal and not is_map) %}
+{% set is_cards = is_cards|default(not is_map and not is_cal) %}
+
+{% set search_val = form.search['#value']|default('') %}
+{% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
+{% set has_search = search_val is not empty or prox_origin is not empty %}
+{% set is_near_active = prox_origin is not empty %}
+
+{{ attach_library('kaliyattam_minimal/toolbar') }}
+
+<div class="timeline-toolbar events-toolbar">
+  <div class="events-toolbar__header">
+    <div class="events-toolbar__filters" role="group" aria-label="{{ 'Filter events'|t }}">
+      {% if routes.events %}
+        <a href="{{ routes.events }}" class="events-pill{{ is_upcoming and not is_near_active ? ' is-active' }}">
+          <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+        </a>
+      {% endif %}
+      {% if is_near_active %}
+        <div class="events-pill-wrap">
+          <button type="button" class="events-pill events-pill--nearby is-active" data-events-near-me aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Find events near your current location'|t }}">
+            <span aria-hidden="true">📍</span> <span class="events-pill__label">{{ 'Near Me (Active)'|t }}</span>
+          </button>
+          <button type="button" class="events-pill__reset" data-events-clear-near title="{{ 'Clear proximity'|t }}" aria-label="{{ 'Clear proximity'|t }}">×</button>
+        </div>
+      {% else %}
+        <button type="button" class="events-pill events-pill--nearby" data-events-near-me aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Find events near your current location'|t }}">
+          <span aria-hidden="true">📍</span> <span class="events-pill__label">{{ 'Near Me'|t }}</span>
+        </button>
+      {% endif %}
+      {% if routes.events_past %}
+        <a href="{{ is_my ? (routes.events_past_my ?: routes.events_past) : routes.events_past }}" class="events-pill{{ is_past ? ' is-active' }}">
+          <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
+        </a>
+      {% endif %}
+      {% if logged_in and (routes.events_my or routes.events_past_my) %}
+        <a href="{{ is_my ? (is_past ? routes.events_past : routes.events) : (is_past ? routes.events_past_my : routes.events_my) }}" class="events-pill events-pill--my{{ is_my ? ' is-active' }}" title="{{ is_my ? 'Show all events'|t : 'Show only my events'|t }}">
+          <span aria-hidden="true">👤</span> <span class="events-pill__label">{{ 'My events'|t }}</span>
+          {% if is_my %}
+            <span class="events-pill__reset" title="{{ 'Clear filter'|t }}">×</span>
+          {% endif %}
+        </a>
+      {% endif %}
+      <button type="button" class="events-pill events-pill--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Search and filters'|t }}">
+        <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
+      </button>
+    </div>
+
+    <div class="events-toolbar__views" role="group" aria-label="{{ 'View layout'|t }}">
+      {% if routes.events %}
+        <a href="{{ routes.events }}" class="events-view-btn{{ is_cards ? ' is-active' }}" title="{{ 'Card list view'|t }}">
+          <span aria-hidden="true">📑</span> {{ 'Cards'|t }}
+        </a>
+      {% endif %}
+      {% if routes.events_map %}
+        <a href="{{ routes.events_map }}" class="events-view-btn{{ is_map ? ' is-active' }}" title="{{ 'Map view'|t }}">
+          <span aria-hidden="true">🗺️</span> {{ 'Map'|t }}
+        </a>
+      {% endif %}
+      {% if routes.events_calendar %}
+        <a href="{{ routes.events_calendar }}" class="events-view-btn{{ is_cal ? ' is-active' }}" title="{{ 'Calendar view'|t }}">
+          <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="timeline-toolbar__search-drawer{{ has_search ? ' is-open' }}" id="timeline-search-drawer" {{ not has_search ? 'hidden' }}>
+    <div class="timeline-toolbar__search-inner">
+      {% if form.search %}
+        <div class="timeline-toolbar__filter-item">
+          {{ form.search }}
+        </div>
+      {% endif %}
+      {% if form.proximity_wrapper %}
+        <div class="timeline-toolbar__filter-item timeline-toolbar__filter-item--proximity">
+          {{ form.proximity_wrapper }}
+        </div>
+      {% elseif form.proximity %}
+        <div class="timeline-toolbar__filter-item timeline-toolbar__filter-item--proximity">
+          {{ form.proximity }}
+        </div>
+      {% endif %}
+      <div class="timeline-toolbar__actions">
+        {{ form.actions }}
+      </div>
+    </div>
+  </div>
+
+  <div class="visually-hidden">
+    {% if is_my %}
+      <input type="hidden" name="uid" value="{{ current_uid }}">
+    {% endif %}
+    {{ form|without('q', 'search', 'proximity', 'proximity_wrapper', 'actions') }}
+  </div>
+</div>
+

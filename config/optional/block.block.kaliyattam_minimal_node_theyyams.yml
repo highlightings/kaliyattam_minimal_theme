@@ -29,6 +29,6 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       event: event
-      temple: temple
+      location: location
       post: post
       theyyam: theyyam

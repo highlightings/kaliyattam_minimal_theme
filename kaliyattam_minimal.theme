@@ -13,9 +13,9 @@ use Drupal\views\Views;
 /**
  * Safely generates a URL from a route name without throwing RouteNotFoundException.
  */
-function _kaliyattam_minimal_safe_url(string $route_name, array $params = []): string {
+function _kaliyattam_minimal_safe_url(string $route_name, array $params = [], array $options = []): string {
   try {
-    return Url::fromRoute($route_name, $params)->toString();
+    return Url::fromRoute($route_name, $params, $options)->toString();
   }
   catch (\Throwable $e) {
     return '';
@@ -26,8 +26,8 @@ function _kaliyattam_minimal_safe_url(string $route_name, array $params = []): s
  * Implements hook_theme_suggestions_form_alter().
  */
 function kaliyattam_minimal_theme_suggestions_form_alter(array &$suggestions, array $variables): void {
-  $id = $variables['element']['#id'] ?? '';
-  if (preg_match('/^node-(post|event|theyyam|location)-(edit-)?form/', $id)) {
+  $form_id = $variables['element']['#form_id'] ?? '';
+  if (preg_match('/^node_(post|event|theyyam|location)_(edit_)?form$/', $form_id)) {
     $suggestions[] = 'form__node_composer';
   }
 }
@@ -36,8 +36,8 @@ function kaliyattam_minimal_theme_suggestions_form_alter(array &$suggestions, ar
  * Implements hook_preprocess_form().
  */
 function kaliyattam_minimal_preprocess_form(array &$variables): void {
-  $id = $variables['element']['#id'] ?? '';
-  if (preg_match('/^node-(post|event|theyyam|location)-(edit-)?form/', $id)) {
+  $form_id = $variables['element']['#form_id'] ?? '';
+  if (preg_match('/^node_(post|event|theyyam|location)_(edit_)?form$/', $form_id)) {
     $variables['composer_is_draft'] = false;
     $form_state = $variables['element']['#form_state'] ?? NULL;
     if ($form_state && method_exists($form_state, 'getFormObject')) {
@@ -160,4 +160,34 @@ function kaliyattam_minimal_preprocess_views_exposed_form(array &$variables): vo
   $variables['#cache']['contexts'][] = 'user';
   $variables['#cache']['contexts'][] = 'url.query_args:uid';
   $variables['#cache']['contexts'][] = 'url.path';
+
+  // Provide safe route URLs so templates never throw RouteNotFoundException.
+  $uid_query = $is_logged_in ? ['uid' => (string) $current_user->id()] : [];
+  $variables['routes'] = [
+    'events' => _kaliyattam_minimal_safe_url('view.events.page_1'),
+    'events_my' => _kaliyattam_minimal_safe_url('view.events.page_1', [], ['query' => $uid_query]),
+    'events_past' => _kaliyattam_minimal_safe_url('view.events.page_2'),
+    'events_past_my' => _kaliyattam_minimal_safe_url('view.events.page_2', [], ['query' => $uid_query]),
+    'events_map' => _kaliyattam_minimal_safe_url('view.events.page_map'),
+    'events_map_my' => _kaliyattam_minimal_safe_url('view.events.page_map', [], ['query' => $uid_query]),
+    'events_calendar' => _kaliyattam_minimal_safe_url('view.events_calendar.page_1'),
+    'locations' => _kaliyattam_minimal_safe_url('view.timeline_locations.page_locations'),
+    'locations_map' => _kaliyattam_minimal_safe_url('view.locations_map.page_1'),
+    'posts' => _kaliyattam_minimal_safe_url('view.timeline_type.post_page'),
+    'posts_my' => _kaliyattam_minimal_safe_url('view.timeline_type.post_page', [], ['query' => $uid_query]),
+  ];
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function kaliyattam_minimal_preprocess_views_view(array &$variables): void {
+  $variables['routes'] = [
+    'events' => _kaliyattam_minimal_safe_url('view.events.page_1'),
+    'events_past' => _kaliyattam_minimal_safe_url('view.events.page_2'),
+    'events_map' => _kaliyattam_minimal_safe_url('view.events.page_map'),
+    'events_calendar' => _kaliyattam_minimal_safe_url('view.events_calendar.page_1'),
+    'locations' => _kaliyattam_minimal_safe_url('view.timeline_locations.page_locations'),
+    'locations_map' => _kaliyattam_minimal_safe_url('view.locations_map.page_1'),
+  ];
 }

@@ -1,8 +1,8 @@
 /**
  * @file
- * Theme JavaScript: theme toggle, mobile nav, collapsible comments, and share button.
+ * Core Theme JavaScript: theme toggle, mobile nav, copy link, and active nav.
  */
-(function (Drupal, once) {
+(function (Drupal, drupalSettings, once) {
   'use strict';
 
   function currentTheme() {
@@ -25,40 +25,12 @@
     return 'light';
   }
 
-  function autoExpandComments() {
-    if (window.location.hash && (window.location.hash === '#comments' || window.location.hash.indexOf('#comment') === 0)) {
-      var commentsSection = document.querySelector('.node-comments-section');
-      if (commentsSection) {
-        commentsSection.classList.add('is-open');
-        var btn = document.querySelector('.comments-scroll-btn');
-        if (btn) {
-          btn.classList.add('is-active');
-          btn.setAttribute('aria-expanded', 'true');
-        }
-        setTimeout(function () {
-          var target = null;
-          var hash = window.location.hash;
-          if (/^#[a-zA-Z0-9_\-]+$/.test(hash)) {
-            target = document.getElementById(hash.slice(1));
-          }
-          (target || commentsSection).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
-      }
-    }
-  }
-
   Drupal.behaviors.kaliyattamMinimal = {
     attach: function (context) {
       // 1. Dark / Light Mode Toggle
       once('km-theme-toggle', '[data-theme-toggle]', context).forEach(function (button) {
-        var label = button.querySelector('.theme-toggle-label');
         function syncState(theme) {
           button.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-          if (label) {
-            label.textContent = theme === 'dark'
-              ? (Drupal.t ? Drupal.t('Light') : 'Light')
-              : (Drupal.t ? Drupal.t('Dark') : 'Dark');
-          }
         }
 
         syncState(currentTheme());
@@ -67,11 +39,6 @@
           e.preventDefault();
           var next = currentTheme() === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', next);
-          if (next === 'dark') {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
           syncState(next);
           try {
             window.localStorage.setItem('kaliyattam-theme', next);
@@ -85,6 +52,8 @@
       // 2. Mobile Nav Toggle
       once('km-nav-toggle', '[data-nav-toggle]', context).forEach(function (button) {
         var header = button.closest('.site-header');
+        if (!header) return;
+
         function setOpen(open) {
           if (open) {
             header.setAttribute('data-nav-open', '');
@@ -94,53 +63,26 @@
           }
           button.setAttribute('aria-expanded', open ? 'true' : 'false');
         }
-        button.addEventListener('click', function () {
+
+        function toggleClick() {
           setOpen(!header.hasAttribute('data-nav-open'));
-        });
-        header.addEventListener('keydown', function (event) {
+        }
+
+        function keyHandler(event) {
           if (event.key === 'Escape') {
             setOpen(false);
             button.focus();
           }
-        });
+        }
+
+        button.addEventListener('click', toggleClick);
+        header.addEventListener('keydown', keyHandler);
       });
 
-      // 3. Collapsible Comments Toggle
-      once('km-comments-toggle', '.comments-scroll-btn', context).forEach(function (btn) {
-        var parentNode = btn.closest('article, .node, .site-main') || document;
-        var commentsSection = parentNode.querySelector('.node-comments-section');
-        if (!commentsSection) return;
-
-        btn.addEventListener('click', function (e) {
-          e.preventDefault();
-          var willOpen = !commentsSection.classList.contains('is-open');
-          commentsSection.classList.toggle('is-open', willOpen);
-          btn.classList.toggle('is-active', willOpen);
-          btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-
-          if (willOpen) {
-            setTimeout(function () {
-              commentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              var firstInput = commentsSection.querySelector('textarea, input[type="text"]:not([type="hidden"])');
-              if (firstInput) {
-                setTimeout(function () {
-                  firstInput.focus();
-                }, 350);
-              }
-            }, 60);
-          }
-        });
-      });
-
-      // Automatically expand comments if hash matches on initial load or subsequent in-page hashchange
-      once('km-comments-hash-listener', 'body', context).forEach(function () {
-        window.addEventListener('hashchange', autoExpandComments);
-        autoExpandComments();
-      });
-
-      // 4. Share / Copy Link Button
+      // 3. Share / Copy Link Button
       once('km-copy-link', '.btn-copy-link', context).forEach(function (btn) {
         btn.addEventListener('click', function (e) {
+          e.preventDefault();
           var rawUrl = btn.getAttribute('data-url') || window.location.href;
           var url = window.location.href;
           try {
@@ -160,336 +102,47 @@
                   label.textContent = originalText;
                 }
               }, 2000);
+            }).catch(function () {
+              /* Clipboard permission denied or unavailable */
             });
           }
-        });
-      });
-
-      // 5. Timeline Search Drawer Toggle & Sort Switcher
-      once('km-timeline-toolbar', '.timeline-toolbar', context).forEach(function (toolbar) {
-        var form = toolbar.closest('form');
-        var drawer = toolbar.querySelector('.timeline-toolbar__search-drawer');
-        var toggleBtn = toolbar.querySelector('[data-timeline-toggle-search]');
-        var sortBtns = toolbar.querySelectorAll('[data-timeline-sort]');
-
-        // Sync view switcher buttons (.events-view-btn) to current URL pathname
-        var currentPath = window.location.pathname.replace(/\/+$/, '');
-        var viewBtns = toolbar.querySelectorAll('.events-view-btn');
-        if (viewBtns.length) {
-          viewBtns.forEach(function (btn) {
-            var href = (btn.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '');
-            if (href === currentPath) {
-              btn.classList.add('is-active');
-            } else if (href) {
-              btn.classList.remove('is-active');
-            }
-          });
-        }
-
-        if (toggleBtn && drawer) {
-          toggleBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            var isOpen = drawer.classList.contains('is-open');
-            drawer.classList.toggle('is-open', !isOpen);
-            drawer.hidden = isOpen;
-            toggleBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
-            toggleBtn.classList.toggle('is-active', !isOpen);
-            if (!isOpen) {
-              var searchInput = drawer.querySelector('input[name="search"], input[type="text"], input[type="search"]');
-              if (searchInput) {
-                setTimeout(function () { searchInput.focus(); }, 100);
-              }
-            }
-          });
-        }
-
-        var nearbyBtn = toolbar.querySelector('[data-timeline-nearby], [data-events-near-me]');
-        if (nearbyBtn) {
-          // Handle clear reset button if active
-          var clearBtn = nearbyBtn.querySelector('[data-events-clear-near]');
-          if (clearBtn) {
-            clearBtn.addEventListener('click', function (e) {
-              e.stopPropagation();
-              e.preventDefault();
-              var originInput = document.querySelector('#edit-proximity-source-configuration-origin-address, input[name*="origin_address"]');
-              if (originInput) {
-                originInput.value = '';
-              }
-              if (form) {
-                var submitBtn = form.querySelector('[data-drupal-selector*="edit-submit"], input[type="submit"]');
-                if (submitBtn) {
-                  submitBtn.click();
-                } else {
-                  form.submit();
-                }
-              } else {
-                window.location.href = window.location.pathname;
-              }
-            });
-          }
-
-          nearbyBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // If browser geolocation is available, attempt one-click GPS detection
-            if (!navigator.geolocation) {
-              fallbackToOriginInput(Drupal.t('Geolocation is not supported by your browser. Please enter your city or town below.'));
-              return;
-            }
-
-            var labelEl = nearbyBtn.querySelector('.events-pill__label') || nearbyBtn;
-            var originalText = labelEl.textContent;
-            labelEl.textContent = '⏳ ' + (Drupal.t ? Drupal.t('Locating...') : 'Locating...');
-
-            navigator.geolocation.getCurrentPosition(
-              function (position) {
-                var lat = position.coords.latitude.toFixed(4);
-                var lon = position.coords.longitude.toFixed(4);
-                var coordsStr = lat + ', ' + lon;
-
-                var originInput = document.querySelector('#edit-proximity-source-configuration-origin-address, input[name*="origin_address"]');
-                var distInput = document.querySelector('#edit-proximity-value, input[name*="proximity[value]"]');
-
-                if (originInput) {
-                  originInput.value = coordsStr;
-                }
-                if (distInput && (!distInput.value || distInput.value.trim() === '')) {
-                  distInput.value = '50';
-                }
-
-                if (form) {
-                  var submitBtn = form.querySelector('[data-drupal-selector*="edit-submit"], input[type="submit"]');
-                  if (submitBtn) {
-                    submitBtn.click();
-                  } else {
-                    form.submit();
-                  }
-                } else {
-                  var baseUrl = window.location.pathname;
-                  window.location.href = baseUrl + '?proximity[value]=50&proximity[source_configuration][origin_address]=' + encodeURIComponent(coordsStr);
-                }
-              },
-              function (err) {
-                labelEl.textContent = originalText;
-                var msg = Drupal.t ? Drupal.t('Location access was denied. Please enter your city or town below.') : 'Location access was denied. Please enter your city or town below.';
-                if (err.code !== 1) {
-                  msg = Drupal.t ? Drupal.t('Unable to determine location. Please enter your city or town below.') : 'Unable to determine location. Please enter your city or town below.';
-                }
-                fallbackToOriginInput(msg);
-              },
-              { timeout: 10000, enableHighAccuracy: true, maximumAge: 60000 }
-            );
-          });
-        }
-
-        function fallbackToOriginInput(message) {
-          if (drawer) {
-            drawer.classList.add('is-open');
-            drawer.hidden = false;
-            var notice = drawer.querySelector('.km-geo-fallback-notice');
-            if (!notice) {
-              notice = document.createElement('div');
-              notice.className = 'km-geo-fallback-notice';
-              drawer.prepend(notice);
-            }
-            notice.textContent = message;
-            var proxInput = drawer.querySelector('#edit-proximity-source-configuration-origin-address, input[name*="origin_address"], input[type="text"]');
-            if (proxInput) {
-              setTimeout(function () { proxInput.focus(); }, 150);
-            }
-          }
-        }
-
-        sortBtns.forEach(function (btn) {
-          btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            var sortVal = btn.getAttribute('data-timeline-sort');
-            var sortSelect = form ? form.querySelector('select[name="sort_by"]') : null;
-            if (sortSelect) {
-              sortSelect.value = sortVal;
-              var submitBtn = form.querySelector('[data-drupal-selector*="edit-submit"], input[type="submit"]');
-              if (submitBtn) {
-                submitBtn.click();
-              } else {
-                form.submit();
-              }
-            }
-          });
         });
       });
     }
   };
 
-  // 7. Performant Lightweight Media Carousel Behavior
-  Drupal.behaviors.kmCarousel = {
-    attach: function (context) {
-      once('km-carousel', '[data-km-carousel]', context).forEach(function (carousel) {
-        var viewport = carousel.querySelector('.km-carousel__viewport');
-        var prevBtn = carousel.querySelector('[data-carousel-prev]');
-        var nextBtn = carousel.querySelector('[data-carousel-next]');
-        var dots = carousel.querySelectorAll('.km-carousel__dot');
-        var slides = carousel.querySelectorAll('.km-carousel__slide');
-
-        if (!viewport || slides.length <= 1) {
-          if (prevBtn) prevBtn.style.display = 'none';
-          if (nextBtn) nextBtn.style.display = 'none';
-          var dotsWrap = carousel.querySelector('[data-carousel-dots]');
-          if (dotsWrap) dotsWrap.style.display = 'none';
-          return;
-        }
-
-        function getBaseOffset() {
-          return slides[0] ? slides[0].offsetLeft : 0;
-        }
-
-        function getTargetScroll(index) {
-          if (!slides[index]) return 0;
-          return slides[index].offsetLeft - getBaseOffset();
-        }
-
-        function getCurrentIndex() {
-          var scrollLeft = viewport.scrollLeft;
-          var baseOffset = getBaseOffset();
-          var closestIndex = 0;
-          var minDiff = Infinity;
-          for (var i = 0; i < slides.length; i++) {
-            var slidePos = slides[i].offsetLeft - baseOffset;
-            var diff = Math.abs(slidePos - scrollLeft);
-            if (diff < minDiff) {
-              minDiff = diff;
-              closestIndex = i;
-            }
-          }
-          return closestIndex;
-        }
-
-        function scrollToIndex(targetIndex) {
-          var clamped = Math.max(0, Math.min(targetIndex, slides.length - 1));
-          viewport.scrollTo({
-            left: getTargetScroll(clamped),
-            behavior: 'smooth'
-          });
-        }
-
-        var isTicking = false;
-        function updateControls() {
-          var scrollLeft = viewport.scrollLeft;
-          var maxScroll = viewport.scrollWidth - viewport.clientWidth - 5;
-          var activeIndex = getCurrentIndex();
-
-          if (prevBtn) prevBtn.disabled = activeIndex <= 0 || scrollLeft <= 5;
-          if (nextBtn) nextBtn.disabled = activeIndex >= slides.length - 1 || scrollLeft >= maxScroll;
-
-          if (dots.length > 0) {
-            dots.forEach(function (dot, idx) {
-              var isActive = idx === activeIndex;
-              dot.classList.toggle('is-active', isActive);
-              dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
-              dot.setAttribute('aria-current', isActive ? 'true' : 'false');
-            });
-          }
-          isTicking = false;
-        }
-
-        if (prevBtn) {
-          prevBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            var current = getCurrentIndex();
-            scrollToIndex(current - 1);
-          });
-        }
-
-        if (nextBtn) {
-          nextBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            var current = getCurrentIndex();
-            scrollToIndex(current + 1);
-          });
-        }
-
-        dots.forEach(function (dot) {
-          dot.addEventListener('click', function (e) {
-            e.preventDefault();
-            var idx = parseInt(dot.getAttribute('data-slide-index'), 10);
-            if (!isNaN(idx)) {
-              scrollToIndex(idx);
-            }
-          });
-        });
-
-        viewport.addEventListener('scroll', function () {
-          if (!isTicking) {
-            window.requestAnimationFrame(updateControls);
-            isTicking = true;
-          }
-        }, { passive: true });
-
-        // Recalculate controls when images finish loading or viewport resizes
-        carousel.querySelectorAll('img').forEach(function (img) {
-          if (!img.complete && !img._kmBound) {
-            img._kmBound = true;
-            img.addEventListener('load', updateControls);
-          }
-        });
-
-        if (window.ResizeObserver && !carousel._kmResizeObserved) {
-          carousel._kmResizeObserved = true;
-          var ro = new ResizeObserver(function () {
-            updateControls();
-          });
-          ro.observe(viewport);
-        }
-
-        updateControls();
-      });
-    }
-  };
-
-  // 8. Main Nav Active State for Section Sub-routes (e.g. /events/map, /events/calendar)
+  // 4. Main Nav Active State using drupalSettings.path (language-neutral)
   Drupal.behaviors.kmActiveNav = {
     attach: function (context) {
       once('km-active-nav', 'body', context).forEach(function () {
-        var path = window.location.pathname;
-        var isFront = path === '/' || path === '/ml' || path === '/timeline' || path === '/ml/timeline';
+        var currentPath = (drupalSettings && drupalSettings.path && drupalSettings.path.currentPath) || '';
+        var isFront = (drupalSettings && drupalSettings.path && drupalSettings.path.isFront) || false;
+
+        function setActive(selector) {
+          var link = document.querySelector('.site-nav a[data-drupal-link-system-path="' + selector + '"]');
+          if (link && !link.classList.contains('is-active')) {
+            link.classList.add('is-active');
+            link.setAttribute('aria-current', 'page');
+          }
+        }
+
         if (isFront) {
-          var homeLink = document.querySelector('.site-nav a[data-drupal-link-system-path="<front>"]');
-          if (homeLink && !homeLink.classList.contains('is-active')) {
-            homeLink.classList.add('is-active');
-            homeLink.setAttribute('aria-current', 'page');
-          }
+          setActive('<front>');
         }
-        else if (/^\/([a-z]{2}\/)?events(\/.*)?$/.test(path)) {
-          var eventsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="events"]');
-          if (eventsLink && !eventsLink.classList.contains('is-active')) {
-            eventsLink.classList.add('is-active');
-            eventsLink.setAttribute('aria-current', 'page');
-          }
+        else if (currentPath === 'events' || currentPath.indexOf('events/') === 0) {
+          setActive('events');
         }
-        else if (/^\/([a-z]{2}\/)?(theyyam)(\/.*)?$/.test(path)) {
-          var theyyamLink = document.querySelector('.site-nav a[data-drupal-link-system-path="theyyam"]');
-          if (theyyamLink && !theyyamLink.classList.contains('is-active')) {
-            theyyamLink.classList.add('is-active');
-            theyyamLink.setAttribute('aria-current', 'page');
-          }
+        else if (currentPath === 'theyyam' || currentPath.indexOf('theyyam/') === 0) {
+          setActive('theyyam');
         }
-        else if (/^\/([a-z]{2}\/)?(temples?)(\/.*)?$/.test(path)) {
-          var templesLink = document.querySelector('.site-nav a[data-drupal-link-system-path="temples"]');
-          if (templesLink && !templesLink.classList.contains('is-active')) {
-            templesLink.classList.add('is-active');
-            templesLink.setAttribute('aria-current', 'page');
-          }
+        else if (currentPath === 'temples' || currentPath.indexOf('temples/') === 0 || currentPath.indexOf('locations') === 0) {
+          setActive('temples');
         }
-        else if (/^\/([a-z]{2}\/)?posts(\/.*)?$/.test(path)) {
-          var postsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="posts"]');
-          if (postsLink && !postsLink.classList.contains('is-active')) {
-            postsLink.classList.add('is-active');
-            postsLink.setAttribute('aria-current', 'page');
-          }
+        else if (currentPath === 'posts' || currentPath.indexOf('posts/') === 0) {
+          setActive('posts');
         }
       });
     }
   };
 
-})(Drupal, once);
-
-
+})(Drupal, drupalSettings, once);

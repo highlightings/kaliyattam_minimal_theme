@@ -1,0 +1,14 @@
+{
+  "extends": "../../core/.eslintrc.json",
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "Drupal": "readonly",
+    "drupalSettings": "readonly",
+    "once": "readonly"
+  }
+}
+

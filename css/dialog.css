@@ -347,7 +347,7 @@ html:not([data-theme="dark"]) #drupal-off-canvas textarea:focus,
 [data-theme="light"] #drupal-off-canvas select:focus,
 [data-theme="light"] #drupal-off-canvas textarea:focus {
   border-color: #7a0b0b !important;
-  box-shadow: 0 0 0 3px rgba(122, 11, 11, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(122, 11, 11, 0.35) !important;
   outline: none !important;
 }
 
@@ -355,10 +355,7 @@ html:not([data-theme="dark"]) #drupal-off-canvas textarea:focus,
 [data-theme="dark"] #drupal-off-canvas input[type="date"],
 [data-theme="dark"] #drupal-off-canvas input[type="time"],
 [data-theme="dark"] #drupal-off-canvas select,
-[data-theme="dark"] #drupal-off-canvas textarea,
-html.dark #drupal-off-canvas input[type="text"],
-html.dark #drupal-off-canvas select,
-html.dark #drupal-off-canvas textarea {
+[data-theme="dark"] #drupal-off-canvas textarea {
   background: var(--theme-input-bg, #111c30) !important;
   border: 1px solid var(--theme-input-border, #334155) !important;
   color: var(--theme-text, #f1f5f9) !important;
@@ -366,12 +363,9 @@ html.dark #drupal-off-canvas textarea {
 
 [data-theme="dark"] #drupal-off-canvas input:focus,
 [data-theme="dark"] #drupal-off-canvas select:focus,
-[data-theme="dark"] #drupal-off-canvas textarea:focus,
-html.dark #drupal-off-canvas input:focus,
-html.dark #drupal-off-canvas select:focus,
-html.dark #drupal-off-canvas textarea:focus {
+[data-theme="dark"] #drupal-off-canvas textarea:focus {
   border-color: #f59e0b !important;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4) !important;
   outline: none !important;
 }
 

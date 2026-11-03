@@ -1,72 +1,9 @@
 {#
 /**
  * @file
- * Custom exposed filter template for timeline_locations view (/temples).
- * Provides the [ 📑 List View ] [ 🗺️ Map View ] [ 📍 Nearby ] [ 🔍 Search ] segmented control bar
- * and a collapsible search drawer with native Geofield Proximity search.
+ * Exposed filter template for temples list view (/temples).
  */
 #}
-{% if q is not empty %}
-  {{ q }}
-{% endif %}
-
-{% set search_val = form.search['#value']|default('') %}
-{% set prox_origin = form.proximity_wrapper.proximity.source_configuration.origin_address['#value']|default(form.proximity.source_configuration.origin_address['#value']|default('')) %}
-{% set has_search = search_val is not empty or prox_origin is not empty %}
-{% set is_near_active = prox_origin is not empty %}
-
-<div class="timeline-toolbar events-toolbar">
-  <div class="events-toolbar__header">
-    <div class="events-toolbar__filters" role="group" aria-label="{{ 'Filter temples'|t }}">
-      <button type="button" class="events-pill events-pill--nearby{{ is_near_active ? ' is-active' }}" data-events-near-me aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Find temples near your current location'|t }}">
-        <span aria-hidden="true">📍</span> <span class="events-pill__label">{{ is_near_active ? 'Near Me (Active)'|t : 'Near Me'|t }}</span>
-        {% if is_near_active %}
-          <span class="events-pill__reset" data-events-clear-near title="{{ 'Clear proximity'|t }}">×</span>
-        {% endif %}
-      </button>
-      <button type="button" class="events-pill events-pill--search{{ has_search ? ' is-active' }}" data-timeline-toggle-search aria-expanded="{{ has_search ? 'true' : 'false' }}" title="{{ 'Search and filters'|t }}">
-        <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
-      </button>
-    </div>
-
-    <div class="events-toolbar__views" role="group" aria-label="{{ 'Temple views'|t }}">
-      <a href="{{ path('view.timeline_locations.page_locations') }}" class="events-view-btn is-active" title="{{ 'List view'|t }}">
-        <span aria-hidden="true">📑</span> {{ 'List View'|t }}
-      </a>
-      <a href="{{ path('view.locations_map.page_1') }}" class="events-view-btn" title="{{ 'Map view'|t }}">
-        <span aria-hidden="true">🗺️</span> {{ 'Map View'|t }}
-      </a>
-    </div>
-  </div>
-
-  <div class="timeline-toolbar__search-drawer{{ has_search ? ' is-open' }}" id="timeline-search-drawer" {{ not has_search ? 'hidden' }}>
-    <div class="timeline-toolbar__search-inner">
-      {% if form.search %}
-        <div class="timeline-toolbar__filter-item">
-          {{ form.search }}
-        </div>
-      {% endif %}
-      {% if form.proximity_wrapper %}
-        <div class="timeline-toolbar__filter-item timeline-toolbar__filter-item--proximity">
-          {{ form.proximity_wrapper }}
-        </div>
-      {% elseif form.proximity %}
-        <div class="timeline-toolbar__filter-item timeline-toolbar__filter-item--proximity">
-          {{ form.proximity }}
-        </div>
-      {% endif %}
-      {% if form.sort_by %}
-        <div class="timeline-toolbar__filter-item">
-          {{ form.sort_by }}
-        </div>
-      {% endif %}
-      <div class="timeline-toolbar__actions">
-        {{ form.actions }}
-      </div>
-    </div>
-  </div>
-
-  <div class="visually-hidden">
-    {{ form|without('q', 'search', 'proximity', 'proximity_wrapper', 'sort_by', 'actions') }}
-  </div>
-</div>
+{% set is_list = true %}
+{% set is_map = false %}
+{% include '@kaliyattam_minimal/templates/includes/temples-toolbar.html.twig' %}

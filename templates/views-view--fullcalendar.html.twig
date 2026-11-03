@@ -11,6 +11,8 @@
   ]
 %}
 
+{{ attach_library('kaliyattam_minimal/toolbar') }}
+
 <div {{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {{ title }}
@@ -19,36 +21,46 @@
   <div class="timeline-toolbar events-toolbar">
     <div class="events-toolbar__header">
       <div class="events-toolbar__filters" role="group" aria-label="{{ 'Filter events'|t }}">
-        <a href="{{ path('view.events.page_1') }}" class="events-pill">
-          <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
-        </a>
+        {% if routes.events %}
+          <a href="{{ routes.events }}" class="events-pill">
+            <span aria-hidden="true">📅</span> {{ 'Upcoming'|t }}
+          </a>
+        {% endif %}
         <button type="button" class="events-pill events-pill--nearby" data-events-near-me aria-expanded="false" title="{{ 'Find events near your current location'|t }}">
           <span aria-hidden="true">📍</span> <span class="events-pill__label">{{ 'Near Me'|t }}</span>
         </button>
-        <a href="{{ path('view.events.page_2') }}" class="events-pill">
-          <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
-        </a>
+        {% if routes.events_past %}
+          <a href="{{ routes.events_past }}" class="events-pill">
+            <span aria-hidden="true">🕰️</span> {{ 'Past'|t }}
+          </a>
+        {% endif %}
         <button type="button" class="events-pill events-pill--search" data-timeline-toggle-search aria-expanded="false" title="{{ 'Search and filters'|t }}">
           <span aria-hidden="true">🔍</span> {{ 'Search'|t }}
         </button>
       </div>
 
       <div class="events-toolbar__views" role="group" aria-label="{{ 'View layout'|t }}">
-        <a href="{{ path('view.events.page_1') }}" class="events-view-btn" title="{{ 'Card list view'|t }}">
-          <span aria-hidden="true">📑</span> {{ 'Cards'|t }}
-        </a>
-        <a href="{{ path('view.events.page_map') }}" class="events-view-btn" title="{{ 'Map view'|t }}">
-          <span aria-hidden="true">🗺️</span> {{ 'Map'|t }}
-        </a>
-        <a href="{{ path('view.events_calendar.page_1') }}" class="events-view-btn is-active" title="{{ 'Calendar view'|t }}">
-          <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
-        </a>
+        {% if routes.events %}
+          <a href="{{ routes.events }}" class="events-view-btn" title="{{ 'Card list view'|t }}">
+            <span aria-hidden="true">📑</span> {{ 'Cards'|t }}
+          </a>
+        {% endif %}
+        {% if routes.events_map %}
+          <a href="{{ routes.events_map }}" class="events-view-btn" title="{{ 'Map view'|t }}">
+            <span aria-hidden="true">🗺️</span> {{ 'Map'|t }}
+          </a>
+        {% endif %}
+        {% if routes.events_calendar %}
+          <a href="{{ routes.events_calendar }}" class="events-view-btn is-active" title="{{ 'Calendar view'|t }}">
+            <span aria-hidden="true">🗓️</span> {{ 'Calendar'|t }}
+          </a>
+        {% endif %}
       </div>
     </div>
 
     <div class="timeline-toolbar__search-drawer" id="timeline-search-drawer" hidden>
       <div class="timeline-toolbar__search-inner">
-        <form action="{{ path('view.events.page_1') }}" method="get">
+        <form action="{{ routes.events ?: path('view.events.page_1') }}" method="get">
           <div class="timeline-toolbar__filter-item">
             <div class="js-form-item form-item js-form-type-textfield form-type--textfield form-item-search">
               <input type="text" name="search" placeholder="{{ 'Search events...'|t }}" class="form-text">

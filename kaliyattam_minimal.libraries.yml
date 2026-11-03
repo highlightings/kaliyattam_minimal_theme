@@ -25,4 +25,26 @@ theme:
     js/theme.js: {}
   dependencies:
     - core/drupal
+    - core/drupalSettings
+    - core/once
+
+carousel:
+  js:
+    js/carousel.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+comments:
+  js:
+    js/comments.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+toolbar:
+  js:
+    js/toolbar.js: {}
+  dependencies:
+    - core/drupal
     - core/once

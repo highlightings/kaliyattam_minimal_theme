@@ -3,8 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_events
+    - field.storage.node.field_theyyam
+    - field.storage.node.field_where
     - node.type.event
+    - node.type.location
     - node.type.post
+    - node.type.theyyam
   module:
     - node
     - user

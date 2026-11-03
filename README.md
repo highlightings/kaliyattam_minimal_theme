@@ -1,10 +1,26 @@
 # Kaliyattam Minimal Theme
 
-A lightweight, performant, mobile-first Drupal 11 theme crafted specifically for the Kaliyattam cultural rituals and heritage archive.
+A lightweight, performant, mobile-first Drupal 10.3 / 11 theme crafted specifically for the Kaliyattam cultural rituals and heritage archive.
 
 ---
 
-## 1. Config-First Philosophy
+## 1. Required Dependencies
+
+The theme relies on standard contrib modules declared in `composer.json` for interaction bars, views, and form displays:
+
+| Module | Constraint | Purpose in Theme |
+| --- | --- | --- |
+| `drupal/core` | `^10.3 \|\| ^11` | Core theme system and asset libraries. |
+| `drupal/twig_tweak` | `^3.3` | `drupal_view` and `drupal_entity` helpers for related content. |
+| `drupal/flag` | `^5.0` | `flaglink()` Twig function for like, bookmark, and follow buttons. |
+| `drupal/views` | `core` | Filtered feeds, fullcalendar, and location map displays. |
+| `drupal/smart_date` | `^4.0` | Form display and formatting for ritual dates and timings. |
+| `drupal/geofield` | `^1.0` | Proximity filtering and location display. |
+| `drupal/field_group` | `^3.4` | References & Advanced tabs on composer forms. |
+
+---
+
+## 2. Config-First Philosophy
 
 Form layouts, field arrangements, and display modes are **intentionally configured via Drupal 11's core configuration system and Field Groups**, rather than being hardcoded or overridden in Twig templates:
 

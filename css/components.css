@@ -1460,6 +1460,19 @@ html.dark a.timeline-toolbar__btn.is-active {
   text-decoration: none !important;
 }
 
+.events-pill-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+button.events-pill__reset {
+  border: none;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  padding: 0;
+}
+
 .events-pill__reset {
   display: inline-flex;
   align-items: center;
