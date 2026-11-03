@@ -198,7 +198,7 @@ html.dark #drupal-off-canvas-wrapper {
   --off-canvas-background-color-medium: var(--theme-surface, #1e293b);
   --off-canvas-background-color-dark: var(--theme-bg, #0f172a);
   --off-canvas-text-color: var(--theme-text, #f1f5f9);
-  --off-canvas-link-color: var(--theme-accent, #fca5a5);
+  --off-canvas-link-color: var(--theme-accent, #fbbf24);
   --off-canvas-border-color: var(--theme-border, #334155);
   --off-canvas-title-background-color: var(--theme-surface-alt, #27364b);
   --off-canvas-title-text-color: #ffffff;

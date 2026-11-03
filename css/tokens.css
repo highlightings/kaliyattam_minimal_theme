@@ -145,9 +145,9 @@ html.dark {
   --theme-text: #f1f5f9;
   --theme-text-secondary: #94a3b8;
   --theme-text-muted: #94a3b8;
-  --theme-accent: #fca5a5;
-  --theme-accent-soft: rgba(248, 113, 113, 0.15);
-  --theme-accent-hover: #fecaca;
+  --theme-accent: #fbbf24;
+  --theme-accent-soft: rgba(251, 191, 36, 0.15);
+  --theme-accent-hover: #fde047;
   --theme-accent-solid: #b91c1c;
   --theme-accent-solid-hover: #dc2626;
   --theme-input-bg: #111c30;

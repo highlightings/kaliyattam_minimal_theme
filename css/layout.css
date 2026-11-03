@@ -311,11 +311,13 @@ html.dark .theme-toggle-icon--sun {
 .site-nav a[aria-current="page"],
 body.path-frontpage .site-nav a[data-drupal-link-system-path="<front>"],
 body.path-events .site-nav a[data-drupal-link-system-path="events"],
+body.path-theyyam .site-nav a[data-drupal-link-system-path="theyyam"],
+body.path-temples .site-nav a[data-drupal-link-system-path="temples"],
 body.path-posts .site-nav a[data-drupal-link-system-path="posts"] {
   background: transparent !important;
   color: #ffffff !important;
   font-weight: 600;
-  border-bottom: 2.5px solid var(--kaliyattam-gold, #f59e0b) !important;
+  border-bottom: 2.5px solid var(--kaliyattam-gold-light, #fbbf24) !important;
   box-shadow: none !important;
 }
 
@@ -603,7 +605,7 @@ html.dark .sidebar [id^="block-"] h2:not(.visually-hidden),
 html.dark .sidebar .block .block__title,
 html.dark .sidebar .block .updates-sidebar-heading {
   border-bottom-color: var(--theme-border-subtle, rgba(148, 163, 184, 0.18));
-  color: var(--theme-accent, #fca5a5);
+  color: var(--theme-accent, #fbbf24);
 }
 
 /* Base header icon styling */
@@ -630,7 +632,7 @@ html.dark .sidebar .block .updates-sidebar-heading {
 html.dark .sidebar .block h2::before,
 html.dark .sidebar [id^="block-"] h2::before,
 html.dark .sidebar .block .block__title::before {
-  background-color: #fca5a5;
+  background-color: var(--theme-accent, #fbbf24);
 }
 
 /* Generated header icons: Events / Rituals */
@@ -726,7 +728,7 @@ html.dark .sidebar-item a::before {
 :root[data-theme="dark"] .sidebar-item a:hover,
 html.dark .sidebar-item a:hover {
   background: var(--theme-surface-alt, #27364b);
-  color: var(--theme-accent, #fca5a5);
+  color: var(--theme-accent-hover, #fde047);
 }
 
 .widget-footer {
@@ -758,7 +760,7 @@ html.dark .widget-footer {
 
 :root[data-theme="dark"] .widget-header-link,
 html.dark .widget-header-link {
-  color: var(--theme-accent, #fca5a5);
+  color: var(--theme-accent, #fbbf24);
 }
 
 .updates-heritage-text,

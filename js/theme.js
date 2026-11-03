@@ -462,6 +462,20 @@
           eventsLink.setAttribute('aria-current', 'page');
         }
       }
+      else if (/^\/([a-z]{2}\/)?(theyyam)(\/.*)?$/.test(path)) {
+        var theyyamLink = document.querySelector('.site-nav a[data-drupal-link-system-path="theyyam"]');
+        if (theyyamLink && !theyyamLink.classList.contains('is-active')) {
+          theyyamLink.classList.add('is-active');
+          theyyamLink.setAttribute('aria-current', 'page');
+        }
+      }
+      else if (/^\/([a-z]{2}\/)?(temples?)(\/.*)?$/.test(path)) {
+        var templesLink = document.querySelector('.site-nav a[data-drupal-link-system-path="temples"]');
+        if (templesLink && !templesLink.classList.contains('is-active')) {
+          templesLink.classList.add('is-active');
+          templesLink.setAttribute('aria-current', 'page');
+        }
+      }
       else if (/^\/([a-z]{2}\/)?posts(\/.*)?$/.test(path)) {
         var postsLink = document.querySelector('.site-nav a[data-drupal-link-system-path="posts"]');
         if (postsLink && !postsLink.classList.contains('is-active')) {
