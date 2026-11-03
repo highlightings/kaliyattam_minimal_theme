@@ -137,21 +137,18 @@ function kaliyattam_minimal_preprocess_node(array &$variables): void {
       }
     }
 
-    // Batch load and render referenced Theyyam minicards on location full view.
+    // Render referenced Theyyam minicards on location full view using their view builder.
     if ($bundle === 'location' && $node->hasField('field_theyyam') && !$node->get('field_theyyam')->isEmpty()) {
       $theyyam_nodes = $node->get('field_theyyam')->referencedEntities();
       if (!empty($theyyam_nodes)) {
-        $built = \Drupal::entityTypeManager()
-          ->getViewBuilder('node')
-          ->viewMultiple($theyyam_nodes, 'minicard');
+        $builder = \Drupal::entityTypeManager()->getViewBuilder('node');
         $cards = [];
-        foreach ($theyyam_nodes as $delta => $theyyam_node) {
-          if (isset($built[$delta])) {
-            $cards[] = $built[$delta];
-          }
+        foreach ($theyyam_nodes as $theyyam_node) {
+          $card = $builder->view($theyyam_node, 'minicard');
+          $cards[] = $card;
+          $renderer->addCacheableDependency($variables, CacheableMetadata::createFromRenderArray($card));
         }
         $variables['theyyam_minicards'] = $cards;
-        $renderer->addCacheableDependency($variables, CacheableMetadata::createFromRenderArray($built));
       }
     }
   }

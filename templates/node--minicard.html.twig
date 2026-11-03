@@ -20,6 +20,8 @@
     <div class="minicard-theyyam__media">
       {% if content.field_featured_image is not empty %}
         {{ content.field_featured_image }}
+      {% elseif content.field_media is not empty %}
+        {{ content.field_media }}
       {% else %}
         <div class="minicard-theyyam__placeholder" aria-hidden="true">
           <span class="minicard-theyyam__placeholder-icon">🎭</span>
