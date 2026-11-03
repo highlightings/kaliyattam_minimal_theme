@@ -51,7 +51,15 @@ legend {
   display: block;
   margin-bottom: var(--space-1);
   padding: 0;
-  font-weight: 600;
+  font-size: 0.925rem;
+  font-weight: 550;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.form-item--name > label,
+.user-login-form .form-item > label {
+  white-space: nowrap;
 }
 
 .form-type-checkbox > label,
@@ -306,6 +314,95 @@ html.dark .composer details.field-group-advanced .js-filter-wrapper {
 .composer .media-library-item {
   border-radius: var(--radius-md);
   overflow: hidden;
+}
+
+/* Featured image & general image upload widgets in composer (theyyam, location, event, post) */
+.composer .field--name-field-featured-image {
+  margin-block: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--theme-surface-alt, #fafafa);
+  border: 1px solid var(--theme-border-subtle, #e5e7eb);
+  border-radius: 12px;
+}
+
+.composer .field--name-field-featured-image legend,
+.composer .field--name-field-featured-image > .form-item__label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Compact Image Preview for forms (prevents huge default image display) */
+.composer .image-preview,
+.composer .field--name-field-featured-image .image-preview,
+.image-preview {
+  max-width: 180px;
+  max-height: 130px;
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  border: 1px solid var(--theme-border-subtle, #e5e7eb);
+  background: var(--theme-surface, #ffffff);
+  margin-block: 0.4rem 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.composer .image-preview img,
+.composer .field--name-field-featured-image .image-preview img,
+.image-preview img {
+  width: auto;
+  max-width: 100%;
+  max-height: 130px;
+  object-fit: cover;
+  display: block;
+}
+
+.composer .image-widget-data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+:root[data-theme="dark"] .composer .field--name-field-featured-image,
+html.dark .composer .field--name-field-featured-image {
+  background: var(--theme-surface-alt, #27364b);
+  border-color: var(--theme-border, #334155);
+}
+
+:root[data-theme="dark"] .composer .image-preview,
+:root[data-theme="dark"] .image-preview,
+html.dark .composer .image-preview,
+html.dark .image-preview {
+  background: var(--theme-surface, #1e293b);
+  border-color: var(--theme-border, #334155);
+}
+
+/* Temple Location, Address & Map Fields in Composer */
+.composer .field--name-field-location-address,
+.composer .field--name-field-geofield {
+  margin-block: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--theme-surface-alt, #fafafa);
+  border: 1px solid var(--theme-border-subtle, #e5e7eb);
+  border-radius: 12px;
+}
+
+.composer .field--name-field-location-address legend,
+.composer .field--name-field-geofield legend,
+.composer .field--name-field-location-address > .form-item__label,
+.composer .field--name-field-geofield > .form-item__label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+}
+
+:root[data-theme="dark"] .composer .field--name-field-location-address,
+:root[data-theme="dark"] .composer .field--name-field-geofield,
+html.dark .composer .field--name-field-location-address,
+html.dark .composer .field--name-field-geofield {
+  background: var(--theme-surface-alt, #27364b);
+  border-color: var(--theme-border, #334155);
 }
 
 /* Multi-value table (Smart Date, references, etc.) inside composer */
@@ -689,5 +786,78 @@ html.dark .composer .field--name-field-when legend {
 html.dark .composer details.path-form {
   background: var(--theme-surface, #1e293b) !important;
   border-color: var(--theme-border, #334155) !important;
+}
+
+/* ---- User Authentication Forms (Login, Password Reset, Register) ---- */
+.user-login-form,
+.user-pass,
+.user-register-form {
+  max-width: 27rem;
+  margin: 2rem auto;
+  padding: 2.25rem 2rem;
+  background: var(--theme-surface, #ffffff);
+  border: 1px solid var(--theme-border-subtle, #e5e7eb);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--theme-card-shadow, 0 4px 20px rgba(0, 0, 0, 0.06));
+}
+
+.user-login-form .form-item,
+.user-pass .form-item,
+.user-register-form .form-item {
+  margin-block: 1rem;
+}
+
+.user-login-form .form-item > label,
+.user-pass .form-item > label,
+.user-register-form .form-item > label {
+  font-size: 0.9rem;
+  font-weight: 550;
+  color: var(--theme-text);
+  margin-bottom: 0.35rem;
+}
+
+.user-login-form .form-actions,
+.user-pass .form-actions,
+.user-register-form .form-actions {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-login-form .form-submit,
+.user-pass .form-submit,
+.user-register-form .form-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  background: var(--kaliyattam-gradient);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(137, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.user-login-form .form-submit:hover,
+.user-pass .form-submit:hover,
+.user-register-form .form-submit:hover {
+  box-shadow: var(--shadow-crimson);
+  transform: translateY(-1px);
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .user-login-form,
+:root[data-theme="dark"] .user-pass,
+:root[data-theme="dark"] .user-register-form,
+html.dark .user-login-form,
+html.dark .user-pass,
+html.dark .user-register-form {
+  background: var(--theme-surface, #1e293b);
+  border-color: var(--theme-border, #334155);
+  box-shadow: var(--theme-card-shadow, 0 4px 20px rgba(0, 0, 0, 0.3));
 }
 
