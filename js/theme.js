@@ -145,4 +145,23 @@
     }
   };
 
+  // 5. Language Switcher Active State
+  Drupal.behaviors.kmActiveLanguage = {
+    attach: function (context) {
+      once('km-active-lang', '.block-language, [id*="languageswitcher"], .advanced-language-selector', context).forEach(function (el) {
+        var currentLang = (drupalSettings && drupalSettings.path && drupalSettings.path.currentLanguage) || document.documentElement.lang || 'en';
+        var items = el.querySelectorAll('li, a');
+        items.forEach(function (node) {
+          var lang = node.getAttribute('data-drupal-language') || node.getAttribute('hreflang');
+          if (lang === currentLang) {
+            node.classList.add('is-active');
+            if (node.tagName === 'A') {
+              node.setAttribute('aria-current', 'page');
+            }
+          }
+        });
+      });
+    }
+  };
+
 })(Drupal, drupalSettings, once);

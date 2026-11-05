@@ -51,7 +51,16 @@
 
   <main id="main-content" class="site-main container" tabindex="-1">
     {% if page.breadcrumb %}
-      <div class="site-breadcrumb">{{ page.breadcrumb }}</div>
+      <div class="site-breadcrumb">
+        {{ page.breadcrumb }}
+        {% if is_front %}
+          <div class="block block-breadcrumb-placeholder" aria-hidden="true"></div>
+        {% endif %}
+      </div>
+    {% elseif is_front %}
+      <div class="site-breadcrumb site-breadcrumb--front">
+        <div class="block block-breadcrumb-placeholder" aria-hidden="true"></div>
+      </div>
     {% endif %}
     {{ page.highlighted }}
     <div class="layout{{ has_first ? ' layout--sidebar-first' }}{{ has_second ? ' layout--sidebar-second' }}{{ (has_first and has_second) ? ' layout--both-sidebars' }}">

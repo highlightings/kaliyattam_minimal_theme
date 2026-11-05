@@ -164,6 +164,10 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+html[lang="en"] .site-header__top .block-language a[hreflang="en"],
+html[lang="en"] .site-header__top .block-language li[data-drupal-language="en"] a,
+html[lang="ml"] .site-header__top .block-language a[hreflang="ml"],
+html[lang="ml"] .site-header__top .block-language li[data-drupal-language="ml"] a,
 .advanced-language-selector .nav-link.active,
 .advanced-language-selector .nav-link.is-active,
 .advanced-language-selector a.active,
